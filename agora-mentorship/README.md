@@ -32,3 +32,17 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+## DB
+
+Database setup for local development:
+
+1. cd .\agora-mentorship\
+2. run command: docker-compose up docker-compose-local.yml
+3. run command: yarn prisma migrate dev --name [init]
+
+Seeding:
+
+1. cd .\agora-mentorship\
+2. add/alter data in prisma/data.json as required, maintaining the existing format.
+3. run command: node prisma/seed

@@ -1,0 +1,43 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+
+model Mentor{ 
+  id Int @id @default(autoincrement())
+  bio String
+  job_title_primary String
+  job_title_secondary String
+  preferred_services Services[]  
+  school String
+  school_major String
+  school_year String
+}
+
+model Mentee{
+  id Int @id @default(autoincrement())
+  bio String
+  job_title_primary String
+  job_title_secondary String
+  preferred_services Services[] 
+  school String
+  school_major String
+  school_year Int
+}
+
+enum Services {
+  CAREER_DEVELOPMENT
+  GENERAL
+  MOCK_INTERVIEW
+  CAREER_PLANNING
+  SUCCESS_AT_WORK
+}
