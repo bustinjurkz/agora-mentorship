@@ -9,29 +9,32 @@ datasource db {
 
 generator client {
   provider = "prisma-client-js"
+
 }
 
 
 model Mentor{ 
   id Int @id @default(autoincrement())
-  bio String
+  name String
+  bio String?
   job_title_primary String
-  job_title_secondary String
+  job_title_secondary String?
   preferred_services Services[]  
-  school String
+  school String[]
   school_major String
-  school_year String
+  school_year Int?
 }
 
 model Mentee{
   id Int @id @default(autoincrement())
-  bio String
+  name String
+  bio String?
   job_title_primary String
-  job_title_secondary String
+  job_title_secondary String?
   preferred_services Services[] 
-  school String
+  school String[]
   school_major String
-  school_year Int
+  school_year Int?
 }
 
 enum Services {

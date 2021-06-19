@@ -39,10 +39,10 @@ Database setup for local development:
 
 1. cd .\agora-mentorship\
 2. run command: docker-compose up docker-compose-local.yml
-3. run command: yarn prisma migrate dev --name [init]
+3. run command: yarn prisma migrate dev --name init (where `init` can be any name for the migration)
 
 Seeding:
 
 1. cd .\agora-mentorship\
 2. add/alter data in prisma/data.json as required, maintaining the existing format.
-3. run command: node prisma/seed
+3. run command: npx prisma db seed --preview-feature

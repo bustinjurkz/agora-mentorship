@@ -7,7 +7,6 @@ import { store } from '../store/store';
 import React from 'react';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core';
 import { client } from '../client';
-
 const GlobalStyle = createGlobalStyle`
   body {
     height: 100%;
@@ -50,7 +49,7 @@ export default function App({ Component, pageProps }: AppProps) {
         <ThemeProvider theme={theme}>
           <Helmet>
             <meta charSet="utf-8" />
-            <title>Agora</title>
+            <title>Agora Mentorship</title>
             <link rel="preconnect" href="https://fonts.gstatic.com" />
             <link rel="icon" href="/favicon.ico" />
             <link
