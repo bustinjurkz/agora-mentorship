@@ -7,32 +7,32 @@ import { store } from '../store/store';
 import React from 'react';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core';
 import { client } from '../client';
+import Navbar from 'components/Navbar';
+import Layout from 'components/Layout';
 const GlobalStyle = createGlobalStyle`
   body {
     height: 100%;
-    background-color: #f7faf6;
+    background-color: #fdfdfd;
     font-family: 'Rubik', sans-serif;
-
     margin: 0;
-    color: #415939;
+    color: #1a5336;
     padding: 0;
     overflow: hidden;
     box-sizing: border-box;
   }
+  .MuiButton-outlined{
+    border: 3px solid #ffaf40 !important
+  }
+
 
 `;
-
 const theme = {
-  primary: '#0070f3',
-  white: '#f6faf6',
-  lightestGreen: '#f7faf6',
-  lightGreen: '#e9f0e7',
-  green: '#73a85f',
-  darkGreen: '#415939',
-  treeGreen: '#c9d3c5',
-  grey: '#b4b5b4',
-  brown: '#48302F',
-  paleGreen: '#C1CCBD',
+  white: '#fdfdfd',
+  mainGreen: '#1a5336',
+  TDGreen: '#008a00',
+  orange: '#ffaf40',
+  lightGreen: '#f5f9f7',
+  grey: '#cacaca',
 };
 
 const MuiTheme = createMuiTheme({
@@ -60,11 +60,11 @@ export default function App({ Component, pageProps }: AppProps) {
 
           <ReduxProvider store={store}>
             <ApolloProvider client={client}>
-              {/* <Navbar />
-              <Layout> */}
-              <Component {...pageProps} />
-              {/* <Footer />
-              </Layout> */}
+              <Navbar />
+              <Layout>
+                <Component {...pageProps} />
+                {/* <Footer /> */}
+              </Layout>
             </ApolloProvider>
           </ReduxProvider>
         </ThemeProvider>

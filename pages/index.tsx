@@ -1,18 +1,13 @@
+import LandingPage from 'components/LandingPage';
 import { useGetMentorsQuery } from 'generated/graphql';
+import React from 'react';
 
 const Home = () => {
   const { data, loading } = useGetMentorsQuery();
-
-  if (loading) {
-    console.log('yeet');
+  if (!loading) {
+    console.log(data);
   }
-  console.log('data: ', data?.Mentor);
-
-  return (
-    <>
-      <div>NAME OF THE MAN AVEC PLAN: {data?.Mentor?.name}</div>
-    </>
-  );
+  return <LandingPage />;
 };
 
 export default Home;
