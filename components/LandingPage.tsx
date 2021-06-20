@@ -33,12 +33,15 @@ const LandingPage: React.FC = () => {
           </Button>
         </div>
       </div>
-      <Image
-        src="/landing-image.jpg"
-        alt={'instructions'}
-        width={1050}
-        height={700}
-      />
+      <div className="image-container">
+        <Image
+          src="/landing-image.jpg"
+          alt={'instructions'}
+          width={800}
+          height={500}
+          layout={'intrinsic'}
+        />
+      </div>
     </LandingPageStyle>
   );
 };
@@ -48,6 +51,9 @@ export default LandingPage;
 const LandingPageStyle = styled.div`
   display: flex;
   margin-top: 100px;
+  .image-container {
+    align-self: center;
+  }
   .landing-wrapper {
     align-self: center;
     max-width: 600px;
