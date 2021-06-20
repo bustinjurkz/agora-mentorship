@@ -1,7 +1,6 @@
 import Button from '@material-ui/core/Button/Button';
 import React from 'react';
 import styled from 'styled-components';
-import Image from 'next/image';
 
 const LandingPage: React.FC = () => {
   return (
@@ -33,15 +32,7 @@ const LandingPage: React.FC = () => {
           </Button>
         </div>
       </div>
-      <div className="image-container">
-        <Image
-          src="/landing-image.jpg"
-          alt={'instructions'}
-          width={800}
-          height={500}
-          layout={'intrinsic'}
-        />
-      </div>
+      <div className="image-container"></div>
     </LandingPageStyle>
   );
 };
@@ -51,8 +42,12 @@ export default LandingPage;
 const LandingPageStyle = styled.div`
   display: flex;
   margin-top: 100px;
+  justify-content: space-between;
   .image-container {
     align-self: center;
+    background: grey;
+    height: 400px;
+    width: 400px;
   }
   .landing-wrapper {
     align-self: center;

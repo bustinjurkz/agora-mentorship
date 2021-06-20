@@ -1,11 +1,24 @@
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 import Button from '@material-ui/core/Button/Button';
+import { useRouter } from 'next/dist/client/router';
 import React from 'react';
 import styled from 'styled-components';
 
 const Navbar: React.FC = () => {
+  const router = useRouter();
+  const returnHome = () => {
+    router.push(`/`, `/`);
+  };
+
   return (
     <NavbarStyle>
-      <h1 className="title">Agora Mentoring</h1>
+      <h1
+        className="title"
+        onClick={() => returnHome()}
+        onKeyDown={() => returnHome()}
+      >
+        Agora Mentoring
+      </h1>
       <div className="nav-buttons">
         <Button className="item">How it Works</Button>
         <Button className="item">About</Button>
@@ -24,8 +37,8 @@ const NavbarStyle = styled.header`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 80px;
-  padding: 10px 50px;
+  height: 100px;
+  padding: 0px 50px;
   background-color: ${({ theme }) => theme.mainGreen};
 
   .title {

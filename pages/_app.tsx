@@ -9,6 +9,7 @@ import { createMuiTheme, MuiThemeProvider } from '@material-ui/core';
 import { client } from '../client';
 import Navbar from 'components/Navbar';
 import Layout from 'components/Layout';
+import Footer from 'components/Footer';
 const GlobalStyle = createGlobalStyle`
   body {
     height: 100%;
@@ -63,7 +64,7 @@ export default function App({ Component, pageProps }: AppProps) {
               <Navbar />
               <Layout>
                 <Component {...pageProps} />
-                {/* <Footer /> */}
+                <Footer />
               </Layout>
             </ApolloProvider>
           </ReduxProvider>

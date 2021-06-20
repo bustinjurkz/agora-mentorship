@@ -17,7 +17,7 @@ export default Layout;
 
 const LayoutStyle = styled.div`
   position: absolute;
-  height: calc(100% - 80px); /* subtract navbar height */
+  height: calc(100% - 100px); /* subtract navbar height */
   width: 100%;
   overflow: auto;
 `;
