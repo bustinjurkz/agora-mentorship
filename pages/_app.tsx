@@ -1,46 +1,16 @@
-import { createGlobalStyle, ThemeProvider } from 'styled-components';
+import { ThemeProvider } from 'styled-components';
 import type { AppProps } from 'next/app';
 import { Helmet } from 'react-helmet';
 import { ApolloProvider } from '@apollo/client';
 import { Provider as ReduxProvider } from 'react-redux';
 import { store } from '../store/store';
 import React from 'react';
-import { createMuiTheme, MuiThemeProvider } from '@material-ui/core';
+import { MuiThemeProvider } from '@material-ui/core';
 import { client } from '../client';
 import Navbar from 'components/Navbar';
 import Layout from 'components/Layout';
 import Footer from 'components/Footer';
-const GlobalStyle = createGlobalStyle`
-  body {
-    height: 100%;
-    background-color: #fdfdfd;
-    font-family: 'Rubik', sans-serif;
-    margin: 0;
-    color: #1a5336;
-    padding: 0;
-    overflow: hidden;
-    box-sizing: border-box;
-  }
-  .MuiButton-outlined{
-    border: 3px solid #ffaf40 !important
-  }
-
-
-`;
-const theme = {
-  white: '#fdfdfd',
-  mainGreen: '#1a5336',
-  TDGreen: '#008a00',
-  orange: '#ffaf40',
-  lightGreen: '#f5f9f7',
-  grey: '#cacaca',
-};
-
-const MuiTheme = createMuiTheme({
-  typography: {
-    fontFamily: `"Rubik",sans-serif;`,
-  },
-});
+import { GlobalStyle, MuiTheme, theme } from 'components/helperFunctions';
 
 export default function App({ Component, pageProps }: AppProps) {
   return (

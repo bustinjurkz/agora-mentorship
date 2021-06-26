@@ -1,8 +1,11 @@
 import Button from '@material-ui/core/Button/Button';
+import { useRouter } from 'next/dist/client/router';
 import React from 'react';
 import styled from 'styled-components';
 
 const LandingPage: React.FC = () => {
+  const router = useRouter();
+
   return (
     <LandingPageStyle>
       <div className="landing-wrapper">
@@ -27,6 +30,7 @@ const LandingPage: React.FC = () => {
             className="sign-up"
             variant="outlined"
             disableElevation
+            onClick={() => router.push(`/register`, `/register`)}
           >
             Sign Up
           </Button>

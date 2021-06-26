@@ -1,10 +1,10 @@
 import Button from '@material-ui/core/Button/Button';
 import React from 'react';
 import styled from 'styled-components';
-// import { useRouter } from 'next/router';
+import { useRouter } from 'next/router';
 
 const Register: React.FC = () => {
-  // const router = useRouter();
+  const router = useRouter();
   return (
     <RegisterStyle>
       <div className="sign-up-wrapper">
@@ -14,6 +14,7 @@ const Register: React.FC = () => {
             className="mentor button"
             variant="contained"
             disableElevation
+            onClick={() => router.push(`/mentor`, `/mentor`)}
           >
             Mentor
           </Button>
@@ -21,6 +22,7 @@ const Register: React.FC = () => {
             className="mentee button"
             variant="contained"
             disableElevation
+            onClick={() => router.push(`/mentee`, `/mentee`)}
           >
             Mentee
           </Button>
