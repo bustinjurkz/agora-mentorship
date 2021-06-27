@@ -7,6 +7,7 @@ import ProfileDashboard from 'components/ProfileDashboard';
 import { BackgroundStyle } from 'components/helperFunctions';
 import MeetingsCalendar from 'components/meetings/MeetingsCalendar';
 import UpcomingMeetings from 'components/meetings/UpcomingMeetings';
+import PendingMeetings from 'components/meetings/PendingMeetings';
 
 // import { useRouter } from 'next/router';
 
@@ -35,6 +36,7 @@ const MentorAdmin: React.FC = () => {
           <MeetingsCalendar />
         </div>
         <UpcomingMeetings />
+        <PendingMeetings />
       </div>
     </MentorAdminStyle>
   );
