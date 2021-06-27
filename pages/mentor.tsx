@@ -5,7 +5,8 @@ import { useGetMentorsQuery } from 'generated/graphql';
 import Loading from 'components/Loading';
 import ProfileDashboard from 'components/ProfileDashboard';
 import { BackgroundStyle } from 'components/helperFunctions';
-import MeetingsCalendar from 'components/MeetingsCalendar';
+import MeetingsCalendar from 'components/meetings/MeetingsCalendar';
+import UpcomingMeetings from 'components/meetings/UpcomingMeetings';
 
 // import { useRouter } from 'next/router';
 
@@ -33,6 +34,7 @@ const MentorAdmin: React.FC = () => {
           <PersonalInfo mentorInfo={data?.Mentor!} />
           <MeetingsCalendar />
         </div>
+        <UpcomingMeetings />
       </div>
     </MentorAdminStyle>
   );
@@ -53,7 +55,7 @@ const MentorAdminStyle = styled.div`
     .info-cal-container {
       display: inline-flex;
       justify-content: space-between;
-      margin-top: 20px;
+      margin: 20px 0px;
     }
   }
 

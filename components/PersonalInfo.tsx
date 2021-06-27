@@ -152,6 +152,7 @@ const PersonalInfoStyle = styled.div`
   }
   .info-content {
     flex: auto;
+    margin: 0px 10px;
     .content-body {
       margin-left: 0px 10px;
       margin-bottom: 5px;

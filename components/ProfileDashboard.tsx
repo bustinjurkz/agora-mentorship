@@ -40,6 +40,7 @@ const ProfileDashboardStyle = styled.div`
   align-items: start;
   width: 150px;
   height: 100%;
+  max-height: 400px;
 
   .divider {
     width: 100%;

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Calendar from 'react-calendar';
 import styled from 'styled-components';
 import 'react-calendar/dist/Calendar.css';
-import { BackgroundStyle } from './helperFunctions';
+import { BackgroundStyle } from '../helperFunctions';
 
 const MeetingsCalendar: React.FC = () => {
   const [value, onChange] = useState(new Date());
