@@ -61,7 +61,7 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({ mentorInfo }) => {
   return (
     <PersonalInfoStyle>
       <div className="header">
-        <h2>Personal Info</h2>{' '}
+        <h2>Personal Info</h2>
         <Button size={'small'} className="edit">
           Edit All
         </Button>
@@ -116,7 +116,7 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({ mentorInfo }) => {
           </Button>
         </div>
       </BackgroundStyle>
-      <BackgroundStyle style={{ marginTop: 17 }}>
+      <BackgroundStyle style={{ marginTop: 17 }} fullHeight>
         <div className="info-content">
           <div className="info-content-header">
             <h4 className="header-text">{renderContentHeader()}</h4>
@@ -142,12 +142,16 @@ const PersonalInfoStyle = styled.div`
     display: inline-flex;
     justify-content: space-between;
   }
+  .edit {
+    color: ${({ theme }) => theme.lightGrey};
+  }
 
   .fields {
     display: inline-flex;
     justify-content: space-between;
   }
   .info-content {
+    flex: auto;
     .content-body {
       margin-left: 0px 10px;
       margin-bottom: 5px;

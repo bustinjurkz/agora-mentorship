@@ -36,14 +36,18 @@ export default ProfileDashboard;
 const ProfileDashboardStyle = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100%;
   justify-content: space-between;
   align-items: start;
+  width: 150px;
+  height: 100%;
 
   .divider {
     width: 100%;
   }
   .icon {
     color: ${({ theme }) => theme.mainGreen};
+  }
+  .item {
+    font-weight: 600;
   }
 `;

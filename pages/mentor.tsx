@@ -17,11 +17,11 @@ const MentorAdmin: React.FC = () => {
   }
   const renderNotificationBanner = () => {
     return (
-      <div className="notification-banner">
-        <BackgroundStyle backgroundColor="#ffaf40">
+      <BackgroundStyle backgroundColor="#ff9500">
+        <div className="notification-banner">
           Hi {data?.Mentor?.name}, you have 1 upcoming & 3 pending meetings!
-        </BackgroundStyle>
-      </div>
+        </div>
+      </BackgroundStyle>
     );
   };
   return (
@@ -43,15 +43,25 @@ export default MentorAdmin;
 const MentorAdminStyle = styled.div`
   display: flex;
   flex-direction: row;
+  justify-content: space-around;
+  margin-top: 45px;
   .mentor-container {
     display: flex;
+    width: 100%;
+    max-width: 875px;
     flex-direction: column;
     .info-cal-container {
       display: inline-flex;
+      justify-content: space-between;
+      margin-top: 20px;
     }
   }
 
   .notification-banner {
     color: white;
+    align-self: center;
+    height: 100%;
+    font-size: large;
+    padding: 8px;
   }
 `;
