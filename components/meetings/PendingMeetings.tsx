@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { BackgroundStyle } from '../helperFunctions';
 import { PendingMeetingCard } from './PendingMeetingCard';
 
-export const sampleData = [
+const sampleData = [
   {
     date: 'June 30 2021',
     type: 'Career Development',

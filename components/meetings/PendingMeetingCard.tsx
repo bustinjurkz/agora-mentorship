@@ -46,7 +46,7 @@ const PendingMeetingCardStyle = styled.div`
     display: flex;
     border-radius: 5px;
     border-left: 5px solid #ff9500;
-    padding: 20px 30px;
+    padding: 20px 45px;
     flex-direction: column;
     background: ${({ theme }) => theme.lightGreen};
     .meeting-type {
@@ -58,7 +58,10 @@ const PendingMeetingCardStyle = styled.div`
       display: flex;
       flex-direction: column;
       font-size: smaller;
-      margin: 10px 0px 0px 40px;
+      margin-top: 12px;
+      background: #ececec;
+      padding: 12px;
+      border-radius: 5px;
       .time {
         margin-bottom: 8px;
       }

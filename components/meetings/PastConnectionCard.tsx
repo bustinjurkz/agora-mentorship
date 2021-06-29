@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-
+import Rating from '@material-ui/lab/Rating';
 export interface PastConnectionsCardProps {
   sampleData: any;
 }
@@ -10,24 +10,20 @@ export const PastConnectionsCard: React.FC<PastConnectionsCardProps> = ({
 }) => {
   return (
     <PastConnectionsCardStyle>
-      <div className="card-container">
-        <span className="meeting-type">{sampleData.type}</span>
-        <span className="date">{sampleData.date}</span>
-
-        <div className="meeting-times">
-          {sampleData.times.map((x: string, i: number) => (
-            <div key={i} className="time">
-              {x}
-            </div>
-          ))}
-        </div>
-        <div className="mentee">
+      <div className="container">
+        <div className="header">
           <AccountCircleIcon className="avatar" />
           <div className="info">
             <span className="name">{sampleData.mentee}</span>
-            <span className="jobtitle">{sampleData.jobtitle}</span>
-            <span className="position">{sampleData.position}</span>
-            <span className="company">{sampleData.company}</span>
+            <span className="history">1 Consult, 1 Upcoming</span>
+          </div>
+        </div>
+        <div className="card-body">
+          <span className="jobtitle">{sampleData.jobtitle}</span>
+          <span className="position">{sampleData.position}</span>
+          <span className="company">{sampleData.company}</span>
+          <div className="rating">
+            <Rating className="stars" name="read-only" value={4} readOnly />
           </div>
         </div>
       </div>
@@ -39,46 +35,55 @@ const PastConnectionsCardStyle = styled.div`
   display: flex;
   flex-direction: column;
   margin-right: 40px;
-  .date {
-    color: ${({ theme }) => theme.mainGreen};
-  }
-  .card-container {
+  width: 275px;
+  .container {
     display: flex;
     border-radius: 5px;
-    border-left: 5px solid #ff9500;
-    padding: 20px 30px;
     flex-direction: column;
     background: ${({ theme }) => theme.lightGreen};
-    .meeting-type {
-      color: ${({ theme }) => theme.mainGreen};
+
+    .jobtitle {
       font-weight: 600;
-      margin-bottom: 10px;
     }
-    .meeting-times {
+    .rating {
+      align-self: flex-end;
+      .stars {
+        color: ${({ theme }) => theme.mainGreen};
+      }
+    }
+
+    .card-body {
       display: flex;
       flex-direction: column;
-      font-size: smaller;
-      margin: 10px 0px 0px 40px;
-      .time {
-        margin-bottom: 8px;
-      }
+      padding: 15px;
     }
   }
 
-  .mentee {
+  .header {
     display: inline-flex;
-    margin-top: 25px;
+    color: ${({ theme }) => theme.white};
+    background: ${({ theme }) => theme.TDGreen};
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    padding: 10px;
     .avatar {
-      color: ${({ theme }) => theme.TDGreen};
       font-size: 3rem;
       margin-right: 20px;
+      color: ${({ theme }) => theme.white};
     }
     .info {
       display: flex;
       flex-direction: column;
+      align-self: center;
+      .history {
+        font-weight: 400;
+        font-size: smaller;
+      }
       .name {
-        color: ${({ theme }) => theme.TDGreen};
+        color: ${({ theme }) => theme.white};
+
         font-weight: 600;
+        font-size: larger;
       }
     }
   }

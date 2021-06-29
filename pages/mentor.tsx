@@ -8,6 +8,7 @@ import { BackgroundStyle } from 'components/helperFunctions';
 import MeetingsCalendar from 'components/meetings/MeetingsCalendar';
 import UpcomingMeetings from 'components/meetings/UpcomingMeetings';
 import PendingMeetings from 'components/meetings/PendingMeetings';
+import PastConnections from 'components/meetings/PastConnections';
 
 // import { useRouter } from 'next/router';
 
@@ -37,6 +38,7 @@ const MentorAdmin: React.FC = () => {
         </div>
         <UpcomingMeetings />
         <PendingMeetings />
+        <PastConnections />
       </div>
     </MentorAdminStyle>
   );

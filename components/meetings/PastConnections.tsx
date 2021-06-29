@@ -2,9 +2,9 @@ import Button from '@material-ui/core/Button/Button';
 import React from 'react';
 import styled from 'styled-components';
 import { BackgroundStyle } from '../helperFunctions';
-import { PendingMeetingCard } from './PendingMeetingCard';
+import { PastConnectionsCard } from './PastConnectionCard';
 
-export const sampleData = [
+const sampleData = [
   {
     rating: 3,
     mentee: 'Steven Du',
@@ -31,9 +31,9 @@ const PastConnections: React.FC = () => {
             View All
           </Button>
         </div>
-        <div className="card-container">
+        <div className="cards-container">
           {sampleData.map((x: any, i: number) => (
-            <PendingMeetingCard key={i} sampleData={x} />
+            <PastConnectionsCard key={i} sampleData={x} />
           ))}
         </div>
       </PastConnectionsStyle>
@@ -56,7 +56,7 @@ const PastConnectionsStyle = styled.div`
     }
   }
 
-  .card-container {
+  .cards-container {
     display: inline-flex;
   }
 `;

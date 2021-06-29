@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { BackgroundStyle } from '../helperFunctions';
 import { UpcomingMeetingCard } from './UpcomingMeetingCard';
 
-export const sampleData = [
+const sampleData = [
   {
     date: 'Tomorrow, June 17',
     type: 'Work-Life Balance',
