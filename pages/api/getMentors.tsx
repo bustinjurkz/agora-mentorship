@@ -5,6 +5,7 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
   const prisma = new PrismaClient({ log: ['query'] });
   try {
     const mentors = await prisma.mentor.findMany();
+
     res.json({ mentors });
   } catch (e) {
     res.status(500);
