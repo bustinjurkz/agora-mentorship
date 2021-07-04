@@ -2,6 +2,18 @@
 ### Do not make changes to this file directly
 
 
+type Mentee {
+  bio: String
+  id: Int!
+  job_title_primary: String!
+  job_title_secondary: String
+  name: String!
+  preferred_services: [Services]!
+  school: [String]!
+  school_major: String!
+  school_year: Int
+}
+
 type Mentor {
   bio: String
   id: Int!
@@ -15,6 +27,7 @@ type Mentor {
 }
 
 type Query {
+  Mentee: Mentee
   Mentor: Mentor
 }
 
