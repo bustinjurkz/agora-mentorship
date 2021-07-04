@@ -68,7 +68,7 @@ const Navbar: React.FC = () => {
 
 export default Navbar;
 
-const LandingNavbarStyle = styled.header`
+const LandingNavbarStyle = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;

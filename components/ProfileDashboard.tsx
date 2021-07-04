@@ -7,8 +7,13 @@ import HelpIcon from '@material-ui/icons/Help';
 import SettingsIcon from '@material-ui/icons/Settings';
 import Divider from '@material-ui/core/Divider';
 import { BackgroundStyle } from './helperFunctions';
+import { Mentee } from 'generated/graphql';
+import PersonAddIcon from '@material-ui/icons/PersonAdd';
 
-const ProfileDashboard: React.FC = () => {
+export interface ProfileDashboardProps {
+  menteeInfo?: Mentee;
+}
+const ProfileDashboard: React.FC<ProfileDashboardProps> = ({ menteeInfo }) => {
   return (
     <BackgroundStyle>
       <ProfileDashboardStyle>
@@ -16,6 +21,14 @@ const ProfileDashboard: React.FC = () => {
         <Button className="item" startIcon={<DashboardIcon className="icon" />}>
           Dashboard
         </Button>
+        {menteeInfo && (
+          <Button
+            className="item"
+            startIcon={<PersonAddIcon className="icon" />}
+          >
+            Find Mentors
+          </Button>
+        )}
         <Button className="item" startIcon={<MailIcon className="icon" />}>
           Messages
         </Button>

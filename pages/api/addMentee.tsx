@@ -4,22 +4,22 @@ import { PrismaClient } from '@prisma/client';
 export default async function (req: NextApiRequest, res: NextApiResponse) {
   const prisma = new PrismaClient({ log: ['query'] });
   try {
-    const mentors = await prisma.mentor.create({
+    const mentees = await prisma.mentee.create({
       data: {
-        name: 'Atinder',
-        bio: 'Very good data scientist with 5+ years of experience',
-        job_title_primary: 'Data Scientist',
-        job_title_secondary: 'Level II Mage',
+        name: 'Dusty',
+        bio: 'Full stack web developer with a focus on sleek front-ends',
+        job_title_primary: 'Web Developer',
+        job_title_secondary: 'Front-End',
         preferred_services: 'MOCK_INTERVIEW',
         school: 'McMaster University',
-        school_major: 'Statistics',
-        school_year: 2017,
+        school_major: 'Computer Science',
+        school_year: 2019,
       },
     });
-    res.json({ mentors });
+    res.json({ mentees });
   } catch (e) {
     res.status(500);
-    res.json({ error: 'Unable to add mentor' });
+    res.json({ error: 'Unable to add mentee' });
   } finally {
     await prisma.$disconnect();
   }

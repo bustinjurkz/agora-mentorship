@@ -10,10 +10,7 @@ import UpcomingMeetings from 'components/meetings/UpcomingMeetings';
 import PendingMeetings from 'components/meetings/PendingMeetings';
 import PastConnections from 'components/meetings/PastConnections';
 
-// import { useRouter } from 'next/router';
-
 const MentorAdmin: React.FC = () => {
-  // const router = useRouter();
   const { data, loading } = useGetMentorsQuery();
   if (loading) {
     return <Loading />;
@@ -28,9 +25,9 @@ const MentorAdmin: React.FC = () => {
     );
   };
   return (
-    <MentorAdminStyle>
+    <AdminStyle>
       <ProfileDashboard />
-      <div className="mentor-container">
+      <div className="profile-container">
         {renderNotificationBanner()}
         <div className="info-cal-container">
           <PersonalInfo mentorInfo={data?.Mentor!} />
@@ -40,18 +37,18 @@ const MentorAdmin: React.FC = () => {
         <PendingMeetings />
         <PastConnections />
       </div>
-    </MentorAdminStyle>
+    </AdminStyle>
   );
 };
 
 export default MentorAdmin;
 
-const MentorAdminStyle = styled.div`
+export const AdminStyle = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-around;
   margin-top: 45px;
-  .mentor-container {
+  .profile-container {
     display: flex;
     width: 100%;
     max-width: 875px;

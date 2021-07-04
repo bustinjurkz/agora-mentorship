@@ -13,6 +13,19 @@ export type Scalars = {
   Float: number;
 };
 
+export type Mentee = {
+  __typename?: 'Mentee';
+  name: Scalars['String'];
+  job_title_primary: Scalars['String'];
+  job_title_secondary?: Maybe<Scalars['String']>;
+  bio?: Maybe<Scalars['String']>;
+  preferred_services: Array<Maybe<Services>>;
+  school: Array<Maybe<Scalars['String']>>;
+  school_major: Scalars['String'];
+  id: Scalars['Int'];
+  school_year?: Maybe<Scalars['Int']>;
+};
+
 export type Mentor = {
   __typename?: 'Mentor';
   name: Scalars['String'];
@@ -29,6 +42,7 @@ export type Mentor = {
 export type Query = {
   __typename?: 'Query';
   Mentor?: Maybe<Mentor>;
+  Mentee?: Maybe<Mentee>;
 };
 
 export enum Services {
@@ -47,6 +61,17 @@ export type GetMentorsQuery = (
   & { Mentor?: Maybe<(
     { __typename?: 'Mentor' }
     & Pick<Mentor, 'name' | 'job_title_primary' | 'job_title_secondary' | 'bio' | 'preferred_services' | 'school' | 'school_major' | 'id' | 'school_year'>
+  )> }
+);
+
+export type GetMenteesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetMenteesQuery = (
+  { __typename?: 'Query' }
+  & { Mentee?: Maybe<(
+    { __typename?: 'Mentee' }
+    & Pick<Mentee, 'name' | 'job_title_primary' | 'job_title_secondary' | 'bio' | 'preferred_services' | 'school' | 'school_major' | 'id' | 'school_year'>
   )> }
 );
 
@@ -91,3 +116,43 @@ export function useGetMentorsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions
 export type GetMentorsQueryHookResult = ReturnType<typeof useGetMentorsQuery>;
 export type GetMentorsLazyQueryHookResult = ReturnType<typeof useGetMentorsLazyQuery>;
 export type GetMentorsQueryResult = Apollo.QueryResult<GetMentorsQuery, GetMentorsQueryVariables>;
+export const GetMenteesDocument = gql`
+    query GetMentees {
+  Mentee {
+    name
+    job_title_primary
+    job_title_secondary
+    bio
+    preferred_services
+    school
+    school_major
+    id
+    school_year
+  }
+}
+    `;
+
+/**
+ * __useGetMenteesQuery__
+ *
+ * To run a query within a React component, call `useGetMenteesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetMenteesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetMenteesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetMenteesQuery(baseOptions?: Apollo.QueryHookOptions<GetMenteesQuery, GetMenteesQueryVariables>) {
+        return Apollo.useQuery<GetMenteesQuery, GetMenteesQueryVariables>(GetMenteesDocument, baseOptions);
+      }
+export function useGetMenteesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetMenteesQuery, GetMenteesQueryVariables>) {
+          return Apollo.useLazyQuery<GetMenteesQuery, GetMenteesQueryVariables>(GetMenteesDocument, baseOptions);
+        }
+export type GetMenteesQueryHookResult = ReturnType<typeof useGetMenteesQuery>;
+export type GetMenteesLazyQueryHookResult = ReturnType<typeof useGetMenteesLazyQuery>;
+export type GetMenteesQueryResult = Apollo.QueryResult<GetMenteesQuery, GetMenteesQueryVariables>;
