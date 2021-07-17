@@ -9,6 +9,9 @@ export const Services = enumType({
     'MOCK_INTERVIEW',
     'CAREER_PLANNING',
     'SUCCESS_AT_WORK',
+    'SKILLS_FOR_SUCCESS',
+    'WORK_LIFE_BALANCE',
+    'RESUME_CRITIQUE',
   ],
 });
 
@@ -22,6 +25,7 @@ const Mentor = objectType({
     t.nonNull.list.field('preferred_services', { type: Services });
     t.nonNull.list.string('school');
     t.nonNull.string('school_major');
+    t.nullable.string('degree_type');
     t.nonNull.int('id');
     t.nullable.int('school_year');
   },
@@ -37,6 +41,7 @@ const Mentee = objectType({
     t.nonNull.list.field('preferred_services', { type: Services });
     t.nonNull.list.string('school');
     t.nonNull.string('school_major');
+    t.nullable.string('degree_type');
     t.nonNull.int('id');
     t.nullable.int('school_year');
   },
@@ -44,14 +49,30 @@ const Mentee = objectType({
 
 const Query = queryType({
   definition(t) {
+    t.list.field('Mentors', {
+      type: Mentor,
+      description: 'Find all mentors',
+      resolve: (_, _args, ctx) => {
+        return ctx.prisma.mentor.findMany();
+      },
+    });
+    t.list.field('Mentees', {
+      type: Mentor,
+      description: 'Find all mentees',
+      resolve: (_, _args, ctx) => {
+        return ctx.prisma.mentee.findMany();
+      },
+    });
     t.field('Mentor', {
       type: Mentor,
+      description: 'Find first mentors',
       resolve: (_, _args, ctx) => {
         return ctx.prisma.mentor.findFirst();
       },
     });
     t.field('Mentee', {
       type: Mentee,
+      description: 'Find first mentee',
       resolve: (_, _args, ctx) => {
         return ctx.prisma.mentee.findFirst();
       },

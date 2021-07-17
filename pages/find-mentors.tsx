@@ -11,9 +11,12 @@ const FindMentors: React.FC = () => {
     return <Loading />;
   }
 
+  console.log('data: ', data);
+
   return (
     <FindMentorsStyle>
       <SearchInputs />
+      <h1>Mentors</h1>
     </FindMentorsStyle>
   );
 };
@@ -22,7 +25,7 @@ export default FindMentors;
 
 export const FindMentorsStyle = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: space-around;
   margin-top: 45px;
 `;
