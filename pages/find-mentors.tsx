@@ -4,6 +4,7 @@ import { useGetMentorsQuery } from 'generated/graphql';
 import Loading from 'components/Loading';
 
 import { SearchInputs } from 'components/SearchInputs';
+import MentorCard from 'components/MentorCard';
 
 const FindMentors: React.FC = () => {
   const { data, loading } = useGetMentorsQuery();
@@ -11,12 +12,13 @@ const FindMentors: React.FC = () => {
     return <Loading />;
   }
 
-  console.log('data: ', data);
-
   return (
     <FindMentorsStyle>
       <SearchInputs />
       <h1>Mentors</h1>
+      {data?.Mentors?.map((x, i: number) => (
+        <MentorCard key={i} mentor={x!} />
+      ))}
     </FindMentorsStyle>
   );
 };
@@ -24,6 +26,7 @@ const FindMentors: React.FC = () => {
 export default FindMentors;
 
 export const FindMentorsStyle = styled.div`
+  max-width: 800px;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
