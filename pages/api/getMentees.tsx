@@ -4,8 +4,7 @@ import { PrismaClient } from '@prisma/client';
 export default async function (req: NextApiRequest, res: NextApiResponse) {
   const prisma = new PrismaClient({ log: ['query'] });
   try {
-    const mentees = await prisma.mentor.findMany();
-
+    const mentees = await prisma.mentee.findMany();
     res.json({ mentees });
   } catch (e) {
     res.status(500);

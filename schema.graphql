@@ -4,6 +4,7 @@
 
 type Mentee {
   bio: String
+  degree_type: String
   id: Int!
   job_title_primary: String!
   job_title_secondary: String
@@ -16,6 +17,7 @@ type Mentee {
 
 type Mentor {
   bio: String
+  degree_type: String
   id: Int!
   job_title_primary: String!
   job_title_secondary: String
@@ -27,8 +29,17 @@ type Mentor {
 }
 
 type Query {
+  """Find first mentee"""
   Mentee: Mentee
+
+  """Find all mentees"""
+  Mentees: [Mentor]
+
+  """Find first mentors"""
   Mentor: Mentor
+
+  """Find all mentors"""
+  Mentors: [Mentor]
 }
 
 enum Services {
@@ -36,5 +47,8 @@ enum Services {
   CAREER_PLANNING
   GENERAL
   MOCK_INTERVIEW
+  RESUME_CRITIQUE
+  SKILLS_FOR_SUCCESS
   SUCCESS_AT_WORK
+  WORK_LIFE_BALANCE
 }

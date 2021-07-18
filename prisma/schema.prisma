@@ -22,6 +22,7 @@ model Mentor{
   preferred_services Services[]  
   school String[]
   school_major String
+  degree_type String
   school_year Int?
 }
 
@@ -34,6 +35,7 @@ model Mentee{
   preferred_services Services[] 
   school String[]
   school_major String
+  degree_type String
   school_year Int?
 }
 
@@ -43,4 +45,7 @@ enum Services {
   MOCK_INTERVIEW
   CAREER_PLANNING
   SUCCESS_AT_WORK
+  SKILLS_FOR_SUCCESS
+  WORK_LIFE_BALANCE
+  RESUME_CRITIQUE
 }

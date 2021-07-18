@@ -6,14 +6,18 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
   try {
     const mentors = await prisma.mentor.create({
       data: {
-        name: 'Atinder',
-        bio: 'Very good data scientist with 5+ years of experience',
-        job_title_primary: 'Data Scientist',
-        job_title_secondary: 'Level II Mage',
-        preferred_services: 'MOCK_INTERVIEW',
-        school: 'McMaster University',
-        school_major: 'Statistics',
-        school_year: 2017,
+        name: 'Jane Doe',
+        bio: 'Unreal Wealth Advanced Analyzer',
+        job_title_primary: 'Data Science Associate',
+        job_title_secondary: 'Wealth Advanced Analytics',
+        preferred_services: [
+          'CAREER_DEVELOPMENT',
+          'SUCCESS_AT_WORK',
+          'MOCK_INTERVIEW',
+        ],
+        school: 'Brock University',
+        school_major: 'BUSINESS',
+        school_year: 2015,
       },
     });
     res.json({ mentors });

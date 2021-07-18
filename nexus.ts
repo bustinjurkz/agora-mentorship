@@ -17,7 +17,7 @@ export interface NexusGenInputs {
 }
 
 export interface NexusGenEnums {
-  Services: "CAREER_DEVELOPMENT" | "CAREER_PLANNING" | "GENERAL" | "MOCK_INTERVIEW" | "SUCCESS_AT_WORK"
+  Services: "CAREER_DEVELOPMENT" | "CAREER_PLANNING" | "GENERAL" | "MOCK_INTERVIEW" | "RESUME_CRITIQUE" | "SKILLS_FOR_SUCCESS" | "SUCCESS_AT_WORK" | "WORK_LIFE_BALANCE"
 }
 
 export interface NexusGenScalars {
@@ -31,6 +31,7 @@ export interface NexusGenScalars {
 export interface NexusGenObjects {
   Mentee: { // root type
     bio?: string | null; // String
+    degree_type?: string | null; // String
     id: number; // Int!
     job_title_primary: string; // String!
     job_title_secondary?: string | null; // String
@@ -42,6 +43,7 @@ export interface NexusGenObjects {
   }
   Mentor: { // root type
     bio?: string | null; // String
+    degree_type?: string | null; // String
     id: number; // Int!
     job_title_primary: string; // String!
     job_title_secondary?: string | null; // String
@@ -67,6 +69,7 @@ export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars & NexusGenEnu
 export interface NexusGenFieldTypes {
   Mentee: { // field return type
     bio: string | null; // String
+    degree_type: string | null; // String
     id: number; // Int!
     job_title_primary: string; // String!
     job_title_secondary: string | null; // String
@@ -78,6 +81,7 @@ export interface NexusGenFieldTypes {
   }
   Mentor: { // field return type
     bio: string | null; // String
+    degree_type: string | null; // String
     id: number; // Int!
     job_title_primary: string; // String!
     job_title_secondary: string | null; // String
@@ -89,13 +93,16 @@ export interface NexusGenFieldTypes {
   }
   Query: { // field return type
     Mentee: NexusGenRootTypes['Mentee'] | null; // Mentee
+    Mentees: Array<NexusGenRootTypes['Mentor'] | null> | null; // [Mentor]
     Mentor: NexusGenRootTypes['Mentor'] | null; // Mentor
+    Mentors: Array<NexusGenRootTypes['Mentor'] | null> | null; // [Mentor]
   }
 }
 
 export interface NexusGenFieldTypeNames {
   Mentee: { // field return type name
     bio: 'String'
+    degree_type: 'String'
     id: 'Int'
     job_title_primary: 'String'
     job_title_secondary: 'String'
@@ -107,6 +114,7 @@ export interface NexusGenFieldTypeNames {
   }
   Mentor: { // field return type name
     bio: 'String'
+    degree_type: 'String'
     id: 'Int'
     job_title_primary: 'String'
     job_title_secondary: 'String'
@@ -118,7 +126,9 @@ export interface NexusGenFieldTypeNames {
   }
   Query: { // field return type name
     Mentee: 'Mentee'
+    Mentees: 'Mentor'
     Mentor: 'Mentor'
+    Mentors: 'Mentor'
   }
 }
 

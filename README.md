@@ -23,8 +23,7 @@ The `pages/api` directory is mapped to `/api/*`. Files in this directory are tre
 Database setup for local development:
 
 1. cd .\agora-mentorship\
-2. run command: docker-compose up docker-compose-local.yml
-3. run command: yarn prisma migrate dev --name init (where `init` can be any name for the migration)
+2. run command: yarn prisma migrate dev --name init (where `init` can be any name for the migration)
 
 Seeding:
 
