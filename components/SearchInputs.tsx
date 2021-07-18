@@ -145,7 +145,7 @@ export const SearchInputs = () => {
   return (
     <SearchFilterStyle>
       <div className="inputs">
-        <FormControl>
+        <FormControl className="search-form">
           <Input
             placeholder="Search"
             id="input-with-icon-adornment"
@@ -303,7 +303,12 @@ const SearchFilterStyle = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
+  margin-bottom: 20px;
   .input {
     display: inline-flex;
+  }
+
+  .search-form {
+    margin-right: 40px;
   }
 `;

@@ -1,4 +1,4 @@
-import { Mentor } from 'generated/graphql';
+import { Mentor, Services } from 'generated/graphql';
 import React from 'react';
 import styled from 'styled-components';
 import { BackgroundStyle } from './helperFunctions';
@@ -14,53 +14,92 @@ export interface MentorCardProps {
   mentor: Mentor;
 }
 const MentorCard: React.FC<MentorCardProps> = ({ mentor }) => {
+  const servicePrettier = (service: Services) => {
+    let prettyService;
+    switch (service) {
+      case Services.CareerDevelopment:
+        return (prettyService = 'Career Development');
+      case Services.CareerPlanning:
+        return (prettyService = 'Career Planning');
+      case Services.General:
+        return (prettyService = 'General');
+      case Services.MockInterview:
+        return (prettyService = 'Mock Interview');
+      case Services.ResumeCritique:
+        return (prettyService = 'Resume/CV Critique');
+      case Services.SkillsForSuccess:
+        return (prettyService = 'Skills for Success');
+      case Services.SuccessAtWork:
+        return (prettyService = 'Success at Work');
+      case Services.WorkLifeBalance:
+        return (prettyService = 'Work-Life Balance');
+      default:
+        return prettyService;
+    }
+  };
+
+  const renderServiceTag = (service: Services) => {
+    const prettyService = servicePrettier(service);
+    return <div className="tag-container">{prettyService}</div>;
+  };
+
   return (
     <BackgroundStyle style={{ marginBottom: 35 }}>
       <MentorCardStyle>
         <div className="person-container">
-          <AccountCircleIcon />
+          <AccountCircleIcon className="icon" />
           <h2 className="name">{mentor.name}</h2>
-          <div className="match">83% MATCH</div>
+          <div className="match-container">
+            <div className="percentage">83%</div>
+            <div className="match">match</div>
+          </div>
         </div>
         <div className="experience-container">
           <div className="career">
             <div className="primary">
-              <WorkIcon />
-              {mentor.job_title_primary}
+              <WorkIcon className="icon" />
+              <h3>{mentor.job_title_primary}</h3>
             </div>
             <div className="secondary">
-              <RightArrow />
+              <RightArrow className="icon" />
               {mentor.job_title_secondary}
             </div>
           </div>
           <div className="education">
             <div className="primary">
-              <SchoolIcon />
-              {mentor.school}
+              <SchoolIcon className="icon" />
+              <h4> {mentor.school}</h4>
             </div>
             <div className="secondary">
-              <RightArrow />
-              {mentor.degree_type},{mentor.school_major}
+              <RightArrow className="icon" />
+              {mentor.school_major}, {mentor.degree_type}
             </div>
           </div>
         </div>
         <div className="services-container">
-          {mentor.preferred_services.map((x, i: number) => (
-            <span key={i} className="service">
-              {x}
-            </span>
-          ))}
+          <h5>PREFERRED SERVICES:</h5>
+          <div className="tags">
+            {mentor.preferred_services.map((x, i: number) => (
+              <span key={i} className="service">
+                {renderServiceTag(x!)}
+              </span>
+            ))}
+          </div>
         </div>
         <div className="request-container">
-          <Button variant="outlined" startIcon={<MeetingRoomIcon />}>
+          <Button
+            variant="outlined"
+            className="button"
+            startIcon={<MeetingRoomIcon className="meeting-icon" />}
+          >
             Request Mentor
           </Button>
           <div className="consults">
-            <ForumIcon />
+            <ForumIcon className="icon" />
             <span className="item">CONSULTS (4)</span>
           </div>
           <div className="reviews">
-            <RateReviewIcon />
+            <RateReviewIcon className="icon" />
             <span className="item">REVIEWS (3)</span>
           </div>
         </div>
@@ -74,20 +113,91 @@ export default MentorCard;
 export const MentorCardStyle = styled.div`
   display: flex;
   justify-content: space-between;
-  .person-container {
+  padding: 15px 0px;
+  margin: 0px 20px;
+  .person-container,
+  .services-container,
+  .experience-container,
+  .request-container {
+    width: 230px;
     display: flex;
     flex-direction: column;
+  }
+  .person-container {
+    align-items: center;
+
+    .icon {
+      font-size: 125px;
+      color: ${(props) => props.theme.TDGreen};
+    }
+    .match-container {
+      display: inline-flex;
+      align-items: center;
+      align-self: center;
+
+      .percentage {
+        background-color: ${(props) => props.theme.TDGreen};
+        color: white;
+        padding: 6px;
+        font-weight: 500;
+        margin-right: 10px;
+      }
+      .match {
+        font-weight: 600;
+      }
+    }
   }
   .experience-container {
-    display: flex;
-    flex-direction: column;
+    .primary {
+      display: inline-flex;
+      align-items: center;
+    }
+    .secondary {
+      margin-left: 15px;
+    }
+    .icon {
+      color: ${(props) => props.theme.TDGreen};
+      margin-right: 10px;
+    }
   }
   .services-container {
-    display: flex;
-    flex-direction: column;
+    .tags {
+      .tag-container {
+        padding: 8px;
+        margin-bottom: 8px;
+        background: ${(props) => props.theme.TDGreen};
+        color: white;
+        width: fit-content;
+      }
+    }
   }
   .request-container {
-    display: flex;
-    flex-direction: column;
+    margin-top: 15px;
+    .icon {
+      color: ${(props) => props.theme.TDGreen};
+    }
+    .meeting-icon {
+      font-size: xx-large;
+    }
+    .item {
+      margin-left: 10px;
+      font-size: smaller;
+    }
+    .consults,
+    .reviews {
+      display: flex;
+      align-items: center;
+      margin-bottom: 5px;
+      font-weight: 600;
+    }
+
+    .button {
+      color: ${(props) => props.theme.TDGreen};
+      border: 3.5px solid #008a00 !important;
+      margin-bottom: 20px;
+      height: 100px;
+      font-weight: 600;
+      font-size: 18px;
+    }
   }
 `;

@@ -26,9 +26,11 @@ const FindMentors: React.FC = () => {
 export default FindMentors;
 
 export const FindMentorsStyle = styled.div`
-  max-width: 800px;
+  width: 100%;
+  align-self: center;
+  max-width: 1200px;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  margin-top: 45px;
+  margin-top: 100px;
 `;
