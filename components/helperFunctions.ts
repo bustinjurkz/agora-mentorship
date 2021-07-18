@@ -1,4 +1,5 @@
 import { createMuiTheme } from '@material-ui/core/styles';
+import { Services } from 'generated/graphql';
 import styled, { createGlobalStyle } from 'styled-components';
 
 export const GlobalStyle = createGlobalStyle`
@@ -37,6 +38,30 @@ export const MuiTheme = createMuiTheme({
     fontFamily: `"Rubik",sans-serif;`,
   },
 });
+
+export const servicePrettier = (service: Services) => {
+  let prettyService;
+  switch (service) {
+    case Services.CareerDevelopment:
+      return (prettyService = 'Career Development');
+    case Services.CareerPlanning:
+      return (prettyService = 'Career Planning');
+    case Services.General:
+      return (prettyService = 'General');
+    case Services.MockInterview:
+      return (prettyService = 'Mock Interview');
+    case Services.ResumeCritique:
+      return (prettyService = 'Resume/CV Critique');
+    case Services.SkillsForSuccess:
+      return (prettyService = 'Skills for Success');
+    case Services.SuccessAtWork:
+      return (prettyService = 'Success at Work');
+    case Services.WorkLifeBalance:
+      return (prettyService = 'Work-Life Balance');
+    default:
+      return prettyService;
+  }
+};
 
 export const BackgroundStyle = styled.div<{
   backgroundColor?: string;

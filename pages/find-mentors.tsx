@@ -1,24 +1,39 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import { useGetMentorsQuery } from 'generated/graphql';
+import { Mentor, useGetMentorsQuery } from 'generated/graphql';
 import Loading from 'components/Loading';
 
 import { SearchInputs } from 'components/SearchInputs';
 import MentorCard from 'components/MentorCard';
+import RequestMentor from 'components/RequestMentor';
 
 const FindMentors: React.FC = () => {
   const { data, loading } = useGetMentorsQuery();
+  const [mentorRequested, setMentorRequested] = useState<Mentor>();
+  const back = () => {
+    setMentorRequested(undefined);
+  };
   if (loading) {
     return <Loading />;
   }
 
   return (
     <FindMentorsStyle>
-      <SearchInputs />
-      <h1>Mentors</h1>
-      {data?.Mentors?.map((x, i: number) => (
-        <MentorCard key={i} mentor={x!} />
-      ))}
+      {mentorRequested ? (
+        <RequestMentor mentor={mentorRequested} back={back} />
+      ) : (
+        <>
+          <SearchInputs />
+          <h1>Mentors</h1>
+          {data?.Mentors?.map((x, i: number) => (
+            <MentorCard
+              key={i}
+              mentor={x!}
+              setMentorRequested={setMentorRequested}
+            />
+          ))}
+        </>
+      )}
     </FindMentorsStyle>
   );
 };

@@ -28,5 +28,4 @@ const ChildrenStyle = styled.div`
   flex-direction: column;
   justify-content: space-between;
   margin: 0 90px;
-  align-items: center;
 `;

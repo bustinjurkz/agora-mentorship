@@ -1,7 +1,7 @@
 import { Mentor, Services } from 'generated/graphql';
 import React from 'react';
 import styled from 'styled-components';
-import { BackgroundStyle } from './helperFunctions';
+import { BackgroundStyle, servicePrettier } from './helperFunctions';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import WorkIcon from '@material-ui/icons/Work';
 import SchoolIcon from '@material-ui/icons/School';
@@ -12,32 +12,14 @@ import RateReviewIcon from '@material-ui/icons/RateReview';
 import ForumIcon from '@material-ui/icons/Forum';
 export interface MentorCardProps {
   mentor: Mentor;
+  request?: boolean;
+  setMentorRequested?: (x: Mentor) => void;
 }
-const MentorCard: React.FC<MentorCardProps> = ({ mentor }) => {
-  const servicePrettier = (service: Services) => {
-    let prettyService;
-    switch (service) {
-      case Services.CareerDevelopment:
-        return (prettyService = 'Career Development');
-      case Services.CareerPlanning:
-        return (prettyService = 'Career Planning');
-      case Services.General:
-        return (prettyService = 'General');
-      case Services.MockInterview:
-        return (prettyService = 'Mock Interview');
-      case Services.ResumeCritique:
-        return (prettyService = 'Resume/CV Critique');
-      case Services.SkillsForSuccess:
-        return (prettyService = 'Skills for Success');
-      case Services.SuccessAtWork:
-        return (prettyService = 'Success at Work');
-      case Services.WorkLifeBalance:
-        return (prettyService = 'Work-Life Balance');
-      default:
-        return prettyService;
-    }
-  };
-
+const MentorCard: React.FC<MentorCardProps> = ({
+  mentor,
+  request,
+  setMentorRequested,
+}) => {
   const renderServiceTag = (service: Services) => {
     const prettyService = servicePrettier(service);
     return <div className="tag-container">{prettyService}</div>;
@@ -86,23 +68,26 @@ const MentorCard: React.FC<MentorCardProps> = ({ mentor }) => {
             ))}
           </div>
         </div>
-        <div className="request-container">
-          <Button
-            variant="outlined"
-            className="button"
-            startIcon={<MeetingRoomIcon className="meeting-icon" />}
-          >
-            Request Mentor
-          </Button>
-          <div className="consults">
-            <ForumIcon className="icon" />
-            <span className="item">CONSULTS (4)</span>
+        {!request && (
+          <div className="request-container">
+            <Button
+              variant="outlined"
+              className="button"
+              onClick={() => setMentorRequested && setMentorRequested(mentor)}
+              startIcon={<MeetingRoomIcon className="meeting-icon" />}
+            >
+              Request Mentor
+            </Button>
+            <div className="consults">
+              <ForumIcon className="icon" />
+              <span className="item">CONSULTS (4)</span>
+            </div>
+            <div className="reviews">
+              <RateReviewIcon className="icon" />
+              <span className="item">REVIEWS (3)</span>
+            </div>
           </div>
-          <div className="reviews">
-            <RateReviewIcon className="icon" />
-            <span className="item">REVIEWS (3)</span>
-          </div>
-        </div>
+        )}
       </MentorCardStyle>
     </BackgroundStyle>
   );
