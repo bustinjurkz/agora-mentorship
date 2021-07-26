@@ -1,326 +1,326 @@
 export const majors = [
   {
-    major: 'Arts & Science',
+    major: 'ARTS_AND_SCIENCE',
     faculty: 'Arts and Science',
   },
   {
-    major: 'Computer Science',
+    major: 'COMPUTER_SCIENCE',
     faculty: 'Applied Science',
   },
   {
-    major: 'Business Informatics',
+    major: 'BUSINESS_INFORMATICS',
     faculty: 'Applied Science',
   },
   {
-    major: 'Human Behaviour',
+    major: 'HUMAN_BEHAVIOUR',
     faculty: 'Applied Science',
   },
   {
-    major: 'Engineering',
+    major: 'ENGINEERING',
     faculty: 'Engineering',
   },
   {
-    major: 'Chemical Engineering',
+    major: 'CHEMICAL_ENGINEERING',
     faculty: 'Engineering',
   },
   {
-    major: 'Civil Engineering',
+    major: 'CIVIL_ENGINEERING',
     faculty: 'Engineering',
   },
   {
-    major: 'Computer Engineeering',
+    major: 'COMPUTER_ENGINEERING',
     faculty: 'Engineering',
   },
   {
-    major: 'Electrical Engineering',
+    major: 'ELECTRICAL_ENGINEERING',
     faculty: 'Engineering',
   },
   {
-    major: 'Electrical and Biomedical Engineering',
+    major: 'ELECTRICAL_AND_BIOMEDICAL_ENGINEERING',
     faculty: 'Engineering',
   },
   {
-    major: 'Materials Engineering',
+    major: 'MATERIALS_ENGINEERING',
     faculty: 'Engineering',
   },
   {
-    major: 'Mechanical Engineering',
+    major: 'MECHANICAL_ENGINEERING',
     faculty: 'Engineering',
   },
   {
-    major: 'Mechatronics Engineering',
+    major: 'MECHATRONICS_ENGINEERING',
     faculty: 'Engineering',
   },
   {
-    major: 'Nanotechnology Engineering',
+    major: 'NANOTECHNOLOGY_ENGINEERING',
     faculty: 'Engineering',
   },
   {
-    major: 'Software Engineering',
+    major: 'SOFTWARE_ENGINEERING',
     faculty: 'Engineering',
   },
   {
-    major: 'Aerospace Engineering',
+    major: 'AEROSPACE_ENGINEERING',
     faculty: 'Engineering',
   },
   {
-    major: 'B.Tech',
+    major: 'B_TECH',
     faculty: 'Technology',
   },
   {
-    major: 'Automation Engineering',
+    major: 'AUTOMATION_ENGINEERING',
     faculty: 'Technology',
   },
   {
-    major: 'Automotive and Vehicle Engineering Technology',
+    major: 'AUTOMOTIVE_AND_VEHICLE_ENGINEERING_TECHNOLOGY',
     faculty: 'Technology',
   },
   {
-    major: 'Biotechnology',
+    major: 'BIOTECHNOLOGY',
     faculty: 'Technology',
   },
   {
-    major: 'Civil Engineering Infrastructure Technology',
+    major: 'CIVIL_ENGINEERING_INFRASTRUCTURE_TECHNOLOGY',
     faculty: 'Technology',
   },
   {
-    major: 'Manufacturing Engineering Technology',
+    major: 'MANUFACTURING_ENGINEERING_TECHNOLOGY',
     faculty: 'Technology',
   },
   {
-    major: 'Power and Energy Engineering Technology',
+    major: 'POWER_AND_ENERGY_ENGINEERING_TECHNOLOGY',
     faculty: 'Technology',
   },
   {
-    major: 'Software Engineering and Technology',
+    major: 'SOFTWARE_ENGINEERING_AND_TECHNOLOGY',
     faculty: 'Technology',
   },
   {
-    major: 'Health Sciences',
+    major: 'HEALTH_SCIENCES',
     faculty: 'Health Sciences',
   },
   {
-    major: 'Engineering Science and Entrepreneurship',
+    major: 'ENGINEERING_SCIENCE_AND_ENTREPRENEURSHIP',
     faculty: 'Health Sciences',
   },
   {
-    major: 'Biology and Pharmacology',
+    major: 'BIOLOGY_AND_PHARMACOLOGY',
     faculty: 'Health Sciences',
   },
   {
-    major: 'Midwifery Program',
+    major: 'MIDWIFERY_PROGRAM',
     faculty: 'Health Sciences',
   },
   {
-    major: 'Physician Assistant',
+    major: 'PHYSICIAN_ASSISTANT',
     faculty: 'Health Sciences',
   },
   {
-    major: 'Nursing',
+    major: 'NURSING',
     faculty: 'Nursing',
   },
   {
-    major: 'Economics',
+    major: 'ECONOMICS',
     faculty: 'Arts',
   },
   {
-    major: 'Health and Society',
+    major: 'HEALTH_AND_SOCIETY',
     faculty: 'Arts',
   },
   {
-    major: 'Humanities',
+    major: 'HUMANITIES',
     faculty: 'Arts',
   },
   {
-    major: 'Social Sciences',
+    major: 'SOCIAL_SCIENCES',
     faculty: 'Arts',
   },
   {
-    major: 'Art History',
+    major: 'ART_HISTORY',
     faculty: 'Arts',
   },
   {
-    major: 'Archaology',
+    major: 'ARCHAEOLOGY',
     faculty: 'Arts',
   },
   {
-    major: 'Anthropology',
+    major: 'ANTHROPOLOGY',
     faculty: 'Arts',
   },
   {
-    major: 'Aging and Society',
+    major: 'AGING_AND_SOCIETY',
     faculty: 'Arts',
   },
   {
-    major: 'Classics',
+    major: 'CLASSICS',
     faculty: 'Arts',
   },
   {
-    major: 'Cognitive Science',
+    major: 'COGNITIVE_SCIENCE',
     faculty: 'Arts',
   },
   {
-    major: 'Communication Studies',
+    major: 'COMMUNICATION_STUDIES',
     faculty: 'Arts',
   },
   {
-    major: 'English and Cultural Studies',
+    major: 'ENGLISH_AND_CULTURAL_STUDIES',
     faculty: 'Arts',
   },
   {
-    major: 'French',
+    major: 'FRENCH',
     faculty: 'Arts',
   },
   {
-    major: 'Geography',
+    major: 'GEOGRAPHY',
     faculty: 'Arts',
   },
   {
-    major: 'History',
+    major: 'HISTORY',
     faculty: 'Arts',
   },
   {
-    major: 'Indigenous Studies',
+    major: 'INDIGENOUS_STUDIES',
     faculty: 'Arts',
   },
   {
-    major: 'Justice, Political Philosophy, and Law',
+    major: 'JUSTICE_POLITICAL_PHILOSOPHY_AND_LAW',
     faculty: 'Arts',
   },
   {
-    major: 'Labour Studies',
+    major: 'LABOUR_STUDIES',
     faculty: 'Arts',
   },
   {
-    major: 'Linguistics',
+    major: 'LINGUISTICS',
     faculty: 'Arts',
   },
   {
-    major: 'Multimedia',
+    major: 'MULTIMEDIA',
     faculty: 'Arts',
   },
   {
-    major: 'Philosophy',
+    major: 'PHILOSOPHY',
     faculty: 'Arts',
   },
   {
-    major: 'Political Science',
+    major: 'POLITICAL_SCIENCE',
     faculty: 'Arts',
   },
   {
-    major: 'Society, Culture and Religion',
+    major: 'SOCIETY_CULTURE_AND_RELIGION',
     faculty: 'Arts',
   },
   {
-    major: 'Social Psychology',
+    major: 'SOCIAL_PSYCHOLOGY',
     faculty: 'Arts',
   },
   {
-    major: 'Sociology',
+    major: 'SOCIOLOGY',
     faculty: 'Arts',
   },
   {
-    major: 'Theatre & Film',
+    major: 'THEATRE_AND_FILM',
     faculty: 'Arts',
   },
   {
-    major: 'Music',
+    major: 'MUSIC',
     faculty: 'Arts',
   },
   {
-    major: 'Studio Art',
+    major: 'STUDIO_ART',
     faculty: 'Arts',
   },
   {
-    major: 'Social Work',
+    major: 'SOCIAL_WORK',
     faculty: 'Arts',
   },
   {
-    major: 'Law',
+    major: 'LAW',
     faculty: 'Arts',
   },
   {
-    major: 'Chemical and Physical Sciences',
+    major: 'CHEMICAL_AND_PHYSICAL_SCIENCES',
     faculty: 'Arts',
   },
   {
-    major: 'Integrated Sciences',
+    major: 'INTEGRATED_SCIENCES',
     faculty: 'Science',
   },
   {
-    major: 'Life Sciences',
+    major: 'LIFE_SCIENCES',
     faculty: 'Science',
   },
   {
-    major: 'Mathematics and Statistics',
+    major: 'MATHEMATICS_AND_STATISTICS',
     faculty: 'Science',
   },
   {
-    major: 'Biostatistics',
+    major: 'BIOSTATISTICS',
     faculty: 'Science',
   },
   {
-    major: 'Data Science',
+    major: 'DATA_SCIENCE',
     faculty: 'Science',
   },
   {
-    major: 'Earth and Enviornmental Sciences',
+    major: 'EARTH_AND_ENVIRONMENTAL_SCIENCES',
     faculty: 'Science',
   },
   {
-    major: 'Actuarial and Financial Mathematics',
+    major: 'ACTUARIAL_AND_FINANCIAL_MATHEMATICS',
     faculty: 'Science',
   },
   {
-    major: 'Astrophysics',
+    major: 'ASTROPHYSICS',
     faculty: 'Science',
   },
   {
-    major: 'Biochemistry',
+    major: 'BIOCHEMISTRY',
     faculty: 'Science',
   },
   {
-    major: 'Biology',
+    major: 'BIOLOGY',
     faculty: 'Science',
   },
   {
-    major: 'Chemical Biology',
+    major: 'CHEMICAL_BIOLOGY',
     faculty: 'Science',
   },
   {
-    major: 'Chemistry',
+    major: 'CHEMISTRY',
     faculty: 'Science',
   },
   {
-    major: 'Enviornmental Sciences',
+    major: 'ENVIRONMENTAL_SCIENCES',
     faculty: 'Science',
   },
   {
-    major: 'Computational Mathematics',
+    major: 'COMPUTATIONAL_MATHEMATICS',
     faculty: 'Science',
   },
   {
-    major: 'Neuroscience',
+    major: 'NEUROSCIENCE',
     faculty: 'Science',
   },
   {
-    major: 'Physics',
+    major: 'PHYSICS',
     faculty: 'Science',
   },
   {
-    major: 'Psychology, Neuroscience & Behaviour',
+    major: 'PSYCHOLOGY_NEUROSCIENCE_AND_BEHAVIOUR',
     faculty: 'Science',
   },
   {
-    major: 'Kinesiology',
+    major: 'KINESIOLOGY',
     faculty: 'Science',
   },
   {
-    major: 'Medical Radiation',
+    major: 'MEDICAL_RADIATION',
     faculty: 'Kinesiology',
   },
   {
-    major: 'Medical Radiation',
+    major: 'MEDICAL_RADIATION',
     faculty: 'Medical Radiation Sciences',
   },
 ];
