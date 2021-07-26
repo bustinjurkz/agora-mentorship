@@ -9,14 +9,20 @@ import PendingMeetings from 'components/meetings/PendingMeetings';
 import PastConnections from 'components/meetings/PastConnections';
 import { AdminStyle } from './mentor';
 import { useGetMenteeQuery } from 'generated/graphql';
+import ErrorMessage from 'components/ErrorMessage';
 
 // import { useRouter } from 'next/router';
 
 const MenteeAdmin: React.FC = () => {
   // const router = useRouter();
-  const { data, loading } = useGetMenteeQuery();
+  const { data, loading, error } = useGetMenteeQuery();
   if (loading) {
     return <Loading />;
+  }
+  if (error) {
+    return (
+      <ErrorMessage msg="Unknown network error.  Please try again later" />
+    );
   }
   const renderNotificationBanner = () => {
     return (

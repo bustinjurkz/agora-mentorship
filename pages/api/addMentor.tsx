@@ -15,6 +15,7 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
           'SUCCESS_AT_WORK',
           'MOCK_INTERVIEW',
         ],
+        degree_type: 'Bachelors',
         school: 'Brock University',
         school_major: 'BUSINESS',
         school_year: 2015,

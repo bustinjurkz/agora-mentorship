@@ -20,7 +20,7 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({
   mentorInfo,
   menteeInfo,
 }) => {
-  const user = mentorInfo ? mentorInfo! : menteeInfo!;
+  const user = mentorInfo ? mentorInfo : menteeInfo;
   const [fieldSelected, setFieldSelected] = useState<FieldType>(FieldType.bio);
   const renderContentHeader = () => {
     switch (fieldSelected) {
@@ -37,24 +37,24 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({
   const renderContentBody = () => {
     switch (fieldSelected) {
       case FieldType.bio:
-        return user.bio;
+        return user?.bio;
       case FieldType.education:
         return (
           <div className="education">
-            <div className="school">{user.school}</div>
-            <div className="major">{user.school_major}</div>
-            <div className="year">{user.school_year}</div>
+            <div className="school">{user?.school}</div>
+            <div className="major">{user?.school_major}</div>
+            <div className="year">{user?.school_year}</div>
           </div>
         );
       case FieldType.position:
         return (
           <div className="job-info">
-            <div className="primary">{user.job_title_primary}</div>
-            <div className="secondary">{user.job_title_secondary}</div>
+            <div className="primary">{user?.job_title_primary}</div>
+            <div className="secondary">{user?.job_title_secondary}</div>
           </div>
         );
       case FieldType.services:
-        return user.preferred_services.map((x) => {
+        return user?.preferred_services.map((x) => {
           return (
             <div key={x} className="services">
               {x}

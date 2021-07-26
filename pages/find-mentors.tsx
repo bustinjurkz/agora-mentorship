@@ -6,15 +6,22 @@ import Loading from 'components/Loading';
 import { SearchInputs } from 'components/SearchInputs';
 import MentorCard from 'components/MentorCard';
 import RequestMentor from 'components/RequestMentor';
+import ErrorMessage from 'components/ErrorMessage';
 
 const FindMentors: React.FC = () => {
-  const { data, loading } = useGetMentorsQuery();
+  const { data, loading, error } = useGetMentorsQuery();
   const [mentorRequested, setMentorRequested] = useState<Mentor>();
   const back = () => {
     setMentorRequested(undefined);
   };
   if (loading) {
     return <Loading />;
+  }
+
+  if (error) {
+    return (
+      <ErrorMessage msg={'Unknown network error.  Please try again later'} />
+    );
   }
 
   return (

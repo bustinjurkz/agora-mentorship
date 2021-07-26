@@ -39,6 +39,56 @@ model Mentee{
   school_year Int?
 }
 
+model University{
+  id Int @id @default(autoincrement())
+  name String
+  city String[]
+  province String
+  country String
+  language String
+  category String
+  undergrad_count Int
+  postgrad_count Int
+  total_count Int
+  year_founded Int
+  size_score Int
+}
+
+model Skills{
+  id Int @id @default(autoincrement())
+  skill String
+  skill_type Skill_Type
+  family Family
+  role String[]
+  purpose String[]
+}
+
+model Languages {
+  id Int @id @default(autoincrement())
+  language String
+  country String
+  continent String
+  population Int
+}
+
+model Majors { 
+  id Int @id @default(autoincrement())
+  major String
+  faculty String
+}
+
+enum Skill_Type {
+  SOFT
+  HARD
+}
+
+enum Family {
+  GENERAL
+  PROGRAMMING
+  MULTIMEDIA
+  QUANTITATIVE
+}
+
 enum Services {
   CAREER_DEVELOPMENT
   GENERAL

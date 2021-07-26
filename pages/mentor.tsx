@@ -9,11 +9,17 @@ import MeetingsCalendar from 'components/meetings/MeetingsCalendar';
 import UpcomingMeetings from 'components/meetings/UpcomingMeetings';
 import PendingMeetings from 'components/meetings/PendingMeetings';
 import PastConnections from 'components/meetings/PastConnections';
+import ErrorMessage from 'components/ErrorMessage';
 
 const MentorAdmin: React.FC = () => {
-  const { data, loading } = useGetMentorQuery();
+  const { data, loading, error } = useGetMentorQuery();
   if (loading) {
     return <Loading />;
+  }
+  if (error) {
+    return (
+      <ErrorMessage msg={'Unknown network error.  Please try again later'} />
+    );
   }
   const renderNotificationBanner = () => {
     return (
