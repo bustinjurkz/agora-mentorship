@@ -1,6 +1,75 @@
 import gql from 'graphql-tag';
 
 gql`
+  query User($input: ID!) {
+    user(id: $input) {
+      id
+      email
+      password
+      language {
+        id
+        language
+        country
+        population
+      }
+      mentor {
+        id
+        bio
+        job_title_primary
+        job_title_secondary
+        preferred_services
+        birthyear
+        degree_type
+        highest_education
+        name
+        years_experience
+        school_year
+      }
+      mentee {
+        id
+        bio
+        job_title_primary
+        job_title_secondary
+        preferred_services
+        birthyear
+        degree_type
+        highest_education
+        name
+        years_experience
+        school_year
+      }
+      majors {
+        id
+        major
+        faculty
+      }
+      skills {
+        id
+        skills
+        skill_type
+        family
+        role
+        purpose
+      }
+      university {
+        id
+        name
+        city
+        province
+        country
+        language
+        category
+        underground_count
+        postgrad_count
+        total_count
+        year_founded
+        size_score
+      }
+    }
+  }
+`;
+
+gql`
   query GetMentors {
     Mentors {
       name

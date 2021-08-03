@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "codegen": "graphql-codegen --config codegen.yml",
+    "codegen-api": "graphql-codegen --config codegen-api.yml",
     "lint": "eslint .",
     "ts-node": "ts-node --compiler-options {\\\"module\\\":\\\"commonjs\\\"}"
   },
