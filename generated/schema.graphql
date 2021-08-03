@@ -40,11 +40,11 @@ type Mentee {
 
 type Mentor {
   bio: String
-  birthyear: Int!
   degree_type: String!
   highest_education: Int!
   job_title_primary: String!
   job_title_secondary: String
+  language: [Languages!]!
   name: String!
   preferred_services: [Services]!
   school_year: Int
@@ -111,4 +111,8 @@ type University {
   total_count: Int!
   undergrad_count: Int!
   year_founded: Int!
+}
+
+type User {
+  email: String!
 }

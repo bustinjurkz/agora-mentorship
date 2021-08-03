@@ -1,4 +1,4 @@
-import { enumType, makeSchema, objectType, queryType } from '@nexus/schema';
+import { enumType, makeSchema, objectType, queryType } from 'nexus';
 import path from 'path';
 
 export const Services = enumType({
@@ -136,13 +136,13 @@ const Majors = objectType({
   },
 });
 
-const MajorSimilarity = objectType({
-  name: 'MajorSimilarity',
-  definition(t) {
-    t.nonNull.string('major');
-    t.nonNull.string('faculty');
-  },
-});
+// const MajorSimilarity = objectType({
+//   name: 'MajorSimilarity',
+//   definition(t) {
+//     t.nonNull.field('ARTS_AND_SCIENCE', {type: MajorSimilarity});
+//     t.nonNull.string('faculty');
+//   },
+// });
 
 const Skills = objectType({
   name: 'Skills',
@@ -165,19 +165,38 @@ const Languages = objectType({
   },
 });
 
+const User = objectType({
+  name: 'User',
+  definition(t) {
+    t.nonNull.string('email');
+  },
+});
+
 const Mentor = objectType({
   name: 'Mentor',
   definition(t) {
     t.nonNull.string('name');
     t.nonNull.string('job_title_primary');
     t.nullable.string('job_title_secondary');
+    t.nonNull.int('years_experience');
     t.nullable.string('bio');
     t.nonNull.list.field('preferred_services', { type: Services });
-    t.nonNull.list.string('school');
-    t.nonNull.string('school_major');
-    t.nullable.string('degree_type');
-    t.nonNull.int('id');
+    t.nonNull.string('degree_type');
     t.nullable.int('school_year');
+    t.nonNull.int('highest_education');
+    t.nonNull.list.nonNull.field('language', {
+      type: 'Languages',
+      resolve(mentor, _, ctx) {
+        return ctx.prisma.languages.findMany({
+          where: {
+            language: {
+              in: user.language.filter((x) => !!x).map((x) => x!),
+            },
+          },
+        });
+      },
+    });
+    t.nonNull.list.string('ski');
   },
 });
 
@@ -185,29 +204,40 @@ const Mentee = objectType({
   name: 'Mentee',
   definition(t) {
     t.nonNull.string('name');
-    t.nonNull.string('job_title_primary');
+    // nullable as the mentee might not have a job
+    t.nullable.string('job_title_primary');
     t.nullable.string('job_title_secondary');
+    t.nonNull.int('years_experience');
     t.nullable.string('bio');
     t.nonNull.list.field('preferred_services', { type: Services });
     t.nonNull.list.string('school');
     t.nonNull.string('school_major');
     t.nullable.string('degree_type');
-    t.nonNull.int('id');
     t.nullable.int('school_year');
+    t.nonNull.int('highest_education');
+    t.nonNull.int('birthyear');
+    t.nonNull.list.string('language');
+    t.nonNull.list.string('skills');
   },
 });
 
 const Query = queryType({
   definition(t) {
-    t.list.field('Mentors', {
-      type: Mentor,
+    t.list.field('mentors', {
+      type: 'Mentor',
       description: 'Find all mentors',
       resolve: (_, _args, ctx) => {
-        return ctx.prisma.mentor.findMany();
+        // SourceType
+
+        // GraphQL types, Typescript Types
+        // return a thing from db
+        return ctx.prisma.mentor.findMany({
+          include: { language: true },
+        });
       },
     });
-    t.list.field('Mentees', {
-      type: Mentor,
+    t.list.field('mentees', {
+      type: Mentee,
       description: 'Find all mentees',
       resolve: (_, _args, ctx) => {
         return ctx.prisma.mentee.findMany();
@@ -220,7 +250,14 @@ const Query = queryType({
         return ctx.prisma.mentor.findFirst();
       },
     });
-    t.field('Universities', {
+    t.field('Mentee', {
+      type: Mentee,
+      description: 'Find first mentee',
+      resolve: (_, _args, ctx) => {
+        return ctx.prisma.mentee.findFirst();
+      },
+    });
+    t.list.field('Universities', {
       type: University,
       description: 'Fetch all University data',
       resolve: (_, _args, ctx) => {
@@ -234,20 +271,13 @@ const Query = queryType({
         return ctx.prisma.skills.findMany();
       },
     });
-    t.field('Languages', {
-      type: Languages,
-      description: 'Fetch all Languages data',
-      resolve: (_, _args, ctx) => {
-        return ctx.prisma.languages.findMany();
-      },
-    });
-    t.field('Mentee', {
-      type: Mentee,
-      description: 'Find first mentee',
-      resolve: (_, _args, ctx) => {
-        return ctx.prisma.mentee.findFirst();
-      },
-    });
+    // t.field('Languages', {
+    //   type: Languages,
+    //   description: 'Fetch all Languages data',
+    //   resolve: (_, _args, ctx) => {
+    //     return ctx.prisma.
+    //   },
+    // });
     t.field('Majors', {
       type: Majors,
       description: 'Find all majors',
@@ -255,13 +285,13 @@ const Query = queryType({
         return ctx.prisma.majors.findMany();
       },
     });
-    t.field('MajorSimilarity', {
-      type: Majors,
-      description: 'Find all majors',
-      resolve: (_, _args, ctx) => {
-        return ctx.prisma.majorSimilarity.findMany();
-      },
-    });
+    // t.field('MajorSimilarity', {
+    //   type: MajorSimilarity,
+    //   description: 'Fetch values from matrix',
+    //   resolve: (_, _args, ctx) => {
+    //     return ctx.prisma.majorSimilarity.findMany();
+    //   },
+    // });
   },
 });
 
@@ -274,22 +304,22 @@ export const schema = makeSchema({
     Languages,
     Skills,
     Majors,
-    MajorSimilarity,
+    User,
   },
   outputs: {
-    schema: path.join(process.cwd(), 'schema.graphql'),
-    typegen: path.join(process.cwd(), 'nexus.ts'),
+    schema: path.join(process.cwd(), '/generated/schema.graphql'),
+    typegen: path.join(process.cwd(), '/generated/nexus-codegen.ts'),
   },
-  typegenAutoConfig: {
-    contextType: 'Context.Context',
-    sources: [
+  contextType: {
+    module: path.join(process.cwd(), 'src/context.ts'),
+    export: 'Context',
+  },
+  sourceTypes: {
+    modules: [
       {
-        source: '@prisma/client',
+        module: require.resolve('../generated/prisma/client/index.d.ts'),
         alias: 'prisma',
-      },
-      {
-        source: require.resolve('./context'),
-        alias: 'Context',
+        typeMatch: (type) => new RegExp(`(?:interface)\\s+(${type.name}s)\\W`),
       },
     ],
   },

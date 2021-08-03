@@ -1,0 +1,179 @@
+jesse{
+	languages{
+		['english']
+	}
+}
+
+
+
+
+
+
+
+
+#CHANGES TO MAKE for mentee/mentor
+highest form education -- int
+languages = string ref lang table @ name or w/e
+age group = < 25, 25-30, etc
+int student = boolean // get from school country
+
+
+Model Logic
+
+Static Tables:
+●	UNIVERSITY_TBL: “List of Universities” extracted from “Options for Sign-up Form”
+●	SKILLS_TBL: “Skills” extracted from “Options for Sign-up Form”
+●	LANGUAGES_TBL: “Top 100 Languages” extracted from “Options for Sign-up Form”
+●	MAJORS_TBL: “Majors Similarity Matrix DF” extracted from “Options for Sign-up Form”
+
+Dynamic Tables:
+●	MENTOR_INFO: Contains features needed for the model logic, which trace back to when the mentor first signed-up. They could change some of these features (like the skills they possess, years of experience, etc).
+●	MENTEE_INFO: Contains features needed for the model logic, which trace back to when the mentee first signed-up. They could change some of these features (like the skills they possess, years of experience, etc).
+
+Algorithm Weights:
+The algorithm takes feature importance using an XGBoost model. To implement the model and let it regress a value between 0 and 1 across all mentors and mentees is too time consuming, so the next best approach is to take the feature importance and create a weighted average (out of 100). These weights will then scale the scores of each individual variable below to get a total score out of 100 (expressed as a percentage). The logic and weights used for this model are as follows:
+
+VARIABLE	MAX_WEIGHT
+UNIVERSITY_SIMILARITY	10
+MAJORS_SIMILARITY	44
+AGE_SIMILARITY	11
+LANGUAGES_SIMILARITY	7
+INT_NATIONAL_STUDENT	3
+YEARS_OF_EXP	5
+MAX_EDUCATION	7
+SKILLS_SIMILARITY	13
+TOTAL:	100
+
+
+Pseudo Code:
+The code corresponds numerically by the features in the chart above. The above table will be used to scale the individual features and get a macro feature score. This will later be added to the matching_score. The reason for using a weighted score table like the one above is so we can tune the parameters down the line on a macro scale if need be, and then if individual weights need to be adjusted manually, we can dig into the code to do so. 
+
+1.	IF ( mentee_info$uni_name == mentor_info$uni_name ):
+University_similarity = 1
+ELSE IF (mentee_info$uni_prov == mentor_info$uni_prov ):
+	University_similarity = 0.69625
+ELSE IF (mentee_info$uni_size == mentor_info$uni_size ):
+	University_similarity = 0.4
+ELSE IF(mentee_info$uni_language == mentor_info$uni_language ):
+	University_similarity = 0.248
+ELSE:
+	University_similarity = 0.178
+
+Matching_score += UNIVERSITY_SIMILARITY_WEIGHT * University_similarity 
+
+2.	Matching_score += MAJORS_TBL.loc[mentee_info$major, mentor_info$major] * MAJORS_SIMILARITY_WEIGHT 
+Note, above .loc looks at the cross reference point where the mentee’s and mentor’s major are located, and extracts that specific score from [0,1].
+
+3.	IF ( mentee_info$ageGroup == mentor_info$ageGroup ):
+Age_similarity += 1
+	ELSE IF ( mentor_info$ageGroup == 5 ):
+		Age_similarity += 0.949
+	ELSE IF (abs(mentee_info$ageGroup - mentor_info$ageGroup) > 1) and (abs(mentee_info$ageGroup - mentor_info$ageGroup) <= 2):
+Age_similarity += 0.77812 
+ELSE IF (abs(mentee_info$ageGroup - mentor_info$ageGroup) > 2) and (abs(mentee_info$ageGroup - mentor_info$ageGroup) <= 3):
+Age_similarity += 0.60657
+ELSE IF (abs(mentee_info$ageGroup - mentor_info$ageGroup) > 3) and (abs(mentee_info$ageGroup - mentor_info$ageGroup) <= 4):
+Age_similarity += 0.5131
+ELSE IF (abs(mentee_info$ageGroup - mentor_info$ageGroup) > 4) and (abs(mentee_info$ageGroup - mentor_info$ageGroup) <= 5):
+Age_similarity += 0.564
+
+Matching_score += AGE_SIMILARITY_WEIGHT * Age_similarity
+Note, the ageGroups come as an ordinal variable from the sign up. Specifically, there will be age groups the user can specify (because age is a fragile piece of info to collect). For example, “< 25” is ageGroup 1, “25-30” is ageGroup 2, “31-35” is ageGroup 3, “36-40” is ageGroup 4 and ageGroup 5 is “>40”. 
+
+4.	IF ( mentee_info$language_ind == “N” and mentor_info$language_ind == “N”):
+Language_similarity += 0.701
+	ELSE IF ( mentee_info$language_ind == “Y” and mentor_info$language_ind == “N” OR mentee_info$language_ind == “N” and mentor_info$language_ind == “Y”):
+	Language_similarity += 0.428571
+	ELSE IF ( mentee_info$language == mentor_info$language )
+		Language_similarity += 1
+ELSE IF ( mentee_info$language_city == mentor_info$language_city):
+		Language_similarity += 0.87142
+ELSE IF ( mentee_info$language_continent == mentor_info$language_continent):
+		Language_similarity += 0.71428
+
+Matching_score += LANGUAGE_SIMILARITY_WEIGHT *Language_similarity 
+Note, during the sign up, the users will be asked if they speak another language besides English. If they say No, no new dialogue will appear. If they select “Yes”, they can select from a list of languages from the top 100 we have. We will record this response as “language_indicator” as “Y” or “N” for if this speak another language besides English. You will also have to take the users info and join it to the LANGUAGES_TBL to extract the other variables like language city, continent, etc. 
+
+5.	IF ( mentee_info$int_national_std == “Y” and  mentor_info$int_national_std == “N”  ):
+Int_std_score += 0.2331
+ELSE IF ( mentee_info$int_national_std == “N” and  mentor_info$int_national_std == “Y” ):
+	Int_std_score += 0.415189
+ELSE IF ( mentee_info$int_national_std == “Y” and  mentor_info$int_national_std == “Y” ):
+	Int_std_score += 1
+ELSE: 
+	Int_std_score +=  0.851161
+
+Matching_score += INT_NATIONAL_STUDENT_WEIGHT*Int_std_score
+  
+6.	IF ( mentor_info$years_of_exp - mentee_info$years_of_exp <=  0 ):
+Experience_weight = 0.341
+	ELSE IF (mentor_info$years_of_exp - mentee_info$years_of_exp == 1) 
+		Experience_weight = 0.74
+	ELSE IF (mentor_info$years_of_exp - mentee_info$years_of_exp == 2) 
+		Experience_weight = 0.86
+ELSE IF (mentor_info$years_of_exp - mentee_info$years_of_exp == 3) 
+	Experience_weight = 0.84
+ELSE IF (mentor_info$years_of_exp - mentee_info$years_of_exp == 4) 
+	Experience_weight = 0.89
+ELSE:
+	Experience_weight = 0.92
+
+	Matching_score += YEARS_OF_EXP_WEIGHT * Experience_weight
+
+Note, during the sign up when users are asked about their years of experience, the final option will be “+5 years”. This means that “+5 years” needs to be converted into a numeric value of “6” for simplicity.
+
+7.	IF ( mentee_info$education == mentor_info$education ):
+Education_similarity = 1
+	ELSE IF(mentor_info$education > mentee_info$education) : 
+		Education_similarity = 0.87 
+	ELSE:
+		Education_similarity = 0.7134
+
+	Matching_score += MAX_EDUCATION_WEIGHT * Education_similarity
+
+Note, during the sign up when users are asked about their highest form of education / most recent level of education, we again need to numerically rank. A college diploma =  1, bachelor (3 year degree) = 2, honours ( 4 year degree ) = 3, masters = 4, professional degree = 4.5 , PhD = 5. The algorithmic logic is that if a mentor has a higher degree than the mentee, the mentee will be more inclined to listen. However the reverse isnt always guaranteed. Since this variable has a low impact on the match, the scores tend to be on the higher end. 
+		
+8.	mentee$skill_tokens <- tokenize(mentee$skills)
+	mentor$skill_tokens <- tokenize(mentor$skills)
+
+	# map each skill to their corresponding skill purpose using the SKILLS_TABLE, itemize them and check across mentor skill purpose. 
+
+	mentor$skill_purpose_tokens <- tokenize(mentor$skill_purpose)
+
+mentor$skill_role_tokens <-  tokenize(mentor$skill_role
+
+for( i in 1:3) {
+	IF ( tokenize(mentee$skill_purpose[i]) %in% mentor$skill_purpose_tokens ) : 
+		Skill_purpose_similarity += 1
+}
+
+for( i in 1:3) {
+	IF ( tokenize(mentee$skill_role[i]) %in% mentor$skill_role_tokens ) : 
+		Skill_role_similarity += 1
+}
+
+IF(mentee$skill_tokens %in% mentor$skill_tokens == 3):
+	Skills_similarity = 1
+ELSE IF(mentee$skill_tokens %in% mentor$skill_tokens == 2):
+	Skills_similarity = 0.9127 
+ELSE IF(Skill_purpose_similarity == 3 ):
+	Skills_similarity = 0.841402
+ELSE IF(Skill_purpose_similarity == 2):
+	Skills_similarity = 0.7842
+ELSE IF(Skill_role_similarity  == 3 ):
+	Skills_similarity = 0.75591
+ELSE IF(Skill_role_similarity  == 2 ):
+	Skills_similarity = 0.712319
+ELSE IF(mentee$skill_tokens %in% mentor$skill_tokens == 1):
+	Skills_similarity = 0.6758
+ELSE IF(Skill_purpose_similarity == 1):
+	Skills_similarity = 0.64128
+ELSE IF(Skill_role_similarity == 1):
+	Skills_similarity = 0.5794
+ELSE:
+	Skills_similarity = 0.4712
+
+Matching_score += SKILLS_SIMILARITY_WEIGHT * Skills_similarity
+
+
+# Matching Score should be between 0 and 100. The scores are added by appending sums as seen above across each variable. 

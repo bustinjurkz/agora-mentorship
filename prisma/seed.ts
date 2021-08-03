@@ -5,7 +5,7 @@ import {
   // Mentor,
   // Skills,
   // University,
-  MajorSimilarity,
+  // MajorSimilarity,
   PrismaClient,
 } from '@prisma/client';
 // import { mentors } from './sample-data/mentors';
@@ -14,7 +14,7 @@ import {
 // import { skills } from './sample-data/skills';
 // import { majors } from './sample-data/majors';
 // import { languages } from './sample-data/languages';
-import { major_similarity } from './sample-data/major_similarity';
+// import { major_similarity } from './sample-data/major_similarity';
 
 const prisma = new PrismaClient({ log: ['query', 'info', 'warn', 'error'] });
 
@@ -77,12 +77,12 @@ export const seed = async () => {
   //   console.log(`Created university with ID ${universityAdded.id}`);
   // }
 
-  for (const score of major_similarity) {
-    const scoreAdded: MajorSimilarity = await prisma.majorSimilarity.create({
-      data: score as unknown as MajorSimilarity,
-    });
-    console.log(`Created score with ID ${scoreAdded.id}`);
-  }
+  // for (const score of major_similarity) {
+  //   const scoreAdded: MajorSimilarity = await prisma.majorSimilarity.create({
+  //     data: score as unknown as MajorSimilarity,
+  //   });
+  //   console.log(`Created score with ID ${scoreAdded.id}`);
+  // }
 };
 
 seed()

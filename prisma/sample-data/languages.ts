@@ -61,13 +61,13 @@ export const languages = [
   },
   {
     language: 'Javanese',
-    country: 'Indonesia, Java, Bali',
+    country: 'Indonesia',
     continent: 'Asia',
     population: 75500800,
   },
   {
     language: 'Korean',
-    country: 'Korea, South',
+    country: 'Korea',
     continent: 'Asia',
     population: 75000000,
   },
@@ -79,7 +79,7 @@ export const languages = [
   },
   {
     language: 'Vietnamese',
-    country: 'Viet Nam',
+    country: 'Vietnam',
     continent: 'Asia',
     population: 67662000,
   },
@@ -343,7 +343,7 @@ export const languages = [
   },
   {
     language: 'Madura',
-    country: 'Indonesia, Java, Bali',
+    country: 'Indonesia',
     continent: 'Asia',
     population: 13694000,
   },

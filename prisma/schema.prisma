@@ -1,165 +1,221 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma/client"
+}
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider          = "postgresql"
+  url               = env("DATABASE_URL")
   shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
 
-generator client {
-  provider = "prisma-client-js"
 
+
+model User {
+  id         Int              @id @default(autoincrement())
+  email      String
+  password   String
+  mentee     Mentee?
+  mentor     Mentor?
+  language   UserLanguage[]
+  majors     UserMajor[]
+  skills     UserSkills[]
+  university UserUniversity[]
 }
 
-
-model Mentor{ 
-  id Int @id @default(autoincrement())
-  name String
-  bio String?
-  job_title_primary String
+model Mentor {
+  id                  Int        @id @default(autoincrement())
+  bio                 String?
+  job_title_primary   String
   job_title_secondary String?
-  preferred_services Services[]  
-  school String[]
-  school_major String
-  degree_type String
-  school_year Int?
+  preferred_services  Services[]
+  birthyear           Int
+  degree_type         String
+  highest_education   Int
+  name                String
+  years_experience    Int
+  school_year         Int?
+  userId              Int        @unique
+  user                User       @relation(fields: [userId], references: [id])
 }
 
-model Mentee{
-  id Int @id @default(autoincrement())
-  name String
-  bio String?
-  job_title_primary String
+model Mentee {
+  id                  Int        @id @default(autoincrement())
+  bio                 String?
+  job_title_primary   String?
   job_title_secondary String?
-  preferred_services Services[] 
-  school String[]
-  school_major String
-  degree_type String
-  school_year Int?
+  preferred_services  Services[]
+  school_year         Int?
+  birthyear           Int
+  degree_type         String
+  highest_education   Int
+  name                String
+  years_experience    Int
+  userId              Int        @unique
+  user                User       @relation(fields: [userId], references: [id])
 }
 
-model University{
-  id Int @id @default(autoincrement())
-  name String
-  city String[]
-  province String
-  country String
-  language String
-  category String
+model University {
+  id              Int              @id @default(autoincrement())
+  name            String
+  city            String[]
+  province        String
+  country         String
+  language        String
+  category        String
   undergrad_count Int
-  postgrad_count Int
-  total_count Int
-  year_founded Int
-  size_score Int
+  postgrad_count  Int
+  total_count     Int
+  year_founded    Int
+  size_score      Int
+  users           UserUniversity[]
 }
 
-model Skills{
-  id Int @id @default(autoincrement())
-  skill String
-  skill_type Skill_Type
-  family Family
-  role String[]
-  purpose String[]
-}
-
-model Languages {
-  id Int @id @default(autoincrement())
-  language String
-  country String
-  continent String
-  population Int
-}
-
-model Majors { 
-  id Int @id @default(autoincrement())
-  major String
+model Majors {
+  id      Int         @id @default(autoincrement())
+  major   String      @unique
   faculty String
+  users   UserMajor[]
 }
 
-model MajorSimilarity{ 
-  id Int @id @default(autoincrement())
-  name String
-  ARTS_AND_SCIENCE Decimal? @db.Decimal(3, 2)
-  COMPUTER_SCIENCE Decimal? @db.Decimal(3, 2)
-  BUSINESS_INFORMATICS Decimal? @db.Decimal(3, 2)
-  HUMAN_BEHAVIOUR Decimal? @db.Decimal(3, 2)
-  ENGINEERING Decimal? @db.Decimal(3, 2)
-  CHEMICAL_ENGINEERING Decimal? @db.Decimal(3, 2)
-  CIVIL_ENGINEERING Decimal? @db.Decimal(3, 2)
-  COMPUTER_ENGINEERING Decimal? @db.Decimal(3, 2)
-  ELECTRICAL_ENGINEERING Decimal? @db.Decimal(3, 2)
-  ELECTRICAL_AND_BIOMEDICAL_ENGINEERING Decimal? @db.Decimal(3, 2)
-  MATERIALS_ENGINEERING Decimal? @db.Decimal(3, 2)
-  MECHANICAL_ENGINEERING Decimal? @db.Decimal(3, 2)
-  MECHATRONICS_ENGINEERING Decimal? @db.Decimal(3, 2)
-  NANOTECHNOLOGY_ENGINEERING Decimal? @db.Decimal(3, 2)
-  SOFTWARE_ENGINEERING Decimal? @db.Decimal(3, 2)
-  AEROSPACE_ENGINEERING Decimal? @db.Decimal(3, 2)
-  B_TECH Decimal? @db.Decimal(3, 2)
-  AUTOMATION_ENGINEERING Decimal? @db.Decimal(3, 2)
+model Skills {
+  id         Int          @id @default(autoincrement())
+  skill      String
+  skill_type Skill_Type
+  family     Family
+  role       String[]
+  purpose    String[]
+  users      UserSkills[]
+}
+
+model Language {
+  id         Int            @id @default(autoincrement())
+  language   String         @unique
+  country    String
+  continent  String
+  population Int
+  users      UserLanguage[]
+}
+
+model UserUniversity {
+  userId       Int
+  universityId Int
+  university   University @relation(fields: [universityId], references: [id])
+  user         User       @relation(fields: [userId], references: [id])
+
+  @@id([userId, universityId])
+}
+
+model UserLanguage {
+  userId     Int
+  languageId Int
+  language   Language @relation(fields: [languageId], references: [id])
+  user       User     @relation(fields: [userId], references: [id])
+
+  @@id([userId, languageId])
+}
+
+model UserMajor {
+  userId  Int
+  majorId Int
+  major   Majors @relation(fields: [majorId], references: [id])
+  user    User   @relation(fields: [userId], references: [id])
+
+  @@id([userId, majorId])
+}
+
+model UserSkills {
+  userId  Int
+  skillId Int
+  skill   Skills @relation(fields: [skillId], references: [id])
+  user    User   @relation(fields: [userId], references: [id])
+
+  @@id([userId, skillId])
+}
+
+model MajorSimilarity {
+  id                                            Int      @id @default(autoincrement())
+  name                                          String
+  ARTS_AND_SCIENCE                              Decimal? @db.Decimal(3, 2)
+  COMPUTER_SCIENCE                              Decimal? @db.Decimal(3, 2)
+  BUSINESS_INFORMATICS                          Decimal? @db.Decimal(3, 2)
+  HUMAN_BEHAVIOUR                               Decimal? @db.Decimal(3, 2)
+  ENGINEERING                                   Decimal? @db.Decimal(3, 2)
+  CHEMICAL_ENGINEERING                          Decimal? @db.Decimal(3, 2)
+  CIVIL_ENGINEERING                             Decimal? @db.Decimal(3, 2)
+  COMPUTER_ENGINEERING                          Decimal? @db.Decimal(3, 2)
+  ELECTRICAL_ENGINEERING                        Decimal? @db.Decimal(3, 2)
+  ELECTRICAL_AND_BIOMEDICAL_ENGINEERING         Decimal? @db.Decimal(3, 2)
+  MATERIALS_ENGINEERING                         Decimal? @db.Decimal(3, 2)
+  MECHANICAL_ENGINEERING                        Decimal? @db.Decimal(3, 2)
+  MECHATRONICS_ENGINEERING                      Decimal? @db.Decimal(3, 2)
+  NANOTECHNOLOGY_ENGINEERING                    Decimal? @db.Decimal(3, 2)
+  SOFTWARE_ENGINEERING                          Decimal? @db.Decimal(3, 2)
+  AEROSPACE_ENGINEERING                         Decimal? @db.Decimal(3, 2)
+  B_TECH                                        Decimal? @db.Decimal(3, 2)
+  AUTOMATION_ENGINEERING                        Decimal? @db.Decimal(3, 2)
   AUTOMOTIVE_AND_VEHICLE_ENGINEERING_TECHNOLOGY Decimal? @db.Decimal(3, 2)
-  BIOTECHNOLOGY Decimal? @db.Decimal(3, 2)
-  CIVIL_ENGINEERING_INFRASTRUCTURE_TECHNOLOGY Decimal? @db.Decimal(3, 2)
-  MANUFACTURING_ENGINEERING_TECHNOLOGY Decimal? @db.Decimal(3, 2)
-  POWER_AND_ENERGY_ENGINEERING_TECHNOLOGY Decimal? @db.Decimal(3, 2)
-  SOFTWARE_ENGINEERING_AND_TECHNOLOGY Decimal? @db.Decimal(3, 2)
-  HEALTH_SCIENCES Decimal? @db.Decimal(3, 2)
-  ENGINEERING_SCIENCE_AND_ENTREPRENEURSHIP Decimal? @db.Decimal(3, 2)
-  BIOLOGY_AND_PHARMACOLOGY Decimal? @db.Decimal(3, 2)
-  MIDWIFERY_PROGRAM Decimal? @db.Decimal(3, 2)
-  PHYSICIAN_ASSISTANT Decimal? @db.Decimal(3, 2)
-  NURSING Decimal? @db.Decimal(3, 2)
-  ECONOMICS Decimal? @db.Decimal(3, 2)
-  HEALTH_AND_SOCIETY Decimal? @db.Decimal(3, 2)
-  HUMANITIES Decimal? @db.Decimal(3, 2)
-  SOCIAL_SCIENCES Decimal? @db.Decimal(3, 2)
-  ART_HISTORY Decimal? @db.Decimal(3, 2)
-  ARCHAEOLOGY Decimal? @db.Decimal(3, 2)
-  ANTHROPOLOGY Decimal? @db.Decimal(3, 2)
-  AGING_AND_SOCIETY Decimal? @db.Decimal(3, 2)
-  CLASSICS Decimal? @db.Decimal(3, 2)
-  COGNITIVE_SCIENCE Decimal? @db.Decimal(3, 2)
-  COMMUNICATION_STUDIES Decimal? @db.Decimal(3, 2)
-  ENGLISH_AND_CULTURAL_STUDIES Decimal? @db.Decimal(3, 2)
-  FRENCH Decimal? @db.Decimal(3, 2)
-  GEOGRAPHY Decimal? @db.Decimal(3, 2)
-  HISTORY Decimal? @db.Decimal(3, 2)
-  INDIGENOUS_STUDIES Decimal? @db.Decimal(3, 2)
-  JUSTICE_POLITICAL_PHILOSOPHY_AND_LAW Decimal? @db.Decimal(3, 2)
-  LABOUR_STUDIES Decimal? @db.Decimal(3, 2)
-  LINGUISTICS Decimal? @db.Decimal(3, 2)
-  MULTIMEDIA Decimal? @db.Decimal(3, 2)
-  PHILOSOPHY Decimal? @db.Decimal(3, 2)
-  POLITICAL_SCIENCE Decimal? @db.Decimal(3, 2)
-  SOCIETY_CULTURE_AND_RELIGION Decimal? @db.Decimal(3, 2)
-  SOCIAL_PSYCHOLOGY Decimal? @db.Decimal(3, 2)
-  SOCIOLOGY Decimal? @db.Decimal(3, 2)
-  THEATRE_AND_FILM Decimal? @db.Decimal(3, 2)
-  MUSIC Decimal? @db.Decimal(3, 2)
-  STUDIO_ART Decimal? @db.Decimal(3, 2)
-  SOCIAL_WORK Decimal? @db.Decimal(3, 2)
-  LAW Decimal? @db.Decimal(3, 2)
-  CHEMICAL_AND_PHYSICAL_SCIENCES Decimal? @db.Decimal(3, 2)
-  INTEGRATED_SCIENCES Decimal? @db.Decimal(3, 2)
-  LIFE_SCIENCES Decimal? @db.Decimal(3, 2)
-  MATHEMATICS_AND_STATISTICS Decimal? @db.Decimal(3, 2)
-  BIOSTATISTICS Decimal? @db.Decimal(3, 2)
-  DATA_SCIENCE Decimal? @db.Decimal(3, 2)
-  EARTH_AND_ENVIRONMENTAL_SCIENCES Decimal? @db.Decimal(3, 2)
-  ACTUARIAL_AND_FINANCIAL_MATHEMATICS Decimal? @db.Decimal(3, 2)
-  ASTROPHYSICS Decimal? @db.Decimal(3, 2)
-  BIOCHEMISTRY Decimal? @db.Decimal(3, 2)
-  BIOLOGY Decimal? @db.Decimal(3, 2)
-  CHEMICAL_BIOLOGY Decimal? @db.Decimal(3, 2)
-  CHEMISTRY Decimal? @db.Decimal(3, 2)
-  ENVIRONMENTAL_SCIENCES Decimal? @db.Decimal(3, 2)
-  COMPUTATIONAL_MATHEMATICS Decimal? @db.Decimal(3, 2)
-  NEUROSCIENCE Decimal? @db.Decimal(3, 2)
-  PHYSICS Decimal? @db.Decimal(3, 2)
-  PSYCHOLOGY_NEUROSCIENCE_AND_BEHAVIOUR Decimal? @db.Decimal(3, 2)
-  KINESIOLOGY Decimal? @db.Decimal(3, 2)
-  MEDICAL_RADIATION Decimal? @db.Decimal(3, 2)
+  BIOTECHNOLOGY                                 Decimal? @db.Decimal(3, 2)
+  CIVIL_ENGINEERING_INFRASTRUCTURE_TECHNOLOGY   Decimal? @db.Decimal(3, 2)
+  MANUFACTURING_ENGINEERING_TECHNOLOGY          Decimal? @db.Decimal(3, 2)
+  POWER_AND_ENERGY_ENGINEERING_TECHNOLOGY       Decimal? @db.Decimal(3, 2)
+  SOFTWARE_ENGINEERING_AND_TECHNOLOGY           Decimal? @db.Decimal(3, 2)
+  HEALTH_SCIENCES                               Decimal? @db.Decimal(3, 2)
+  ENGINEERING_SCIENCE_AND_ENTREPRENEURSHIP      Decimal? @db.Decimal(3, 2)
+  BIOLOGY_AND_PHARMACOLOGY                      Decimal? @db.Decimal(3, 2)
+  MIDWIFERY_PROGRAM                             Decimal? @db.Decimal(3, 2)
+  PHYSICIAN_ASSISTANT                           Decimal? @db.Decimal(3, 2)
+  NURSING                                       Decimal? @db.Decimal(3, 2)
+  ECONOMICS                                     Decimal? @db.Decimal(3, 2)
+  HEALTH_AND_SOCIETY                            Decimal? @db.Decimal(3, 2)
+  HUMANITIES                                    Decimal? @db.Decimal(3, 2)
+  SOCIAL_SCIENCES                               Decimal? @db.Decimal(3, 2)
+  ART_HISTORY                                   Decimal? @db.Decimal(3, 2)
+  ARCHAEOLOGY                                   Decimal? @db.Decimal(3, 2)
+  ANTHROPOLOGY                                  Decimal? @db.Decimal(3, 2)
+  AGING_AND_SOCIETY                             Decimal? @db.Decimal(3, 2)
+  CLASSICS                                      Decimal? @db.Decimal(3, 2)
+  COGNITIVE_SCIENCE                             Decimal? @db.Decimal(3, 2)
+  COMMUNICATION_STUDIES                         Decimal? @db.Decimal(3, 2)
+  ENGLISH_AND_CULTURAL_STUDIES                  Decimal? @db.Decimal(3, 2)
+  FRENCH                                        Decimal? @db.Decimal(3, 2)
+  GEOGRAPHY                                     Decimal? @db.Decimal(3, 2)
+  HISTORY                                       Decimal? @db.Decimal(3, 2)
+  INDIGENOUS_STUDIES                            Decimal? @db.Decimal(3, 2)
+  JUSTICE_POLITICAL_PHILOSOPHY_AND_LAW          Decimal? @db.Decimal(3, 2)
+  LABOUR_STUDIES                                Decimal? @db.Decimal(3, 2)
+  LINGUISTICS                                   Decimal? @db.Decimal(3, 2)
+  MULTIMEDIA                                    Decimal? @db.Decimal(3, 2)
+  PHILOSOPHY                                    Decimal? @db.Decimal(3, 2)
+  POLITICAL_SCIENCE                             Decimal? @db.Decimal(3, 2)
+  SOCIETY_CULTURE_AND_RELIGION                  Decimal? @db.Decimal(3, 2)
+  SOCIAL_PSYCHOLOGY                             Decimal? @db.Decimal(3, 2)
+  SOCIOLOGY                                     Decimal? @db.Decimal(3, 2)
+  THEATRE_AND_FILM                              Decimal? @db.Decimal(3, 2)
+  MUSIC                                         Decimal? @db.Decimal(3, 2)
+  STUDIO_ART                                    Decimal? @db.Decimal(3, 2)
+  SOCIAL_WORK                                   Decimal? @db.Decimal(3, 2)
+  LAW                                           Decimal? @db.Decimal(3, 2)
+  CHEMICAL_AND_PHYSICAL_SCIENCES                Decimal? @db.Decimal(3, 2)
+  INTEGRATED_SCIENCES                           Decimal? @db.Decimal(3, 2)
+  LIFE_SCIENCES                                 Decimal? @db.Decimal(3, 2)
+  MATHEMATICS_AND_STATISTICS                    Decimal? @db.Decimal(3, 2)
+  BIOSTATISTICS                                 Decimal? @db.Decimal(3, 2)
+  DATA_SCIENCE                                  Decimal? @db.Decimal(3, 2)
+  EARTH_AND_ENVIRONMENTAL_SCIENCES              Decimal? @db.Decimal(3, 2)
+  ACTUARIAL_AND_FINANCIAL_MATHEMATICS           Decimal? @db.Decimal(3, 2)
+  ASTROPHYSICS                                  Decimal? @db.Decimal(3, 2)
+  BIOCHEMISTRY                                  Decimal? @db.Decimal(3, 2)
+  BIOLOGY                                       Decimal? @db.Decimal(3, 2)
+  CHEMICAL_BIOLOGY                              Decimal? @db.Decimal(3, 2)
+  CHEMISTRY                                     Decimal? @db.Decimal(3, 2)
+  ENVIRONMENTAL_SCIENCES                        Decimal? @db.Decimal(3, 2)
+  COMPUTATIONAL_MATHEMATICS                     Decimal? @db.Decimal(3, 2)
+  NEUROSCIENCE                                  Decimal? @db.Decimal(3, 2)
+  PHYSICS                                       Decimal? @db.Decimal(3, 2)
+  PSYCHOLOGY_NEUROSCIENCE_AND_BEHAVIOUR         Decimal? @db.Decimal(3, 2)
+  KINESIOLOGY                                   Decimal? @db.Decimal(3, 2)
+  MEDICAL_RADIATION                             Decimal? @db.Decimal(3, 2)
 }
 
 enum Skill_Type {
@@ -185,7 +241,7 @@ enum Services {
   RESUME_CRITIQUE
 }
 
-enum Major { 
+enum Major {
   ARTS_AND_SCIENCE
   COMPUTER_SCIENCE
   BUSINESS_INFORMATICS

@@ -3,8 +3,8 @@
  * Do not make changes to this file directly
  */
 
-import * as Context from "./src/context"
 
+import { Context } from "./../src/context"
 
 
 
@@ -17,7 +17,9 @@ export interface NexusGenInputs {
 }
 
 export interface NexusGenEnums {
+  Family: "GENERAL" | "MULTIMEDIA" | "PROGRAMMING" | "QUANTITATIVE"
   Services: "CAREER_DEVELOPMENT" | "CAREER_PLANNING" | "GENERAL" | "MOCK_INTERVIEW" | "RESUME_CRITIQUE" | "SKILLS_FOR_SUCCESS" | "SUCCESS_AT_WORK" | "WORK_LIFE_BALANCE"
+  Skill_Type: "HARD" | "SOFT"
 }
 
 export interface NexusGenScalars {
@@ -29,31 +31,68 @@ export interface NexusGenScalars {
 }
 
 export interface NexusGenObjects {
+  Languages: { // root type
+    continent: string; // String!
+    country: string; // String!
+    language: string; // String!
+    population: number; // Int!
+  }
+  Majors: { // root type
+    faculty: string; // String!
+    major: string; // String!
+  }
   Mentee: { // root type
     bio?: string | null; // String
+    birthyear: number; // Int!
     degree_type?: string | null; // String
-    id: number; // Int!
-    job_title_primary: string; // String!
+    highest_education: number; // Int!
+    job_title_primary?: string | null; // String
     job_title_secondary?: string | null; // String
+    language: Array<string | null>; // [String]!
     name: string; // String!
     preferred_services: Array<NexusGenEnums['Services'] | null>; // [Services]!
     school: Array<string | null>; // [String]!
     school_major: string; // String!
     school_year?: number | null; // Int
+    skills: Array<string | null>; // [String]!
+    years_experience: number; // Int!
   }
   Mentor: { // root type
     bio?: string | null; // String
-    degree_type?: string | null; // String
-    id: number; // Int!
+    degree_type: string; // String!
+    highest_education: number; // Int!
     job_title_primary: string; // String!
     job_title_secondary?: string | null; // String
     name: string; // String!
     preferred_services: Array<NexusGenEnums['Services'] | null>; // [Services]!
-    school: Array<string | null>; // [String]!
-    school_major: string; // String!
     school_year?: number | null; // Int
+    ski: Array<string | null>; // [String]!
+    years_experience: number; // Int!
   }
   Query: {};
+  Skills: { // root type
+    family: NexusGenEnums['Family']; // Family!
+    purpose: Array<string | null>; // [String]!
+    role: Array<string | null>; // [String]!
+    skill: string; // String!
+    skill_type: NexusGenEnums['Skill_Type']; // Skill_Type!
+  }
+  University: { // root type
+    category: string; // String!
+    city: Array<string | null>; // [String]!
+    country: string; // String!
+    language: string; // String!
+    name: string; // String!
+    postgrad_count: number; // Int!
+    province: string; // String!
+    size_score: number; // Int!
+    total_count: number; // Int!
+    undergrad_count: number; // Int!
+    year_founded: number; // Int!
+  }
+  User: { // root type
+    email: string; // String!
+  }
 }
 
 export interface NexusGenInterfaces {
@@ -67,68 +106,150 @@ export type NexusGenRootTypes = NexusGenObjects
 export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars & NexusGenEnums
 
 export interface NexusGenFieldTypes {
+  Languages: { // field return type
+    continent: string; // String!
+    country: string; // String!
+    language: string; // String!
+    population: number; // Int!
+  }
+  Majors: { // field return type
+    faculty: string; // String!
+    major: string; // String!
+  }
   Mentee: { // field return type
     bio: string | null; // String
+    birthyear: number; // Int!
     degree_type: string | null; // String
-    id: number; // Int!
-    job_title_primary: string; // String!
+    highest_education: number; // Int!
+    job_title_primary: string | null; // String
     job_title_secondary: string | null; // String
+    language: Array<string | null>; // [String]!
     name: string; // String!
     preferred_services: Array<NexusGenEnums['Services'] | null>; // [Services]!
     school: Array<string | null>; // [String]!
     school_major: string; // String!
     school_year: number | null; // Int
+    skills: Array<string | null>; // [String]!
+    years_experience: number; // Int!
   }
   Mentor: { // field return type
     bio: string | null; // String
-    degree_type: string | null; // String
-    id: number; // Int!
+    degree_type: string; // String!
+    highest_education: number; // Int!
     job_title_primary: string; // String!
     job_title_secondary: string | null; // String
+    language: NexusGenRootTypes['Languages'][]; // [Languages!]!
     name: string; // String!
     preferred_services: Array<NexusGenEnums['Services'] | null>; // [Services]!
-    school: Array<string | null>; // [String]!
-    school_major: string; // String!
     school_year: number | null; // Int
+    ski: Array<string | null>; // [String]!
+    years_experience: number; // Int!
   }
   Query: { // field return type
+    Majors: NexusGenRootTypes['Majors'] | null; // Majors
     Mentee: NexusGenRootTypes['Mentee'] | null; // Mentee
-    Mentees: Array<NexusGenRootTypes['Mentor'] | null> | null; // [Mentor]
     Mentor: NexusGenRootTypes['Mentor'] | null; // Mentor
-    Mentors: Array<NexusGenRootTypes['Mentor'] | null> | null; // [Mentor]
+    Skills: NexusGenRootTypes['Skills'] | null; // Skills
+    Universities: Array<NexusGenRootTypes['University'] | null> | null; // [University]
+    mentees: Array<NexusGenRootTypes['Mentee'] | null> | null; // [Mentee]
+    mentors: Array<NexusGenRootTypes['Mentor'] | null> | null; // [Mentor]
+  }
+  Skills: { // field return type
+    family: NexusGenEnums['Family']; // Family!
+    purpose: Array<string | null>; // [String]!
+    role: Array<string | null>; // [String]!
+    skill: string; // String!
+    skill_type: NexusGenEnums['Skill_Type']; // Skill_Type!
+  }
+  University: { // field return type
+    category: string; // String!
+    city: Array<string | null>; // [String]!
+    country: string; // String!
+    language: string; // String!
+    name: string; // String!
+    postgrad_count: number; // Int!
+    province: string; // String!
+    size_score: number; // Int!
+    total_count: number; // Int!
+    undergrad_count: number; // Int!
+    year_founded: number; // Int!
+  }
+  User: { // field return type
+    email: string; // String!
   }
 }
 
 export interface NexusGenFieldTypeNames {
+  Languages: { // field return type name
+    continent: 'String'
+    country: 'String'
+    language: 'String'
+    population: 'Int'
+  }
+  Majors: { // field return type name
+    faculty: 'String'
+    major: 'String'
+  }
   Mentee: { // field return type name
     bio: 'String'
+    birthyear: 'Int'
     degree_type: 'String'
-    id: 'Int'
+    highest_education: 'Int'
     job_title_primary: 'String'
     job_title_secondary: 'String'
+    language: 'String'
     name: 'String'
     preferred_services: 'Services'
     school: 'String'
     school_major: 'String'
     school_year: 'Int'
+    skills: 'String'
+    years_experience: 'Int'
   }
   Mentor: { // field return type name
     bio: 'String'
     degree_type: 'String'
-    id: 'Int'
+    highest_education: 'Int'
     job_title_primary: 'String'
     job_title_secondary: 'String'
+    language: 'Languages'
     name: 'String'
     preferred_services: 'Services'
-    school: 'String'
-    school_major: 'String'
     school_year: 'Int'
+    ski: 'String'
+    years_experience: 'Int'
   }
   Query: { // field return type name
+    Majors: 'Majors'
     Mentee: 'Mentee'
-    Mentees: 'Mentor'
     Mentor: 'Mentor'
-    Mentors: 'Mentor'
+    Skills: 'Skills'
+    Universities: 'University'
+    mentees: 'Mentee'
+    mentors: 'Mentor'
+  }
+  Skills: { // field return type name
+    family: 'Family'
+    purpose: 'String'
+    role: 'String'
+    skill: 'String'
+    skill_type: 'Skill_Type'
+  }
+  University: { // field return type name
+    category: 'String'
+    city: 'String'
+    country: 'String'
+    language: 'String'
+    name: 'String'
+    postgrad_count: 'Int'
+    province: 'String'
+    size_score: 'Int'
+    total_count: 'Int'
+    undergrad_count: 'Int'
+    year_founded: 'Int'
+  }
+  User: { // field return type name
+    email: 'String'
   }
 }
 
@@ -166,9 +287,10 @@ export type NexusGenFeaturesConfig = {
 }
 
 export interface NexusGenTypes {
-  context: Context.Context;
+  context: Context;
   inputTypes: NexusGenInputs;
   rootTypes: NexusGenRootTypes;
+  inputTypeShapes: NexusGenInputs & NexusGenEnums & NexusGenScalars;
   argTypes: NexusGenArgTypes;
   fieldTypes: NexusGenFieldTypes;
   fieldTypeNames: NexusGenFieldTypeNames;
