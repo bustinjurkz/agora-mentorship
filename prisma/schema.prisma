@@ -9,18 +9,16 @@ datasource db {
   shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
 
-
-
 model User {
-  id         Int              @id @default(autoincrement())
+  id         Int          @id @default(autoincrement())
   email      String
   password   String
   mentee     Mentee?
   mentor     Mentor?
-  language   UserLanguage[]
-  majors     UserMajor[]
-  skills     UserSkills[]
-  university UserUniversity[]
+  language   Language[]
+  majors     Majors[]
+  skills     Skills[]
+  university University[]
 }
 
 model Mentor {
@@ -56,8 +54,8 @@ model Mentee {
 }
 
 model University {
-  id              Int             @id @default(autoincrement())
-  name            String          @unique
+  id              Int      @id @default(autoincrement())
+  name            String   @unique
   city            String[]
   province        String
   country         String
@@ -68,70 +66,70 @@ model University {
   total_count     Int
   year_founded    Int
   size_score      Int
-  users           UserUniversity[]
+  users           User[]
 }
 
 model Majors {
-  id      Int         @id @default(autoincrement())
-  major   String      @unique
+  id      Int    @id @default(autoincrement())
+  major   String @unique
   faculty String
-  users   UserMajor[]
+  users   User[]
 }
 
 model Skills {
-  id         Int          @id @default(autoincrement())
-  skill      String       @unique
+  id         Int        @id @default(autoincrement())
+  skill      String     @unique
   skill_type Skill_Type
   family     Family
   role       String[]
   purpose    String[]
-  users      UserSkills[]
+  users      User[]
 }
 
 model Language {
-  id         Int            @id @default(autoincrement())
-  language   String         @unique
+  id         Int    @id @default(autoincrement())
+  language   String @unique
   country    String
   continent  String
   population Int
-  users      UserLanguage[]
+  users      User[]
 }
 
-model UserUniversity {
-  userId       Int
-  universityId Int
-  university   University @relation(fields: [universityId], references: [id])
-  user         User       @relation(fields: [userId], references: [id])
+// model UserUniversity {
+//   userId       Int
+//   universityId Int
+//   university   University @relation(fields: [universityId], references: [id])
+//   user         User       @relation(fields: [userId], references: [id])
 
-  @@id([userId, universityId])
-}
+//   @@id([userId, universityId])
+// }
 
-model UserLanguage {
-  userId     Int
-  languageId Int
-  language   Language @relation(fields: [languageId], references: [id])
-  user       User     @relation(fields: [userId], references: [id])
+// model UserLanguage {
+//   userId     Int
+//   languageId Int
+//   language   Language @relation(fields: [languageId], references: [id])
+//   user       User     @relation(fields: [userId], references: [id])
 
-  @@id([userId, languageId])
-}
+//   @@id([userId, languageId])
+// }
 
-model UserMajor {
-  userId  Int
-  majorId Int
-  major   Majors @relation(fields: [majorId], references: [id])
-  user    User   @relation(fields: [userId], references: [id])
+// model UserMajor {
+//   userId  Int
+//   majorId Int
+//   major   Majors @relation(fields: [majorId], references: [id])
+//   user    User   @relation(fields: [userId], references: [id])
 
-  @@id([userId, majorId])
-}
+//   @@id([userId, majorId])
+// }
 
-model UserSkills {
-  userId  Int
-  skillId Int
-  skill   Skills @relation(fields: [skillId], references: [id])
-  user    User   @relation(fields: [userId], references: [id])
+// model UserSkills {
+//   userId  Int
+//   skillId Int
+//   skill   Skills @relation(fields: [skillId], references: [id])
+//   user    User   @relation(fields: [userId], references: [id])
 
-  @@id([userId, skillId])
-}
+//   @@id([userId, skillId])
+// }
 
 model MajorSimilarity {
   id                                            Int      @id @default(autoincrement())
