@@ -44,7 +44,13 @@ type Mentee {
   highest_education: Int!
   name: String!
   years_experience: Int!
+  mentors: [MentorWithScore]!
   userId: ID
+}
+
+type MentorWithScore {
+  mentor: User
+  score: Int
 }
 
 type Mentor {
@@ -59,7 +65,6 @@ type Mentor {
   name: String!
   years_experience: Int!
   userId: ID
-  score: Int
 }
 
 type Language {
@@ -101,16 +106,21 @@ type University {
 }
 
 type Query {
+  "Find a single User"
   user(id: ID!): User
 
-  # """
-  # Find all majors
-  # """
-  # Majors: Majors
-  # Mentee: Mentee
-  # Mentor: Mentor
-  # Skills: Skills
-  # Universities: [University]
-  # mentees: [Mentee]
-  # mentors: [Mentor]
+  "Find a single User with Mentors and the respective score"
+  userMentors(id: ID!): [MentorWithScore]
+
+  "Find all Universities"
+  universities: [University]
+
+  "Find all majors"
+  majors: [Majors]
+
+  "Find all skills"
+  skills: [Skills]
+
+  "Find all languages"
+  languages: [Language]
 }

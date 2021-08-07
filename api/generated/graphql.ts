@@ -5,6 +5,7 @@ export type Maybe<T> = T | null;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
+export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 export type RequireFields<T, K extends keyof T> = { [X in Exclude<keyof T, K>]?: T[X] } & { [P in K]-?: NonNullable<T[P]> };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -50,6 +51,7 @@ export type Mentee = {
   highest_education: Scalars['Int'];
   name: Scalars['String'];
   years_experience: Scalars['Int'];
+  mentors: Array<Maybe<MentorWithScore>>;
   userId?: Maybe<Scalars['ID']>;
 };
 
@@ -66,16 +68,37 @@ export type Mentor = {
   name: Scalars['String'];
   years_experience: Scalars['Int'];
   userId?: Maybe<Scalars['ID']>;
+};
+
+export type MentorWithScore = {
+  __typename?: 'MentorWithScore';
+  mentor?: Maybe<User>;
   score?: Maybe<Scalars['Int']>;
 };
 
 export type Query = {
   __typename?: 'Query';
+  /** Find a single User */
   user?: Maybe<User>;
+  /** Find a single User with Mentors and the respective score */
+  userMentors?: Maybe<Array<Maybe<MentorWithScore>>>;
+  /** Find all Universities */
+  universities?: Maybe<Array<Maybe<University>>>;
+  /** Find all majors */
+  majors?: Maybe<Array<Maybe<Majors>>>;
+  /** Find all skills */
+  skills?: Maybe<Array<Maybe<Skills>>>;
+  /** Find all languages */
+  languages?: Maybe<Array<Maybe<Language>>>;
 };
 
 
 export type QueryUserArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryUserMentorsArgs = {
   id: Scalars['ID'];
 };
 
@@ -218,8 +241,9 @@ export type ResolversTypes = {
   String: ResolverTypeWrapper<Scalars['String']>;
   Int: ResolverTypeWrapper<Scalars['Int']>;
   Majors: ResolverTypeWrapper<MajorsModel>;
-  Mentee: ResolverTypeWrapper<Mentee>;
+  Mentee: ResolverTypeWrapper<Omit<Mentee, 'mentors'> & { mentors: Array<Maybe<ResolversTypes['MentorWithScore']>> }>;
   Mentor: ResolverTypeWrapper<Mentor>;
+  MentorWithScore: ResolverTypeWrapper<Omit<MentorWithScore, 'mentor'> & { mentor?: Maybe<ResolversTypes['User']> }>;
   Query: ResolverTypeWrapper<{}>;
   Services: Services;
   Skill_Type: Skill_Type;
@@ -236,8 +260,9 @@ export type ResolversParentTypes = {
   String: Scalars['String'];
   Int: Scalars['Int'];
   Majors: MajorsModel;
-  Mentee: Mentee;
+  Mentee: Omit<Mentee, 'mentors'> & { mentors: Array<Maybe<ResolversParentTypes['MentorWithScore']>> };
   Mentor: Mentor;
+  MentorWithScore: Omit<MentorWithScore, 'mentor'> & { mentor?: Maybe<ResolversParentTypes['User']> };
   Query: {};
   Skills: SkillsModel;
   University: UniversityModel;
@@ -272,6 +297,7 @@ export type MenteeResolvers<ContextType = Context, ParentType extends ResolversP
   highest_education?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   years_experience?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  mentors?: Resolver<Array<Maybe<ResolversTypes['MentorWithScore']>>, ParentType, ContextType>;
   userId?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
@@ -288,12 +314,22 @@ export type MentorResolvers<ContextType = Context, ParentType extends ResolversP
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   years_experience?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   userId?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type MentorWithScoreResolvers<ContextType = Context, ParentType extends ResolversParentTypes['MentorWithScore'] = ResolversParentTypes['MentorWithScore']> = {
+  mentor?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
   score?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type QueryResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryUserArgs, 'id'>>;
+  userMentors?: Resolver<Maybe<Array<Maybe<ResolversTypes['MentorWithScore']>>>, ParentType, ContextType, RequireFields<QueryUserMentorsArgs, 'id'>>;
+  universities?: Resolver<Maybe<Array<Maybe<ResolversTypes['University']>>>, ParentType, ContextType>;
+  majors?: Resolver<Maybe<Array<Maybe<ResolversTypes['Majors']>>>, ParentType, ContextType>;
+  skills?: Resolver<Maybe<Array<Maybe<ResolversTypes['Skills']>>>, ParentType, ContextType>;
+  languages?: Resolver<Maybe<Array<Maybe<ResolversTypes['Language']>>>, ParentType, ContextType>;
 };
 
 export type SkillsResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Skills'] = ResolversParentTypes['Skills']> = {
@@ -340,6 +376,7 @@ export type Resolvers<ContextType = Context> = {
   Majors?: MajorsResolvers<ContextType>;
   Mentee?: MenteeResolvers<ContextType>;
   Mentor?: MentorResolvers<ContextType>;
+  MentorWithScore?: MentorWithScoreResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Skills?: SkillsResolvers<ContextType>;
   University?: UniversityResolvers<ContextType>;
