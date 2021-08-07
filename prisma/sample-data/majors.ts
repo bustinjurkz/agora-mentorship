@@ -317,10 +317,6 @@ export const majors = [
   },
   {
     major: 'MEDICAL_RADIATION',
-    faculty: 'Kinesiology',
-  },
-  {
-    major: 'MEDICAL_RADIATION',
     faculty: 'Medical Radiation Sciences',
   },
 ];

@@ -1,9 +1,9 @@
-import { Prisma, PrismaClient } from '@db/client';
+import { Prisma, PrismaClient } from '@prisma/client';
 import { ApolloServer, gql } from 'apollo-server-micro';
 import { GraphQLError } from 'graphql';
 import { Context } from './context';
 import * as resolvers from './resolvers';
-import loaders from './loaders';
+// import loaders from './loaders';
 import path from 'path';
 import fs from 'fs';
 
@@ -34,17 +34,18 @@ export function makeGraphServer(
       resolvers: resolvers as any,
       context: () => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const context: Context = { prisma, isTest: true, loaders: {} as any };
-        const map: Record<string, unknown> = {};
-        for (const [k, l] of Object.entries(loaders)) {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          context.loaders[k] = () => {
-            if (map[k]) return map[k];
-            map[k] = l(context);
-            return map[k];
-          };
-        }
+        // const context: Context = { prisma, isTest: true, loaders: {} as any };
+        const context: Context = { prisma, isTest: true };
+        // const map: Record<string, unknown> = {};
+        // for (const [k, l] of Object.entries(loaders)) {
+        //   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        //   // @ts-ignore
+        //   context.loaders[k] = () => {
+        //     if (map[k]) return map[k];
+        //     map[k] = l(context);
+        //     return map[k];
+        //   };
+        // }
         return context;
       },
       playground: true,

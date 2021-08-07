@@ -1,6 +1,6 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/prisma/client"
+  // output   = "../generated/prisma/client"
 }
 
 datasource db {
@@ -56,8 +56,8 @@ model Mentee {
 }
 
 model University {
-  id              Int              @id @default(autoincrement())
-  name            String
+  id              Int             @id @default(autoincrement())
+  name            String          @unique
   city            String[]
   province        String
   country         String
@@ -80,7 +80,7 @@ model Majors {
 
 model Skills {
   id         Int          @id @default(autoincrement())
-  skill      String
+  skill      String       @unique
   skill_type Skill_Type
   family     Family
   role       String[]

@@ -5,6 +5,7 @@ export type Maybe<T> = T | null;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
+export type RequireFields<T, K extends keyof T> = { [X in Exclude<keyof T, K>]?: T[X] } & { [P in K]-?: NonNullable<T[P]> };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -70,20 +71,12 @@ export type Mentor = {
 
 export type Query = {
   __typename?: 'Query';
-  /** Find all majors */
-  Majors?: Maybe<Majors>;
-  /** Find first mentee */
-  Mentee?: Maybe<Mentee>;
-  /** Find first mentor */
-  Mentor?: Maybe<Mentor>;
-  /** Fetch all Skills data */
-  Skills?: Maybe<Skills>;
-  /** Fetch all University data */
-  Universities?: Maybe<Array<Maybe<University>>>;
-  /** Find all mentees */
-  mentees?: Maybe<Array<Maybe<Mentee>>>;
-  /** Find all mentors */
-  mentors?: Maybe<Array<Maybe<Mentor>>>;
+  user?: Maybe<User>;
+};
+
+
+export type QueryUserArgs = {
+  id: Scalars['ID'];
 };
 
 export enum Services {
@@ -300,13 +293,7 @@ export type MentorResolvers<ContextType = Context, ParentType extends ResolversP
 };
 
 export type QueryResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
-  Majors?: Resolver<Maybe<ResolversTypes['Majors']>, ParentType, ContextType>;
-  Mentee?: Resolver<Maybe<ResolversTypes['Mentee']>, ParentType, ContextType>;
-  Mentor?: Resolver<Maybe<ResolversTypes['Mentor']>, ParentType, ContextType>;
-  Skills?: Resolver<Maybe<ResolversTypes['Skills']>, ParentType, ContextType>;
-  Universities?: Resolver<Maybe<Array<Maybe<ResolversTypes['University']>>>, ParentType, ContextType>;
-  mentees?: Resolver<Maybe<Array<Maybe<ResolversTypes['Mentee']>>>, ParentType, ContextType>;
-  mentors?: Resolver<Maybe<Array<Maybe<ResolversTypes['Mentor']>>>, ParentType, ContextType>;
+  user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryUserArgs, 'id'>>;
 };
 
 export type SkillsResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Skills'] = ResolversParentTypes['Skills']> = {

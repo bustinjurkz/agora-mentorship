@@ -1,8 +1,9 @@
 import {
-  // Languages,
+  // Language,
   // Majors,
   // Mentee,
   // Mentor,
+  User,
   // Skills,
   // University,
   // MajorSimilarity,
@@ -10,6 +11,7 @@ import {
 } from '@prisma/client';
 // import { mentors } from './sample-data/mentors';
 // import { mentees } from './sample-data/mentees';
+import { users } from './sample-data/users';
 // import { universities } from './sample-data/universities';
 // import { skills } from './sample-data/skills';
 // import { majors } from './sample-data/majors';
@@ -20,12 +22,66 @@ const prisma = new PrismaClient({ log: ['query', 'info', 'warn', 'error'] });
 
 export const seed = async () => {
   // await prisma.mentee.deleteMany();
-  // await prisma.mentor.deleteMany();
-  // await prisma.languages.deleteMany();
-  // await prisma.skills.deleteMany();
-  // await prisma.university.deleteMany();
-  // await prisma.majors.deleteMany();
+
+  await prisma.user.deleteMany();
+  await prisma.language.deleteMany();
+  await prisma.skills.deleteMany();
+  await prisma.university.deleteMany();
+  await prisma.majors.deleteMany();
   await prisma.majorSimilarity.deleteMany();
+
+  for (const user of users) {
+    // const userAdded = await prisma.user.create({
+    //   data: user as User,
+    // });
+
+    // seed user
+
+    //
+
+    // connect: [{
+    //   id: 'cjc61guf900oa0124sqfhui0x'
+    // }, {
+    //   id: 'cjc61guf900ob0124mhm6ag5b'
+    // }]
+
+    const userAdded = await prisma.user.create({
+      data: {
+        email: user.email,
+        password: user.password,
+      },
+    });
+
+    //     const landmarks = await this.prismaService.landmarks.count();
+
+    // const isLandmarksExist = landmarks > 0 ? true : false
+
+    // await this.prismaService.tour.create({
+    // 	data: {
+    // 		landmarks: {
+    // 			connect: isLandmarksExist ? someLandmarksIds : [],
+    // 			// an array of landmarks ids to connect to, if there is more than one landmark
+    // 			create: isLandmarksExist ? [] : multipleLandmarks,
+    // 			// an array of desired landmarks to be created if there is 0 landmarks
+    // 		}
+    // 	},
+    // })
+
+    //  connect: [{ id: 8 }, { id: 9 }, { id: 10 }],
+
+    prisma.user.update({
+      where: {
+        id: userAdded.id,
+      },
+      data: {
+        language: {
+          connect: [{ userId_languageId: '1' }, { id: 9 }, { id: 10 }],
+        },
+      },
+    });
+
+    console.log(`Created user with ID ${userAdded.id}`);
+  }
 
   // for (const mentor of mentors) {
   //   const mentorAdded = await prisma.mentor.create({
@@ -46,8 +102,8 @@ export const seed = async () => {
   //   console.log(`Created major with ID ${majorAdded.id}`);
   // }
   // for (const language of languages) {
-  //   const languageAdded = await prisma.languages.create({
-  //     data: language as Languages,
+  //   const languageAdded = await prisma.language.create({
+  //     data: language as Language,
   //   });
   //   console.log(`Created language with ID ${languageAdded.id}`);
   // }

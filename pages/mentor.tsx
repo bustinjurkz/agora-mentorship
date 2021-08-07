@@ -1,7 +1,7 @@
 import PersonalInfo from 'components/PersonalInfo';
 import React from 'react';
 import styled from 'styled-components';
-import { useGetMentorQuery } from 'generated/graphql';
+// import { useGetMentorQuery } from 'generated/graphql';
 import Loading from 'components/Loading';
 import ProfileDashboard from 'components/ProfileDashboard';
 import { BackgroundStyle } from 'components/helperFunctions';
@@ -12,6 +12,7 @@ import PastConnections from 'components/meetings/PastConnections';
 import ErrorMessage from 'components/ErrorMessage';
 
 const MentorAdmin: React.FC = () => {
+  //@ts-ignore
   const { data, loading, error } = useGetMentorQuery();
   if (loading) {
     return <Loading />;

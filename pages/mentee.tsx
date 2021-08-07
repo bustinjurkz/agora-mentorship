@@ -8,7 +8,8 @@ import UpcomingMeetings from 'components/meetings/UpcomingMeetings';
 import PendingMeetings from 'components/meetings/PendingMeetings';
 import PastConnections from 'components/meetings/PastConnections';
 import { AdminStyle } from './mentor';
-import { useGetMenteeQuery } from 'generated/graphql';
+//@ts-ignore
+import { useGetMenteeQuery } from '../api/generated/graphql';
 import ErrorMessage from 'components/ErrorMessage';
 
 // import { useRouter } from 'next/router';
