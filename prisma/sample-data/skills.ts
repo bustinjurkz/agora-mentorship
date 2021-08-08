@@ -80,7 +80,7 @@ export const skills = [
     skill: 'Agile Methodologies',
     skill_type: 'HARD',
     family: 'QUANTITATIVE',
-    role: ['ANALYST, DEVELOPER'],
+    role: ['ANALYST', 'DEVELOPER'],
     purpose: ['ANALYST', 'WEB_DEVELOPMENT', 'DATA_SCIENCE'],
   },
   {
@@ -122,7 +122,7 @@ export const skills = [
     skill: 'Artificial Intelligence (AI)',
     skill_type: 'HARD',
     family: 'PROGRAMMING',
-    role: ['ANALYST, DEVELOPER'],
+    role: ['ANALYST', 'DEVELOPER'],
     purpose: ['DATA_SCIENCE, SOFTWARE_DEVELOPMENT'],
   },
   {
@@ -689,7 +689,7 @@ export const skills = [
     skill: 'NoSQL',
     skill_type: 'HARD',
     family: 'PROGRAMMING',
-    role: ['ANALYST DEVELOPER'],
+    role: ['ANALYST', 'DEVELOPER'],
     purpose: ['DATA_SCIENCE'],
   },
   {

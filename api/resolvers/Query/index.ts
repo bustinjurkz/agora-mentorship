@@ -1,3 +1,4 @@
+import { scoreAlgorithm } from '@api/scoreAlgorithm';
 import { QueryResolvers } from '../../generated/graphql';
 
 export const Query: QueryResolvers = {
@@ -15,10 +16,23 @@ export const Query: QueryResolvers = {
     });
   },
   userMentors: async (_, { id }, ctx) => {
-    // const user = await ctx.prisma.user.find
+    // Fetches mentee to be used in the score calculation
+    const mentee = await ctx.prisma.user.findFirst({
+      where: { id: parseInt(id) },
+      include: {
+        language: true,
+        majors: true,
+        mentee: true,
+        mentor: false,
+        skills: true,
+        university: true,
+      },
+    });
 
     // TODO: Add logic to only return mentors that are compatible with the mentee
-    const res = await ctx.prisma.user.findMany({
+
+    // Fetches all mentors
+    const mentors = await ctx.prisma.user.findMany({
       where: { mentor: { isNot: null } },
       include: {
         language: true,
@@ -30,10 +44,16 @@ export const Query: QueryResolvers = {
       },
     });
 
-    return res.map((x) => {
+    const majors = mentee?.majors.map((x) => x.major)!;
+
+    const matrix = await ctx.prisma.majorSimilarity.findMany({
+      where: { name: { in: majors } },
+    });
+
+    return mentors.map((x) => {
       return {
         mentor: x,
-        score: 69,
+        score: scoreAlgorithm(mentee!, x, matrix),
       };
     });
   },
