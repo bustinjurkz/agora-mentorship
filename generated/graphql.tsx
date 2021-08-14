@@ -11,265 +11,398 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  /** The `Upload` scalar type represents a file upload. */
+  Upload: any;
+};
+
+
+export enum CacheControlScope {
+  Public = 'PUBLIC',
+  Private = 'PRIVATE'
+}
+
+export enum Family {
+  General = 'GENERAL',
+  Multimedia = 'MULTIMEDIA',
+  Programming = 'PROGRAMMING',
+  Quantitative = 'QUANTITATIVE'
+}
+
+export type Language = {
+  __typename?: 'Language';
+  id: Scalars['ID'];
+  continent: Scalars['String'];
+  country: Scalars['String'];
+  language: Scalars['String'];
+  population: Scalars['Int'];
+};
+
+export type Majors = {
+  __typename?: 'Majors';
+  id: Scalars['ID'];
+  faculty: Scalars['String'];
+  major: Scalars['String'];
 };
 
 export type Mentee = {
   __typename?: 'Mentee';
-  name: Scalars['String'];
-  job_title_primary: Scalars['String'];
-  job_title_secondary?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['ID']>;
   bio?: Maybe<Scalars['String']>;
+  job_title_primary?: Maybe<Scalars['String']>;
+  job_title_secondary?: Maybe<Scalars['String']>;
   preferred_services: Array<Maybe<Services>>;
-  school: Array<Maybe<Scalars['String']>>;
-  school_major: Scalars['String'];
+  birthyear: Scalars['Int'];
   degree_type?: Maybe<Scalars['String']>;
-  id: Scalars['Int'];
+  highest_education: Scalars['Int'];
+  name: Scalars['String'];
   school_year?: Maybe<Scalars['Int']>;
+  years_experience: Scalars['Int'];
+  mentors?: Maybe<Array<Maybe<MentorWithScore>>>;
+  userId?: Maybe<Scalars['ID']>;
 };
 
 export type Mentor = {
   __typename?: 'Mentor';
-  name: Scalars['String'];
+  id: Scalars['ID'];
+  bio?: Maybe<Scalars['String']>;
   job_title_primary: Scalars['String'];
   job_title_secondary?: Maybe<Scalars['String']>;
-  bio?: Maybe<Scalars['String']>;
   preferred_services: Array<Maybe<Services>>;
-  school: Array<Maybe<Scalars['String']>>;
-  school_major: Scalars['String'];
+  birthyear: Scalars['Int'];
   degree_type?: Maybe<Scalars['String']>;
-  id: Scalars['Int'];
+  highest_education: Scalars['Int'];
   school_year?: Maybe<Scalars['Int']>;
+  name: Scalars['String'];
+  years_experience: Scalars['Int'];
+  userId?: Maybe<Scalars['ID']>;
+};
+
+export type MentorWithScore = {
+  __typename?: 'MentorWithScore';
+  mentor?: Maybe<User>;
+  score?: Maybe<Scalars['Int']>;
 };
 
 export type Query = {
   __typename?: 'Query';
-  /** Find all mentors */
-  Mentors?: Maybe<Array<Maybe<Mentor>>>;
-  /** Find all mentees */
-  Mentees?: Maybe<Array<Maybe<Mentor>>>;
-  /** Find first mentors */
-  Mentor?: Maybe<Mentor>;
-  /** Find first mentee */
-  Mentee?: Maybe<Mentee>;
+  /** Find a single User */
+  user?: Maybe<User>;
+  /** Find a single User with Mentors and the respective score */
+  userMentors?: Maybe<Array<Maybe<MentorWithScore>>>;
+  /** Find all Universities */
+  universities?: Maybe<Array<Maybe<University>>>;
+  /** Find all majors */
+  majors?: Maybe<Array<Maybe<Majors>>>;
+  /** Find all skills */
+  skills?: Maybe<Array<Maybe<Skills>>>;
+  /** Find all languages */
+  languages?: Maybe<Array<Maybe<Language>>>;
+};
+
+
+export type QueryUserArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryUserMentorsArgs = {
+  id: Scalars['ID'];
 };
 
 export enum Services {
   CareerDevelopment = 'CAREER_DEVELOPMENT',
+  CareerPlanning = 'CAREER_PLANNING',
   General = 'GENERAL',
   MockInterview = 'MOCK_INTERVIEW',
-  CareerPlanning = 'CAREER_PLANNING',
-  SuccessAtWork = 'SUCCESS_AT_WORK',
+  ResumeCritique = 'RESUME_CRITIQUE',
   SkillsForSuccess = 'SKILLS_FOR_SUCCESS',
-  WorkLifeBalance = 'WORK_LIFE_BALANCE',
-  ResumeCritique = 'RESUME_CRITIQUE'
+  SuccessAtWork = 'SUCCESS_AT_WORK',
+  WorkLifeBalance = 'WORK_LIFE_BALANCE'
 }
 
-export type GetMentorsQueryVariables = Exact<{ [key: string]: never; }>;
+export enum Skill_Type {
+  Hard = 'HARD',
+  Soft = 'SOFT'
+}
+
+export type Skills = {
+  __typename?: 'Skills';
+  id: Scalars['ID'];
+  family: Family;
+  purpose: Array<Maybe<Scalars['String']>>;
+  role: Array<Maybe<Scalars['String']>>;
+  skill: Scalars['String'];
+  skill_type: Skill_Type;
+};
+
+export type University = {
+  __typename?: 'University';
+  id: Scalars['ID'];
+  category: Scalars['String'];
+  city: Array<Maybe<Scalars['String']>>;
+  country: Scalars['String'];
+  language: Scalars['String'];
+  name: Scalars['String'];
+  postgrad_count: Scalars['Int'];
+  province: Scalars['String'];
+  size_score: Scalars['Int'];
+  total_count: Scalars['Int'];
+  undergrad_count: Scalars['Int'];
+  year_founded: Scalars['Int'];
+};
 
 
-export type GetMentorsQuery = (
+export type User = {
+  __typename?: 'User';
+  id?: Maybe<Scalars['ID']>;
+  email?: Maybe<Scalars['String']>;
+  password?: Maybe<Scalars['String']>;
+  mentee?: Maybe<Mentee>;
+  mentor?: Maybe<Mentor>;
+  language?: Maybe<Array<Maybe<Language>>>;
+  majors?: Maybe<Array<Maybe<Majors>>>;
+  skills?: Maybe<Array<Maybe<Skills>>>;
+  university?: Maybe<Array<Maybe<University>>>;
+};
+
+export type GetUserQueryVariables = Exact<{
+  input: Scalars['ID'];
+}>;
+
+
+export type GetUserQuery = (
   { __typename?: 'Query' }
-  & { Mentors?: Maybe<Array<Maybe<(
-    { __typename?: 'Mentor' }
-    & Pick<Mentor, 'name' | 'job_title_primary' | 'job_title_secondary' | 'bio' | 'preferred_services' | 'school' | 'school_major' | 'degree_type' | 'id' | 'school_year'>
-  )>>> }
-);
-
-export type GetMenteesQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type GetMenteesQuery = (
-  { __typename?: 'Query' }
-  & { Mentees?: Maybe<Array<Maybe<(
-    { __typename?: 'Mentor' }
-    & Pick<Mentor, 'name' | 'job_title_primary' | 'job_title_secondary' | 'bio' | 'preferred_services' | 'school' | 'school_major' | 'degree_type' | 'id' | 'school_year'>
-  )>>> }
-);
-
-export type GetMentorQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type GetMentorQuery = (
-  { __typename?: 'Query' }
-  & { Mentor?: Maybe<(
-    { __typename?: 'Mentor' }
-    & Pick<Mentor, 'name' | 'job_title_primary' | 'job_title_secondary' | 'bio' | 'preferred_services' | 'school' | 'school_major' | 'degree_type' | 'id' | 'school_year'>
+  & { user?: Maybe<(
+    { __typename?: 'User' }
+    & Pick<User, 'id' | 'email'>
+    & { language?: Maybe<Array<Maybe<(
+      { __typename?: 'Language' }
+      & Pick<Language, 'id' | 'language' | 'country' | 'population'>
+    )>>>, mentor?: Maybe<(
+      { __typename?: 'Mentor' }
+      & Pick<Mentor, 'id' | 'bio' | 'job_title_primary' | 'job_title_secondary' | 'preferred_services' | 'birthyear' | 'degree_type' | 'school_year' | 'highest_education' | 'name' | 'years_experience'>
+    )>, mentee?: Maybe<(
+      { __typename?: 'Mentee' }
+      & Pick<Mentee, 'id' | 'bio' | 'job_title_primary' | 'job_title_secondary' | 'preferred_services' | 'birthyear' | 'school_year' | 'degree_type' | 'highest_education' | 'name' | 'years_experience'>
+    )>, majors?: Maybe<Array<Maybe<(
+      { __typename?: 'Majors' }
+      & Pick<Majors, 'id' | 'major' | 'faculty'>
+    )>>>, skills?: Maybe<Array<Maybe<(
+      { __typename?: 'Skills' }
+      & Pick<Skills, 'id' | 'skill' | 'skill_type' | 'family' | 'role' | 'purpose'>
+    )>>>, university?: Maybe<Array<Maybe<(
+      { __typename?: 'University' }
+      & Pick<University, 'id' | 'name' | 'city' | 'province' | 'country' | 'language' | 'category' | 'undergrad_count' | 'postgrad_count' | 'total_count' | 'year_founded' | 'size_score'>
+    )>>> }
   )> }
 );
 
-export type GetMenteeQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetUserMentorsQueryVariables = Exact<{
+  input: Scalars['ID'];
+}>;
 
 
-export type GetMenteeQuery = (
+export type GetUserMentorsQuery = (
   { __typename?: 'Query' }
-  & { Mentee?: Maybe<(
-    { __typename?: 'Mentee' }
-    & Pick<Mentee, 'name' | 'job_title_primary' | 'job_title_secondary' | 'bio' | 'preferred_services' | 'school' | 'school_major' | 'id' | 'degree_type' | 'school_year'>
-  )> }
+  & { userMentors?: Maybe<Array<Maybe<(
+    { __typename?: 'MentorWithScore' }
+    & Pick<MentorWithScore, 'score'>
+    & { mentor?: Maybe<(
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'email'>
+      & { language?: Maybe<Array<Maybe<(
+        { __typename?: 'Language' }
+        & Pick<Language, 'id' | 'language' | 'country' | 'population'>
+      )>>>, mentor?: Maybe<(
+        { __typename?: 'Mentor' }
+        & Pick<Mentor, 'id' | 'bio' | 'job_title_primary' | 'job_title_secondary' | 'preferred_services' | 'birthyear' | 'degree_type' | 'highest_education' | 'name' | 'years_experience'>
+      )>, majors?: Maybe<Array<Maybe<(
+        { __typename?: 'Majors' }
+        & Pick<Majors, 'id' | 'major' | 'faculty'>
+      )>>>, skills?: Maybe<Array<Maybe<(
+        { __typename?: 'Skills' }
+        & Pick<Skills, 'id' | 'skill' | 'skill_type' | 'family' | 'role' | 'purpose'>
+      )>>>, university?: Maybe<Array<Maybe<(
+        { __typename?: 'University' }
+        & Pick<University, 'id' | 'name' | 'city' | 'province' | 'country' | 'language' | 'category' | 'undergrad_count' | 'postgrad_count' | 'total_count' | 'year_founded' | 'size_score'>
+      )>>> }
+    )> }
+  )>>> }
 );
 
 
-export const GetMentorsDocument = gql`
-    query GetMentors {
-  Mentors {
-    name
-    job_title_primary
-    job_title_secondary
-    bio
-    preferred_services
-    school
-    school_major
-    degree_type
+export const GetUserDocument = gql`
+    query GetUser($input: ID!) {
+  user(id: $input) {
     id
-    school_year
+    email
+    language {
+      id
+      language
+      country
+      population
+    }
+    mentor {
+      id
+      bio
+      job_title_primary
+      job_title_secondary
+      preferred_services
+      birthyear
+      degree_type
+      school_year
+      highest_education
+      name
+      years_experience
+    }
+    mentee {
+      id
+      bio
+      job_title_primary
+      job_title_secondary
+      preferred_services
+      birthyear
+      school_year
+      degree_type
+      highest_education
+      name
+      years_experience
+    }
+    majors {
+      id
+      major
+      faculty
+    }
+    skills {
+      id
+      skill
+      skill_type
+      family
+      role
+      purpose
+    }
+    university {
+      id
+      name
+      city
+      province
+      country
+      language
+      category
+      undergrad_count
+      postgrad_count
+      total_count
+      year_founded
+      size_score
+    }
   }
 }
     `;
 
 /**
- * __useGetMentorsQuery__
+ * __useGetUserQuery__
  *
- * To run a query within a React component, call `useGetMentorsQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetMentorsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetUserQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetMentorsQuery({
+ * const { data, loading, error } = useGetUserQuery({
  *   variables: {
+ *      input: // value for 'input'
  *   },
  * });
  */
-export function useGetMentorsQuery(baseOptions?: Apollo.QueryHookOptions<GetMentorsQuery, GetMentorsQueryVariables>) {
-        return Apollo.useQuery<GetMentorsQuery, GetMentorsQueryVariables>(GetMentorsDocument, baseOptions);
+export function useGetUserQuery(baseOptions: Apollo.QueryHookOptions<GetUserQuery, GetUserQueryVariables>) {
+        return Apollo.useQuery<GetUserQuery, GetUserQueryVariables>(GetUserDocument, baseOptions);
       }
-export function useGetMentorsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetMentorsQuery, GetMentorsQueryVariables>) {
-          return Apollo.useLazyQuery<GetMentorsQuery, GetMentorsQueryVariables>(GetMentorsDocument, baseOptions);
+export function useGetUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserQuery, GetUserQueryVariables>) {
+          return Apollo.useLazyQuery<GetUserQuery, GetUserQueryVariables>(GetUserDocument, baseOptions);
         }
-export type GetMentorsQueryHookResult = ReturnType<typeof useGetMentorsQuery>;
-export type GetMentorsLazyQueryHookResult = ReturnType<typeof useGetMentorsLazyQuery>;
-export type GetMentorsQueryResult = Apollo.QueryResult<GetMentorsQuery, GetMentorsQueryVariables>;
-export const GetMenteesDocument = gql`
-    query GetMentees {
-  Mentees {
-    name
-    job_title_primary
-    job_title_secondary
-    bio
-    preferred_services
-    school
-    school_major
-    degree_type
-    id
-    school_year
+export type GetUserQueryHookResult = ReturnType<typeof useGetUserQuery>;
+export type GetUserLazyQueryHookResult = ReturnType<typeof useGetUserLazyQuery>;
+export type GetUserQueryResult = Apollo.QueryResult<GetUserQuery, GetUserQueryVariables>;
+export const GetUserMentorsDocument = gql`
+    query GetUserMentors($input: ID!) {
+  userMentors(id: $input) {
+    mentor {
+      id
+      email
+      language {
+        id
+        language
+        country
+        population
+      }
+      mentor {
+        id
+        bio
+        job_title_primary
+        job_title_secondary
+        preferred_services
+        birthyear
+        degree_type
+        highest_education
+        name
+        years_experience
+      }
+      majors {
+        id
+        major
+        faculty
+      }
+      skills {
+        id
+        skill
+        skill_type
+        family
+        role
+        purpose
+      }
+      university {
+        id
+        name
+        city
+        province
+        country
+        language
+        category
+        undergrad_count
+        postgrad_count
+        total_count
+        year_founded
+        size_score
+      }
+    }
+    score
   }
 }
     `;
 
 /**
- * __useGetMenteesQuery__
+ * __useGetUserMentorsQuery__
  *
- * To run a query within a React component, call `useGetMenteesQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetMenteesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetUserMentorsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserMentorsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetMenteesQuery({
+ * const { data, loading, error } = useGetUserMentorsQuery({
  *   variables: {
+ *      input: // value for 'input'
  *   },
  * });
  */
-export function useGetMenteesQuery(baseOptions?: Apollo.QueryHookOptions<GetMenteesQuery, GetMenteesQueryVariables>) {
-        return Apollo.useQuery<GetMenteesQuery, GetMenteesQueryVariables>(GetMenteesDocument, baseOptions);
+export function useGetUserMentorsQuery(baseOptions: Apollo.QueryHookOptions<GetUserMentorsQuery, GetUserMentorsQueryVariables>) {
+        return Apollo.useQuery<GetUserMentorsQuery, GetUserMentorsQueryVariables>(GetUserMentorsDocument, baseOptions);
       }
-export function useGetMenteesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetMenteesQuery, GetMenteesQueryVariables>) {
-          return Apollo.useLazyQuery<GetMenteesQuery, GetMenteesQueryVariables>(GetMenteesDocument, baseOptions);
+export function useGetUserMentorsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserMentorsQuery, GetUserMentorsQueryVariables>) {
+          return Apollo.useLazyQuery<GetUserMentorsQuery, GetUserMentorsQueryVariables>(GetUserMentorsDocument, baseOptions);
         }
-export type GetMenteesQueryHookResult = ReturnType<typeof useGetMenteesQuery>;
-export type GetMenteesLazyQueryHookResult = ReturnType<typeof useGetMenteesLazyQuery>;
-export type GetMenteesQueryResult = Apollo.QueryResult<GetMenteesQuery, GetMenteesQueryVariables>;
-export const GetMentorDocument = gql`
-    query GetMentor {
-  Mentor {
-    name
-    job_title_primary
-    job_title_secondary
-    bio
-    preferred_services
-    school
-    school_major
-    degree_type
-    id
-    school_year
-  }
-}
-    `;
-
-/**
- * __useGetMentorQuery__
- *
- * To run a query within a React component, call `useGetMentorQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetMentorQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetMentorQuery({
- *   variables: {
- *   },
- * });
- */
-export function useGetMentorQuery(baseOptions?: Apollo.QueryHookOptions<GetMentorQuery, GetMentorQueryVariables>) {
-        return Apollo.useQuery<GetMentorQuery, GetMentorQueryVariables>(GetMentorDocument, baseOptions);
-      }
-export function useGetMentorLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetMentorQuery, GetMentorQueryVariables>) {
-          return Apollo.useLazyQuery<GetMentorQuery, GetMentorQueryVariables>(GetMentorDocument, baseOptions);
-        }
-export type GetMentorQueryHookResult = ReturnType<typeof useGetMentorQuery>;
-export type GetMentorLazyQueryHookResult = ReturnType<typeof useGetMentorLazyQuery>;
-export type GetMentorQueryResult = Apollo.QueryResult<GetMentorQuery, GetMentorQueryVariables>;
-export const GetMenteeDocument = gql`
-    query GetMentee {
-  Mentee {
-    name
-    job_title_primary
-    job_title_secondary
-    bio
-    preferred_services
-    school
-    school_major
-    id
-    degree_type
-    school_year
-  }
-}
-    `;
-
-/**
- * __useGetMenteeQuery__
- *
- * To run a query within a React component, call `useGetMenteeQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetMenteeQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetMenteeQuery({
- *   variables: {
- *   },
- * });
- */
-export function useGetMenteeQuery(baseOptions?: Apollo.QueryHookOptions<GetMenteeQuery, GetMenteeQueryVariables>) {
-        return Apollo.useQuery<GetMenteeQuery, GetMenteeQueryVariables>(GetMenteeDocument, baseOptions);
-      }
-export function useGetMenteeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetMenteeQuery, GetMenteeQueryVariables>) {
-          return Apollo.useLazyQuery<GetMenteeQuery, GetMenteeQueryVariables>(GetMenteeDocument, baseOptions);
-        }
-export type GetMenteeQueryHookResult = ReturnType<typeof useGetMenteeQuery>;
-export type GetMenteeLazyQueryHookResult = ReturnType<typeof useGetMenteeLazyQuery>;
-export type GetMenteeQueryResult = Apollo.QueryResult<GetMenteeQuery, GetMenteeQueryVariables>;
+export type GetUserMentorsQueryHookResult = ReturnType<typeof useGetUserMentorsQuery>;
+export type GetUserMentorsLazyQueryHookResult = ReturnType<typeof useGetUserMentorsLazyQuery>;
+export type GetUserMentorsQueryResult = Apollo.QueryResult<GetUserMentorsQuery, GetUserMentorsQueryVariables>;

@@ -22,6 +22,7 @@
     "isolatedModules": true,
     "paths": {
       "@schema": ["api/generated/graphql.ts"],
+      // "@api/context": ["api/generated/graphql.ts"],
       "@api/*": ["api/*"],
       "@db/*": ["generated/prisma/*"]
     }

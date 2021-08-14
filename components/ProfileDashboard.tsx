@@ -11,7 +11,7 @@ import { Mentee } from 'generated/graphql';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import { useRouter } from 'next/dist/client/router';
 export interface ProfileDashboardProps {
-  menteeInfo: Mentee;
+  menteeInfo?: Mentee;
 }
 const ProfileDashboard: React.FC<ProfileDashboardProps> = ({ menteeInfo }) => {
   const router = useRouter();

@@ -1,10 +1,17 @@
-import { ApolloServer } from 'apollo-server-micro';
-import { schema } from 'src/schema';
-import { createContext } from 'src/context';
+import Cors from 'micro-cors';
+import { makeGraphServer } from '@api/server';
 
-const server = new ApolloServer({ schema, context: createContext });
+// const production = process.env.NODE_ENV === 'production';
+export const { server } = makeGraphServer({
+  logError: console.log,
+  // dbLogging: [
+  //   'info',
+  //   'warn',
+  //   'error',
+  //   ...(production ? [] : ['query' as 'query']),
+  // ],
+});
 
-// Takes incoming request from user and handles http part of it
 const handler = server.createHandler({ path: '/api/graphql' });
 
 export const config = {
@@ -13,4 +20,8 @@ export const config = {
   },
 };
 
-export default handler;
+const cors = Cors({
+  allowMethods: ['POST', 'OPTIONS'],
+});
+
+export default cors(handler);

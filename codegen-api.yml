@@ -1,0 +1,17 @@
+overwrite: true
+schema: 'schema.graphql'
+documents: null
+generates:
+  api/generated/graphql.ts:
+    plugins:
+      - 'typescript'
+      - 'typescript-resolvers'
+    config:
+      contextType: '@api/context#Context'
+      mapperTypeSuffix: Model
+      mappers:
+        User: '@db/client#User'
+        University: '@db/client#University'
+        Majors: '@db/client#Majors'
+        Skills: '@db/client#Skills'
+        Language: '@db/client#Language'

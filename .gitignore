@@ -9,6 +9,9 @@
 !.yarn/plugins
 !.yarn/sdks
 .pnp.*
+
+# generated
+src/prisma
  
 # testing
 /coverage

@@ -10,6 +10,7 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
         bio: 'Full stack web developer with a focus on sleek front-ends',
         job_title_primary: 'Web Developer',
         job_title_secondary: 'Front-End',
+        degree_type: 'Bachelors',
         preferred_services: 'MOCK_INTERVIEW',
         school: 'McMaster University',
         school_major: 'Computer Science',

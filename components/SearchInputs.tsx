@@ -166,133 +166,139 @@ export const SearchInputs = () => {
       </div>
 
       <Collapse in={clicked}>
-        <BackgroundStyle>
-          <FormControl className={classes.formControl}>
-            <InputLabel id="demo-mutiple-checkbox-label">Services</InputLabel>
-            <Select
-              labelId="demo-mutiple-checkbox-label"
-              id="demo-mutiple-checkbox"
-              multiple
-              value={servicesSelected}
-              onChange={(e) => handleChange(e, FilterFields.Services)}
-              input={<Input />}
-              renderValue={(selected) => (selected as string[]).join(', ')}
-              MenuProps={MenuProps}
-            >
-              {services.map((service) => (
-                <MenuItem key={service} value={service}>
-                  <Checkbox checked={servicesSelected.indexOf(service) > -1} />
-                  <ListItemText primary={service} />
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          <FormControl className={classes.formControl}>
-            <InputLabel id="demo-mutiple-checkbox-label">Title</InputLabel>
-            <Select
-              labelId="demo-mutiple-checkbox-label"
-              id="demo-mutiple-checkbox"
-              multiple
-              value={titlesSelected}
-              onChange={(e) => handleChange(e, FilterFields.Title)}
-              input={<Input />}
-              renderValue={(selected) => (selected as string[]).join(', ')}
-              MenuProps={MenuProps}
-            >
-              {title.map((title) => (
-                <MenuItem key={title} value={title}>
-                  <Checkbox checked={titlesSelected.indexOf(title) > -1} />
-                  <ListItemText primary={title} />
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          <FormControl className={classes.formControl}>
-            <InputLabel id="demo-mutiple-checkbox-label">Department</InputLabel>
-            <Select
-              labelId="demo-mutiple-checkbox-label"
-              id="demo-mutiple-checkbox"
-              multiple
-              value={departmentSelected}
-              onChange={(e) => handleChange(e, FilterFields.Department)}
-              input={<Input />}
-              renderValue={(selected) => (selected as string[]).join(', ')}
-              MenuProps={MenuProps}
-            >
-              {department.map((department) => (
-                <MenuItem key={department} value={department}>
-                  <Checkbox
-                    checked={departmentSelected.indexOf(department) > -1}
-                  />
-                  <ListItemText primary={department} />
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          <FormControl className={classes.formControl}>
-            <InputLabel id="demo-mutiple-checkbox-label">School</InputLabel>
-            <Select
-              labelId="demo-mutiple-checkbox-label"
-              id="demo-mutiple-checkbox"
-              multiple
-              value={schoolSelected}
-              onChange={(e) => handleChange(e, FilterFields.School)}
-              input={<Input />}
-              renderValue={(selected) => (selected as string[]).join(', ')}
-              MenuProps={MenuProps}
-            >
-              {school.map((school) => (
-                <MenuItem key={school} value={school}>
-                  <Checkbox checked={schoolSelected.indexOf(school) > -1} />
-                  <ListItemText primary={school} />
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          <FormControl className={classes.formControl}>
-            <InputLabel id="demo-mutiple-checkbox-label">Degree</InputLabel>
-            <Select
-              labelId="demo-mutiple-checkbox-label"
-              id="demo-mutiple-checkbox"
-              multiple
-              value={degreeSelected}
-              onChange={(e) => handleChange(e, FilterFields.Degree)}
-              input={<Input />}
-              renderValue={(selected) => (selected as string[]).join(', ')}
-              MenuProps={MenuProps}
-            >
-              {degree.map((degree) => (
-                <MenuItem key={degree} value={degree}>
-                  <Checkbox checked={degreeSelected.indexOf(degree) > -1} />
-                  <ListItemText primary={degree} />
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          <FormControl className={classes.formControl}>
-            <InputLabel id="demo-mutiple-checkbox-label">
-              Degree Type
-            </InputLabel>
-            <Select
-              labelId="demo-mutiple-checkbox-label"
-              id="demo-mutiple-checkbox"
-              multiple
-              value={degreeTypeSelected}
-              onChange={(e) => handleChange(e, FilterFields.DegreeType)}
-              input={<Input />}
-              renderValue={(selected) => (selected as string[]).join(', ')}
-              MenuProps={MenuProps}
-            >
-              {degreeType.map((degreeType) => (
-                <MenuItem key={degreeType} value={degreeType}>
-                  <Checkbox
-                    checked={degreeTypeSelected.indexOf(degreeType) > -1}
-                  />
-                  <ListItemText primary={degreeType} />
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+        <BackgroundStyle style={{ marginTop: 12 }}>
+          <div className="filter-form">
+            <FormControl className={classes.formControl}>
+              <InputLabel id="demo-mutiple-checkbox-label">Services</InputLabel>
+              <Select
+                labelId="demo-mutiple-checkbox-label"
+                id="demo-mutiple-checkbox"
+                multiple
+                value={servicesSelected}
+                onChange={(e) => handleChange(e, FilterFields.Services)}
+                input={<Input />}
+                renderValue={(selected) => (selected as string[]).join(', ')}
+                MenuProps={MenuProps}
+              >
+                {services.map((service) => (
+                  <MenuItem key={service} value={service}>
+                    <Checkbox
+                      checked={servicesSelected.indexOf(service) > -1}
+                    />
+                    <ListItemText primary={service} />
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <FormControl className={classes.formControl}>
+              <InputLabel id="demo-mutiple-checkbox-label">Title</InputLabel>
+              <Select
+                labelId="demo-mutiple-checkbox-label"
+                id="demo-mutiple-checkbox"
+                multiple
+                value={titlesSelected}
+                onChange={(e) => handleChange(e, FilterFields.Title)}
+                input={<Input />}
+                renderValue={(selected) => (selected as string[]).join(', ')}
+                MenuProps={MenuProps}
+              >
+                {title.map((title) => (
+                  <MenuItem key={title} value={title}>
+                    <Checkbox checked={titlesSelected.indexOf(title) > -1} />
+                    <ListItemText primary={title} />
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <FormControl className={classes.formControl}>
+              <InputLabel id="demo-mutiple-checkbox-label">
+                Department
+              </InputLabel>
+              <Select
+                labelId="demo-mutiple-checkbox-label"
+                id="demo-mutiple-checkbox"
+                multiple
+                value={departmentSelected}
+                onChange={(e) => handleChange(e, FilterFields.Department)}
+                input={<Input />}
+                renderValue={(selected) => (selected as string[]).join(', ')}
+                MenuProps={MenuProps}
+              >
+                {department.map((department) => (
+                  <MenuItem key={department} value={department}>
+                    <Checkbox
+                      checked={departmentSelected.indexOf(department) > -1}
+                    />
+                    <ListItemText primary={department} />
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <FormControl className={classes.formControl}>
+              <InputLabel id="demo-mutiple-checkbox-label">School</InputLabel>
+              <Select
+                labelId="demo-mutiple-checkbox-label"
+                id="demo-mutiple-checkbox"
+                multiple
+                value={schoolSelected}
+                onChange={(e) => handleChange(e, FilterFields.School)}
+                input={<Input />}
+                renderValue={(selected) => (selected as string[]).join(', ')}
+                MenuProps={MenuProps}
+              >
+                {school.map((school) => (
+                  <MenuItem key={school} value={school}>
+                    <Checkbox checked={schoolSelected.indexOf(school) > -1} />
+                    <ListItemText primary={school} />
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <FormControl className={classes.formControl}>
+              <InputLabel id="demo-mutiple-checkbox-label">Degree</InputLabel>
+              <Select
+                labelId="demo-mutiple-checkbox-label"
+                id="demo-mutiple-checkbox"
+                multiple
+                value={degreeSelected}
+                onChange={(e) => handleChange(e, FilterFields.Degree)}
+                input={<Input />}
+                renderValue={(selected) => (selected as string[]).join(', ')}
+                MenuProps={MenuProps}
+              >
+                {degree.map((degree) => (
+                  <MenuItem key={degree} value={degree}>
+                    <Checkbox checked={degreeSelected.indexOf(degree) > -1} />
+                    <ListItemText primary={degree} />
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <FormControl className={classes.formControl}>
+              <InputLabel id="demo-mutiple-checkbox-label">
+                Degree Type
+              </InputLabel>
+              <Select
+                labelId="demo-mutiple-checkbox-label"
+                id="demo-mutiple-checkbox"
+                multiple
+                value={degreeTypeSelected}
+                onChange={(e) => handleChange(e, FilterFields.DegreeType)}
+                input={<Input />}
+                renderValue={(selected) => (selected as string[]).join(', ')}
+                MenuProps={MenuProps}
+              >
+                {degreeType.map((degreeType) => (
+                  <MenuItem key={degreeType} value={degreeType}>
+                    <Checkbox
+                      checked={degreeTypeSelected.indexOf(degreeType) > -1}
+                    />
+                    <ListItemText primary={degreeType} />
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </div>
         </BackgroundStyle>
       </Collapse>
     </SearchFilterStyle>
@@ -304,11 +310,16 @@ const SearchFilterStyle = styled.div`
   flex-direction: column;
   width: 100%;
   margin-bottom: 20px;
+
   .input {
     display: inline-flex;
   }
 
   .search-form {
     margin-right: 40px;
+  }
+
+  .filter-form {
+    display: inline-block;
   }
 `;

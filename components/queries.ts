@@ -1,69 +1,127 @@
 import gql from 'graphql-tag';
 
 gql`
-  query GetMentors {
-    Mentors {
-      name
-      job_title_primary
-      job_title_secondary
-      bio
-      preferred_services
-      school
-      school_major
-      degree_type
+  query GetUser($input: ID!) {
+    user(id: $input) {
       id
-      school_year
+      email
+      language {
+        id
+        language
+        country
+        population
+      }
+      mentor {
+        id
+        bio
+        job_title_primary
+        job_title_secondary
+        preferred_services
+        birthyear
+        degree_type
+        school_year
+        highest_education
+        name
+        years_experience
+      }
+      mentee {
+        id
+        bio
+        job_title_primary
+        job_title_secondary
+        preferred_services
+        birthyear
+        school_year
+        degree_type
+        highest_education
+        name
+        years_experience
+      }
+      majors {
+        id
+        major
+        faculty
+      }
+      skills {
+        id
+        skill
+        skill_type
+        family
+        role
+        purpose
+      }
+      university {
+        id
+        name
+        city
+        province
+        country
+        language
+        category
+        undergrad_count
+        postgrad_count
+        total_count
+        year_founded
+        size_score
+      }
     }
   }
 `;
 
 gql`
-  query GetMentees {
-    Mentees {
-      name
-      job_title_primary
-      job_title_secondary
-      bio
-      preferred_services
-      school
-      school_major
-      degree_type
-      id
-      school_year
-    }
-  }
-`;
+  query GetUserMentors($input: ID!) {
+    userMentors(id: $input) {
+      mentor {
+        id
+        email
+        language {
+          id
+          language
+          country
+          population
+        }
+        mentor {
+          id
+          bio
+          job_title_primary
+          job_title_secondary
+          preferred_services
+          birthyear
+          degree_type
+          highest_education
+          name
+          years_experience
+        }
 
-gql`
-  query GetMentor {
-    Mentor {
-      name
-      job_title_primary
-      job_title_secondary
-      bio
-      preferred_services
-      school
-      school_major
-      degree_type
-      id
-      school_year
-    }
-  }
-`;
-
-gql`
-  query GetMentee {
-    Mentee {
-      name
-      job_title_primary
-      job_title_secondary
-      bio
-      preferred_services
-      school
-      school_major
-      id
-      degree_type
-      school_year
+        majors {
+          id
+          major
+          faculty
+        }
+        skills {
+          id
+          skill
+          skill_type
+          family
+          role
+          purpose
+        }
+        university {
+          id
+          name
+          city
+          province
+          country
+          language
+          category
+          undergrad_count
+          postgrad_count
+          total_count
+          year_founded
+          size_score
+        }
+      }
+      score
     }
   }
 `;
