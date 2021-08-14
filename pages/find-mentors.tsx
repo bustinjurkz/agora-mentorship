@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Mentor, useGetMentorsQuery } from 'generated/graphql';
+import { Mentor, useGetUserMentorsQuery } from 'generated/graphql';
 import Loading from 'components/Loading';
 
 import { SearchInputs } from 'components/SearchInputs';
@@ -9,7 +9,11 @@ import RequestMentor from 'components/RequestMentor';
 import ErrorMessage from 'components/ErrorMessage';
 
 const FindMentors: React.FC = () => {
-  const { data, loading, error } = useGetMentorsQuery();
+  const { data, loading, error } = useGetUserMentorsQuery({
+    variables: {
+      input: '50',
+    },
+  });
   const [mentorRequested, setMentorRequested] = useState<Mentor>();
   const back = () => {
     setMentorRequested(undefined);
@@ -32,10 +36,10 @@ const FindMentors: React.FC = () => {
         <>
           <SearchInputs />
           <h1>Mentors</h1>
-          {data?.Mentors?.map((x, i: number) => (
+          {data?.userMentors?.map((x, i: number) => (
             <MentorCard
               key={i}
-              mentor={x!}
+              mentorWithScore={x!}
               setMentorRequested={setMentorRequested}
             />
           ))}

@@ -1,4 +1,4 @@
-import { Mentor, Services } from 'generated/graphql';
+import { Mentor, MentorWithScore, Services } from 'generated/graphql';
 import React from 'react';
 import styled from 'styled-components';
 import { BackgroundStyle, servicePrettier } from './helperFunctions';
@@ -11,12 +11,12 @@ import Button from '@material-ui/core/Button';
 import RateReviewIcon from '@material-ui/icons/RateReview';
 import ForumIcon from '@material-ui/icons/Forum';
 export interface MentorCardProps {
-  mentor: Mentor;
+  mentorWithScore: MentorWithScore;
   request?: boolean;
   setMentorRequested?: (x: Mentor) => void;
 }
 const MentorCard: React.FC<MentorCardProps> = ({
-  mentor,
+  mentorWithScore,
   request,
   setMentorRequested,
 }) => {
@@ -25,6 +25,10 @@ const MentorCard: React.FC<MentorCardProps> = ({
     return <div className="tag-container">{prettyService}</div>;
   };
 
+  const mentor = mentorWithScore.mentor?.mentor!;
+  const university = mentorWithScore?.mentor?.university;
+  const score = mentorWithScore.score;
+
   return (
     <BackgroundStyle style={{ marginBottom: 35 }}>
       <MentorCardStyle>
@@ -32,7 +36,7 @@ const MentorCard: React.FC<MentorCardProps> = ({
           <AccountCircleIcon className="icon" />
           <h2 className="name">{mentor.name}</h2>
           <div className="match-container">
-            <div className="percentage">83%</div>
+            <div className="percentage">{score}%</div>
             <div className="match">match</div>
           </div>
         </div>
@@ -50,11 +54,11 @@ const MentorCard: React.FC<MentorCardProps> = ({
           <div className="education">
             <div className="primary">
               <SchoolIcon className="icon" />
-              <h4> {mentor.school}</h4>
+              <h4> {mentor.school_year}</h4>
             </div>
             <div className="secondary">
               <RightArrow className="icon" />
-              {mentor.school_major}, {mentor.degree_type}
+              {university![0]!.name}, {mentor.degree_type}
             </div>
           </div>
         </div>

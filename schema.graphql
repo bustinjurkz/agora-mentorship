@@ -43,8 +43,9 @@ type Mentee {
   degree_type: String
   highest_education: Int!
   name: String!
+  school_year: Int
   years_experience: Int!
-  mentors: [MentorWithScore]!
+  mentors: [MentorWithScore]
   userId: ID
 }
 
@@ -62,6 +63,7 @@ type Mentor {
   birthyear: Int!
   degree_type: String
   highest_education: Int!
+  school_year: Int
   name: String!
   years_experience: Int!
   userId: ID

@@ -50,8 +50,9 @@ export type Mentee = {
   degree_type?: Maybe<Scalars['String']>;
   highest_education: Scalars['Int'];
   name: Scalars['String'];
+  school_year?: Maybe<Scalars['Int']>;
   years_experience: Scalars['Int'];
-  mentors: Array<Maybe<MentorWithScore>>;
+  mentors?: Maybe<Array<Maybe<MentorWithScore>>>;
   userId?: Maybe<Scalars['ID']>;
 };
 
@@ -65,6 +66,7 @@ export type Mentor = {
   birthyear: Scalars['Int'];
   degree_type?: Maybe<Scalars['String']>;
   highest_education: Scalars['Int'];
+  school_year?: Maybe<Scalars['Int']>;
   name: Scalars['String'];
   years_experience: Scalars['Int'];
   userId?: Maybe<Scalars['ID']>;
@@ -241,7 +243,7 @@ export type ResolversTypes = {
   String: ResolverTypeWrapper<Scalars['String']>;
   Int: ResolverTypeWrapper<Scalars['Int']>;
   Majors: ResolverTypeWrapper<MajorsModel>;
-  Mentee: ResolverTypeWrapper<Omit<Mentee, 'mentors'> & { mentors: Array<Maybe<ResolversTypes['MentorWithScore']>> }>;
+  Mentee: ResolverTypeWrapper<Omit<Mentee, 'mentors'> & { mentors?: Maybe<Array<Maybe<ResolversTypes['MentorWithScore']>>> }>;
   Mentor: ResolverTypeWrapper<Mentor>;
   MentorWithScore: ResolverTypeWrapper<Omit<MentorWithScore, 'mentor'> & { mentor?: Maybe<ResolversTypes['User']> }>;
   Query: ResolverTypeWrapper<{}>;
@@ -260,7 +262,7 @@ export type ResolversParentTypes = {
   String: Scalars['String'];
   Int: Scalars['Int'];
   Majors: MajorsModel;
-  Mentee: Omit<Mentee, 'mentors'> & { mentors: Array<Maybe<ResolversParentTypes['MentorWithScore']>> };
+  Mentee: Omit<Mentee, 'mentors'> & { mentors?: Maybe<Array<Maybe<ResolversParentTypes['MentorWithScore']>>> };
   Mentor: Mentor;
   MentorWithScore: Omit<MentorWithScore, 'mentor'> & { mentor?: Maybe<ResolversParentTypes['User']> };
   Query: {};
@@ -296,8 +298,9 @@ export type MenteeResolvers<ContextType = Context, ParentType extends ResolversP
   degree_type?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   highest_education?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  school_year?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   years_experience?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  mentors?: Resolver<Array<Maybe<ResolversTypes['MentorWithScore']>>, ParentType, ContextType>;
+  mentors?: Resolver<Maybe<Array<Maybe<ResolversTypes['MentorWithScore']>>>, ParentType, ContextType>;
   userId?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
@@ -311,6 +314,7 @@ export type MentorResolvers<ContextType = Context, ParentType extends ResolversP
   birthyear?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   degree_type?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   highest_education?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  school_year?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   years_experience?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   userId?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;

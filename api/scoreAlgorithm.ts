@@ -229,6 +229,7 @@ export const scoreAlgorithm = (
     const menteeSkills = mentee.skills.map((x) => x.skill);
     const mentorSkills = new Set(mentor.skills.map((x) => x.skill));
     const menteeSkillPurpose = mentee.skills.map((x) => x.purpose)[0];
+    console.log('menteeSkillPurpose: ', menteeSkillPurpose);
     const mentorSkillPurpose = new Set(mentor.skills.map((x) => x.purpose));
     const menteeSkillRole = mentee.skills.map((x) => x.purpose)[0];
     const mentorSkillRole = new Set(mentor.skills.map((x) => x.purpose));
