@@ -18,12 +18,13 @@ import ListItemText from '@material-ui/core/ListItemText';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import { createStyles } from '@material-ui/core/styles';
 
-// interface ChipData {
-//   key: number;
-//   label: string;
-// }
+export interface SearchInputsProps {
+  setMentorSearch: (e: any) => void;
+}
 
-export const SearchInputs = () => {
+export const SearchInputs: React.FC<SearchInputsProps> = ({
+  setMentorSearch,
+}) => {
   const [servicesSelected, setServicesSelected] = useState<string[]>([]);
   const [titlesSelected, setTitlesSelected] = useState<string[]>([]);
   const [departmentSelected, setDepartmentSelected] = useState<string[]>([]);
@@ -49,13 +50,6 @@ export const SearchInputs = () => {
         return setDepartmentSelected(event.target.value as string[]);
     }
   };
-  // const [chipData, setChipData] = React.useState<ChipData[]>([
-  //   { key: 0, label: 'Angular' },
-  //   { key: 1, label: 'jQuery' },
-  //   { key: 2, label: 'Polymer' },
-  //   { key: 3, label: 'React' },
-  //   { key: 4, label: 'Vue.js' },
-  // ]);
 
   enum FilterFields {
     Services,
@@ -91,24 +85,6 @@ export const SearchInputs = () => {
   const degree = ['Math & Statistics', 'Computer Science', 'Business'];
   const degreeType = ['B.Sc', 'B.S', 'MA'];
 
-  // {chipData.map((data) => {
-  //   return (
-  //     <div key={data.key}>
-  //       <Chip
-  //         label={data.label}
-  //         onDelete={
-  //           data.label === 'React' ? undefined : handleDelete(data)
-  //         }
-  //       />
-  //     </div>
-  //   );
-  // })}
-
-  // const handleDelete = (chipToDelete: ChipData) => () => {
-  //   setChipData((chips) =>
-  //     chips.filter((chip) => chip.key !== chipToDelete.key),
-  //   );
-  // };
   const ITEM_HEIGHT = 48;
   const ITEM_PADDING_TOP = 8;
   const MenuProps = {
@@ -149,6 +125,7 @@ export const SearchInputs = () => {
           <Input
             placeholder="Search"
             id="input-with-icon-adornment"
+            onChange={(e) => setMentorSearch(e.target.value)}
             startAdornment={
               <InputAdornment position="start">
                 <SearchIcon />

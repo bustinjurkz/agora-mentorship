@@ -11,10 +11,7 @@ import { AdminStyle } from './mentor';
 import ErrorMessage from 'components/ErrorMessage';
 import { useGetUserQuery } from 'generated/graphql';
 
-// import { useRouter } from 'next/router';
-
 const MenteeAdmin: React.FC = () => {
-  // const router = useRouter();
   //TODO make dynamic, not 50
   const { data, loading, error } = useGetUserQuery({
     variables: {

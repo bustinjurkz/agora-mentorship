@@ -1,6 +1,7 @@
 import { createMuiTheme } from '@material-ui/core/styles';
 import { Services } from '../api/generated/graphql';
 import styled, { createGlobalStyle } from 'styled-components';
+import Fuse from 'fuse.js';
 
 export const GlobalStyle = createGlobalStyle`
   body {
@@ -75,3 +76,15 @@ export const BackgroundStyle = styled.div<{
   box-shadow: 2px 3px 3px 1px #dbdbdb;
   height: ${(props) => props.fullHeight && '100%'};
 `;
+
+export function applySearchQuery<T>(data: T[], query: string): T[] {
+  if (query === '') return data;
+
+  //TODO append more specific search variables
+  const fuse = new Fuse(data, {
+    keys: ['mentor.mentor.name', 'mentor.university.name'],
+    threshold: 0.3,
+    shouldSort: true,
+  });
+  return fuse.search(query.trim().substring(0, 32)).map((x) => x.item);
+}

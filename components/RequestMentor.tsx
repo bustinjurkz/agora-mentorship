@@ -1,4 +1,4 @@
-import { Mentor, Services } from 'generated/graphql';
+import { MentorWithScore, Services } from 'generated/graphql';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
@@ -12,7 +12,7 @@ import Divider from '@material-ui/core/Divider';
 import RequestConfirmation from './RequestConfirmation';
 
 export interface RequestMentorProps {
-  mentor: Mentor;
+  mentor: MentorWithScore;
   back: () => void;
 }
 
@@ -30,6 +30,7 @@ const RequestMentor: React.FC<RequestMentorProps> = ({ mentor, back }) => {
       setTimes((times) => [...times, time]);
     }
   };
+  const mentorSelected = mentor.mentor?.mentor;
   const renderTime = (timeslot: 'MORNING' | 'AFTERNOON' | 'EVENING') => {
     const morning = ['7:00 AM', '8:00 AM', '9:00 AM', '10:00 AM', '11:00 AM'];
     const afternoon = ['12:00 PM', '1:00 PM', '2:00 PM', '3:00 PM', '4:00 PM'];
@@ -75,9 +76,9 @@ const RequestMentor: React.FC<RequestMentorProps> = ({ mentor, back }) => {
 
         <h1>You've Selected:</h1>
       </div>
-      <MentorCard mentor={mentor} request={true} />
+      <MentorCard mentorWithScore={mentor} request={true} />
       <div className="topic-question">
-        <h2>Which topic do you want to discuss with {mentor.name}?</h2>
+        <h2>Which topic do you want to discuss with {mentorSelected?.name}?</h2>
         <h4 className="select-one">(Select one)</h4>
       </div>
       <FormControl className="select-service" component="fieldset">
