@@ -30,7 +30,7 @@ const FindMentors: React.FC = () => {
     );
   }
   const mentors = data?.userMentors;
-  const sortedMentors = mentors?.slice().sort((a, b) => a!.score! - b!.score!);
+  const sortedMentors = mentors?.slice().sort((a, b) => b!.score! - a!.score!);
   // let filteredMentors: MentorWithScore[] | undefined = undefined;
   const filteredMentors = applySearchQuery(sortedMentors!, mentorSearch);
   console.log('filteredMentors: ', filteredMentors);
