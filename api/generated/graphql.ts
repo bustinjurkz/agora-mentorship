@@ -1,12 +1,29 @@
-import { GraphQLResolveInfo } from 'graphql';
-import { User as UserModel, University as UniversityModel, Majors as MajorsModel, Skills as SkillsModel, Language as LanguageModel } from '@db/client';
+import {
+  GraphQLResolveInfo,
+  GraphQLScalarType,
+  GraphQLScalarTypeConfig,
+} from 'graphql';
+import {
+  User as UserModel,
+  University as UniversityModel,
+  Majors as MajorsModel,
+  Skills as SkillsModel,
+  Language as LanguageModel,
+} from '@db/client';
 import { Context } from '@api/context';
 export type Maybe<T> = T | null;
-export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
+export type Exact<T extends { [key: string]: unknown }> = {
+  [K in keyof T]: T[K];
+};
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> &
+  { [SubKey in K]?: Maybe<T[SubKey]> };
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> &
+  { [SubKey in K]: Maybe<T[SubKey]> };
 export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
-export type RequireFields<T, K extends keyof T> = { [X in Exclude<keyof T, K>]?: T[X] } & { [P in K]-?: NonNullable<T[P]> };
+export type RequireFields<T, K extends keyof T> = {
+  [X in Exclude<keyof T, K>]?: T[X];
+} &
+  { [P in K]-?: NonNullable<T[P]> };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -14,13 +31,28 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  Date: any;
+};
+
+export type Availability = {
+  __typename?: 'Availability';
+  id: Scalars['ID'];
+  time?: Maybe<Array<Maybe<Scalars['Date']>>>;
+  mentorId: Scalars['ID'];
+};
+
+export type CreateMeetingInput = {
+  topic: Services;
+  proposed_times: Array<Scalars['Date']>;
+  menteeId: Scalars['ID'];
+  mentorId: Scalars['ID'];
 };
 
 export enum Family {
   General = 'GENERAL',
   Multimedia = 'MULTIMEDIA',
   Programming = 'PROGRAMMING',
-  Quantitative = 'QUANTITATIVE'
+  Quantitative = 'QUANTITATIVE',
 }
 
 export type Language = {
@@ -39,6 +71,19 @@ export type Majors = {
   major: Scalars['String'];
 };
 
+export type Meeting = {
+  __typename?: 'Meeting';
+  id: Scalars['Int'];
+  topic?: Maybe<Array<Maybe<Services>>>;
+  start_time?: Maybe<Scalars['Date']>;
+  end_time?: Maybe<Scalars['Date']>;
+  cancelled?: Maybe<Scalars['Boolean']>;
+  cancel_reason?: Maybe<Scalars['String']>;
+  proposed_times: Array<Maybe<Proposed_Time>>;
+  menteeId: Scalars['ID'];
+  mentorId: Scalars['ID'];
+};
+
 export type Mentee = {
   __typename?: 'Mentee';
   id?: Maybe<Scalars['ID']>;
@@ -53,6 +98,7 @@ export type Mentee = {
   school_year?: Maybe<Scalars['Int']>;
   years_experience: Scalars['Int'];
   mentors?: Maybe<Array<Maybe<MentorWithScore>>>;
+  meetings?: Maybe<Array<Maybe<Meeting>>>;
   userId?: Maybe<Scalars['ID']>;
 };
 
@@ -70,12 +116,30 @@ export type Mentor = {
   name: Scalars['String'];
   years_experience: Scalars['Int'];
   userId?: Maybe<Scalars['ID']>;
+  meetings?: Maybe<Array<Maybe<Meeting>>>;
+  availabilities?: Maybe<Array<Maybe<Availability>>>;
 };
 
 export type MentorWithScore = {
   __typename?: 'MentorWithScore';
   mentor?: Maybe<User>;
   score?: Maybe<Scalars['Int']>;
+};
+
+export type Mutation = {
+  __typename?: 'Mutation';
+  createMeeting?: Maybe<Scalars['ID']>;
+};
+
+export type MutationCreateMeetingArgs = {
+  input: CreateMeetingInput;
+};
+
+export type Proposed_Time = {
+  __typename?: 'Proposed_Time';
+  id: Scalars['Int'];
+  meeting_id?: Maybe<Scalars['Int']>;
+  time?: Maybe<Array<Maybe<Scalars['Date']>>>;
 };
 
 export type Query = {
@@ -94,11 +158,9 @@ export type Query = {
   languages?: Maybe<Array<Maybe<Language>>>;
 };
 
-
 export type QueryUserArgs = {
   id: Scalars['ID'];
 };
-
 
 export type QueryUserMentorsArgs = {
   id: Scalars['ID'];
@@ -112,12 +174,12 @@ export enum Services {
   ResumeCritique = 'RESUME_CRITIQUE',
   SkillsForSuccess = 'SKILLS_FOR_SUCCESS',
   SuccessAtWork = 'SUCCESS_AT_WORK',
-  WorkLifeBalance = 'WORK_LIFE_BALANCE'
+  WorkLifeBalance = 'WORK_LIFE_BALANCE',
 }
 
 export enum Skill_Type {
   Hard = 'HARD',
-  Soft = 'SOFT'
+  Soft = 'SOFT',
 }
 
 export type Skills = {
@@ -159,10 +221,7 @@ export type User = {
   university?: Maybe<Array<Maybe<University>>>;
 };
 
-
-
 export type ResolverTypeWrapper<T> = Promise<T> | T;
-
 
 export type LegacyStitchingResolver<TResult, TParent, TContext, TArgs> = {
   fragment: string;
@@ -173,7 +232,9 @@ export type NewStitchingResolver<TResult, TParent, TContext, TArgs> = {
   selectionSet: string;
   resolve: ResolverFn<TResult, TParent, TContext, TArgs>;
 };
-export type StitchingResolver<TResult, TParent, TContext, TArgs> = LegacyStitchingResolver<TResult, TParent, TContext, TArgs> | NewStitchingResolver<TResult, TParent, TContext, TArgs>;
+export type StitchingResolver<TResult, TParent, TContext, TArgs> =
+  | LegacyStitchingResolver<TResult, TParent, TContext, TArgs>
+  | NewStitchingResolver<TResult, TParent, TContext, TArgs>;
 export type Resolver<TResult, TParent = {}, TContext = {}, TArgs = {}> =
   | ResolverFn<TResult, TParent, TContext, TArgs>
   | StitchingResolver<TResult, TParent, TContext, TArgs>;
@@ -182,26 +243,42 @@ export type ResolverFn<TResult, TParent, TContext, TArgs> = (
   parent: TParent,
   args: TArgs,
   context: TContext,
-  info: GraphQLResolveInfo
+  info: GraphQLResolveInfo,
 ) => Promise<TResult> | TResult;
 
 export type SubscriptionSubscribeFn<TResult, TParent, TContext, TArgs> = (
   parent: TParent,
   args: TArgs,
   context: TContext,
-  info: GraphQLResolveInfo
+  info: GraphQLResolveInfo,
 ) => AsyncIterator<TResult> | Promise<AsyncIterator<TResult>>;
 
 export type SubscriptionResolveFn<TResult, TParent, TContext, TArgs> = (
   parent: TParent,
   args: TArgs,
   context: TContext,
-  info: GraphQLResolveInfo
+  info: GraphQLResolveInfo,
 ) => TResult | Promise<TResult>;
 
-export interface SubscriptionSubscriberObject<TResult, TKey extends string, TParent, TContext, TArgs> {
-  subscribe: SubscriptionSubscribeFn<{ [key in TKey]: TResult }, TParent, TContext, TArgs>;
-  resolve?: SubscriptionResolveFn<TResult, { [key in TKey]: TResult }, TContext, TArgs>;
+export interface SubscriptionSubscriberObject<
+  TResult,
+  TKey extends string,
+  TParent,
+  TContext,
+  TArgs,
+> {
+  subscribe: SubscriptionSubscribeFn<
+    { [key in TKey]: TResult },
+    TParent,
+    TContext,
+    TArgs
+  >;
+  resolve?: SubscriptionResolveFn<
+    TResult,
+    { [key in TKey]: TResult },
+    TContext,
+    TArgs
+  >;
 }
 
 export interface SubscriptionResolverObject<TResult, TParent, TContext, TArgs> {
@@ -209,70 +286,137 @@ export interface SubscriptionResolverObject<TResult, TParent, TContext, TArgs> {
   resolve: SubscriptionResolveFn<TResult, any, TContext, TArgs>;
 }
 
-export type SubscriptionObject<TResult, TKey extends string, TParent, TContext, TArgs> =
+export type SubscriptionObject<
+  TResult,
+  TKey extends string,
+  TParent,
+  TContext,
+  TArgs,
+> =
   | SubscriptionSubscriberObject<TResult, TKey, TParent, TContext, TArgs>
   | SubscriptionResolverObject<TResult, TParent, TContext, TArgs>;
 
-export type SubscriptionResolver<TResult, TKey extends string, TParent = {}, TContext = {}, TArgs = {}> =
-  | ((...args: any[]) => SubscriptionObject<TResult, TKey, TParent, TContext, TArgs>)
+export type SubscriptionResolver<
+  TResult,
+  TKey extends string,
+  TParent = {},
+  TContext = {},
+  TArgs = {},
+> =
+  | ((
+      ...args: any[]
+    ) => SubscriptionObject<TResult, TKey, TParent, TContext, TArgs>)
   | SubscriptionObject<TResult, TKey, TParent, TContext, TArgs>;
 
 export type TypeResolveFn<TTypes, TParent = {}, TContext = {}> = (
   parent: TParent,
   context: TContext,
-  info: GraphQLResolveInfo
+  info: GraphQLResolveInfo,
 ) => Maybe<TTypes> | Promise<Maybe<TTypes>>;
 
-export type IsTypeOfResolverFn<T = {}, TContext = {}> = (obj: T, context: TContext, info: GraphQLResolveInfo) => boolean | Promise<boolean>;
+export type IsTypeOfResolverFn<T = {}, TContext = {}> = (
+  obj: T,
+  context: TContext,
+  info: GraphQLResolveInfo,
+) => boolean | Promise<boolean>;
 
 export type NextResolverFn<T> = () => Promise<T>;
 
-export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs = {}> = (
+export type DirectiveResolverFn<
+  TResult = {},
+  TParent = {},
+  TContext = {},
+  TArgs = {},
+> = (
   next: NextResolverFn<TResult>,
   parent: TParent,
   args: TArgs,
   context: TContext,
-  info: GraphQLResolveInfo
+  info: GraphQLResolveInfo,
 ) => TResult | Promise<TResult>;
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
+  Availability: ResolverTypeWrapper<Availability>;
+  ID: ResolverTypeWrapper<Scalars['ID']>;
+  CreateMeetingInput: CreateMeetingInput;
+  Date: ResolverTypeWrapper<Scalars['Date']>;
   Family: Family;
   Language: ResolverTypeWrapper<LanguageModel>;
-  ID: ResolverTypeWrapper<Scalars['ID']>;
   String: ResolverTypeWrapper<Scalars['String']>;
   Int: ResolverTypeWrapper<Scalars['Int']>;
   Majors: ResolverTypeWrapper<MajorsModel>;
-  Mentee: ResolverTypeWrapper<Omit<Mentee, 'mentors'> & { mentors?: Maybe<Array<Maybe<ResolversTypes['MentorWithScore']>>> }>;
+  Meeting: ResolverTypeWrapper<Meeting>;
+  Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
+  Mentee: ResolverTypeWrapper<
+    Omit<Mentee, 'mentors'> & {
+      mentors?: Maybe<Array<Maybe<ResolversTypes['MentorWithScore']>>>;
+    }
+  >;
   Mentor: ResolverTypeWrapper<Mentor>;
-  MentorWithScore: ResolverTypeWrapper<Omit<MentorWithScore, 'mentor'> & { mentor?: Maybe<ResolversTypes['User']> }>;
+  MentorWithScore: ResolverTypeWrapper<
+    Omit<MentorWithScore, 'mentor'> & { mentor?: Maybe<ResolversTypes['User']> }
+  >;
+  Mutation: ResolverTypeWrapper<{}>;
+  Proposed_Time: ResolverTypeWrapper<Proposed_Time>;
   Query: ResolverTypeWrapper<{}>;
   Services: Services;
   Skill_Type: Skill_Type;
   Skills: ResolverTypeWrapper<SkillsModel>;
   University: ResolverTypeWrapper<UniversityModel>;
   User: ResolverTypeWrapper<UserModel>;
-  Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
-  Language: LanguageModel;
+  Availability: Availability;
   ID: Scalars['ID'];
+  CreateMeetingInput: CreateMeetingInput;
+  Date: Scalars['Date'];
+  Language: LanguageModel;
   String: Scalars['String'];
   Int: Scalars['Int'];
   Majors: MajorsModel;
-  Mentee: Omit<Mentee, 'mentors'> & { mentors?: Maybe<Array<Maybe<ResolversParentTypes['MentorWithScore']>>> };
+  Meeting: Meeting;
+  Boolean: Scalars['Boolean'];
+  Mentee: Omit<Mentee, 'mentors'> & {
+    mentors?: Maybe<Array<Maybe<ResolversParentTypes['MentorWithScore']>>>;
+  };
   Mentor: Mentor;
-  MentorWithScore: Omit<MentorWithScore, 'mentor'> & { mentor?: Maybe<ResolversParentTypes['User']> };
+  MentorWithScore: Omit<MentorWithScore, 'mentor'> & {
+    mentor?: Maybe<ResolversParentTypes['User']>;
+  };
+  Mutation: {};
+  Proposed_Time: Proposed_Time;
   Query: {};
   Skills: SkillsModel;
   University: UniversityModel;
   User: UserModel;
-  Boolean: Scalars['Boolean'];
 };
 
-export type LanguageResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Language'] = ResolversParentTypes['Language']> = {
+export type AvailabilityResolvers<
+  ContextType = Context,
+  ParentType extends ResolversParentTypes['Availability'] = ResolversParentTypes['Availability'],
+> = {
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  time?: Resolver<
+    Maybe<Array<Maybe<ResolversTypes['Date']>>>,
+    ParentType,
+    ContextType
+  >;
+  mentorId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export interface DateScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['Date'], any> {
+  name: 'Date';
+}
+
+export type LanguageResolvers<
+  ContextType = Context,
+  ParentType extends ResolversParentTypes['Language'] = ResolversParentTypes['Language'],
+> = {
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   continent?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   country?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -281,75 +425,243 @@ export type LanguageResolvers<ContextType = Context, ParentType extends Resolver
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type MajorsResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Majors'] = ResolversParentTypes['Majors']> = {
+export type MajorsResolvers<
+  ContextType = Context,
+  ParentType extends ResolversParentTypes['Majors'] = ResolversParentTypes['Majors'],
+> = {
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   faculty?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   major?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type MenteeResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Mentee'] = ResolversParentTypes['Mentee']> = {
+export type MeetingResolvers<
+  ContextType = Context,
+  ParentType extends ResolversParentTypes['Meeting'] = ResolversParentTypes['Meeting'],
+> = {
+  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  topic?: Resolver<
+    Maybe<Array<Maybe<ResolversTypes['Services']>>>,
+    ParentType,
+    ContextType
+  >;
+  start_time?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
+  end_time?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
+  cancelled?: Resolver<
+    Maybe<ResolversTypes['Boolean']>,
+    ParentType,
+    ContextType
+  >;
+  cancel_reason?: Resolver<
+    Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >;
+  proposed_times?: Resolver<
+    Array<Maybe<ResolversTypes['Proposed_Time']>>,
+    ParentType,
+    ContextType
+  >;
+  menteeId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  mentorId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type MenteeResolvers<
+  ContextType = Context,
+  ParentType extends ResolversParentTypes['Mentee'] = ResolversParentTypes['Mentee'],
+> = {
   id?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
   bio?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  job_title_primary?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  job_title_secondary?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  preferred_services?: Resolver<Array<Maybe<ResolversTypes['Services']>>, ParentType, ContextType>;
+  job_title_primary?: Resolver<
+    Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >;
+  job_title_secondary?: Resolver<
+    Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >;
+  preferred_services?: Resolver<
+    Array<Maybe<ResolversTypes['Services']>>,
+    ParentType,
+    ContextType
+  >;
   birthyear?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  degree_type?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  degree_type?: Resolver<
+    Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >;
   highest_education?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   school_year?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   years_experience?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  mentors?: Resolver<Maybe<Array<Maybe<ResolversTypes['MentorWithScore']>>>, ParentType, ContextType>;
+  mentors?: Resolver<
+    Maybe<Array<Maybe<ResolversTypes['MentorWithScore']>>>,
+    ParentType,
+    ContextType
+  >;
+  meetings?: Resolver<
+    Maybe<Array<Maybe<ResolversTypes['Meeting']>>>,
+    ParentType,
+    ContextType
+  >;
   userId?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type MentorResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Mentor'] = ResolversParentTypes['Mentor']> = {
+export type MentorResolvers<
+  ContextType = Context,
+  ParentType extends ResolversParentTypes['Mentor'] = ResolversParentTypes['Mentor'],
+> = {
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   bio?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  job_title_primary?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  job_title_secondary?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  preferred_services?: Resolver<Array<Maybe<ResolversTypes['Services']>>, ParentType, ContextType>;
+  job_title_primary?: Resolver<
+    ResolversTypes['String'],
+    ParentType,
+    ContextType
+  >;
+  job_title_secondary?: Resolver<
+    Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >;
+  preferred_services?: Resolver<
+    Array<Maybe<ResolversTypes['Services']>>,
+    ParentType,
+    ContextType
+  >;
   birthyear?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  degree_type?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  degree_type?: Resolver<
+    Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >;
   highest_education?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   school_year?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   years_experience?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   userId?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
+  meetings?: Resolver<
+    Maybe<Array<Maybe<ResolversTypes['Meeting']>>>,
+    ParentType,
+    ContextType
+  >;
+  availabilities?: Resolver<
+    Maybe<Array<Maybe<ResolversTypes['Availability']>>>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type MentorWithScoreResolvers<ContextType = Context, ParentType extends ResolversParentTypes['MentorWithScore'] = ResolversParentTypes['MentorWithScore']> = {
+export type MentorWithScoreResolvers<
+  ContextType = Context,
+  ParentType extends ResolversParentTypes['MentorWithScore'] = ResolversParentTypes['MentorWithScore'],
+> = {
   mentor?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
   score?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type QueryResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
-  user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryUserArgs, 'id'>>;
-  userMentors?: Resolver<Maybe<Array<Maybe<ResolversTypes['MentorWithScore']>>>, ParentType, ContextType, RequireFields<QueryUserMentorsArgs, 'id'>>;
-  universities?: Resolver<Maybe<Array<Maybe<ResolversTypes['University']>>>, ParentType, ContextType>;
-  majors?: Resolver<Maybe<Array<Maybe<ResolversTypes['Majors']>>>, ParentType, ContextType>;
-  skills?: Resolver<Maybe<Array<Maybe<ResolversTypes['Skills']>>>, ParentType, ContextType>;
-  languages?: Resolver<Maybe<Array<Maybe<ResolversTypes['Language']>>>, ParentType, ContextType>;
+export type MutationResolvers<
+  ContextType = Context,
+  ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation'],
+> = {
+  createMeeting?: Resolver<
+    Maybe<ResolversTypes['ID']>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationCreateMeetingArgs, 'input'>
+  >;
 };
 
-export type SkillsResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Skills'] = ResolversParentTypes['Skills']> = {
+export type Proposed_TimeResolvers<
+  ContextType = Context,
+  ParentType extends ResolversParentTypes['Proposed_Time'] = ResolversParentTypes['Proposed_Time'],
+> = {
+  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  meeting_id?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  time?: Resolver<
+    Maybe<Array<Maybe<ResolversTypes['Date']>>>,
+    ParentType,
+    ContextType
+  >;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type QueryResolvers<
+  ContextType = Context,
+  ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query'],
+> = {
+  user?: Resolver<
+    Maybe<ResolversTypes['User']>,
+    ParentType,
+    ContextType,
+    RequireFields<QueryUserArgs, 'id'>
+  >;
+  userMentors?: Resolver<
+    Maybe<Array<Maybe<ResolversTypes['MentorWithScore']>>>,
+    ParentType,
+    ContextType,
+    RequireFields<QueryUserMentorsArgs, 'id'>
+  >;
+  universities?: Resolver<
+    Maybe<Array<Maybe<ResolversTypes['University']>>>,
+    ParentType,
+    ContextType
+  >;
+  majors?: Resolver<
+    Maybe<Array<Maybe<ResolversTypes['Majors']>>>,
+    ParentType,
+    ContextType
+  >;
+  skills?: Resolver<
+    Maybe<Array<Maybe<ResolversTypes['Skills']>>>,
+    ParentType,
+    ContextType
+  >;
+  languages?: Resolver<
+    Maybe<Array<Maybe<ResolversTypes['Language']>>>,
+    ParentType,
+    ContextType
+  >;
+};
+
+export type SkillsResolvers<
+  ContextType = Context,
+  ParentType extends ResolversParentTypes['Skills'] = ResolversParentTypes['Skills'],
+> = {
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   family?: Resolver<ResolversTypes['Family'], ParentType, ContextType>;
-  purpose?: Resolver<Array<Maybe<ResolversTypes['String']>>, ParentType, ContextType>;
-  role?: Resolver<Array<Maybe<ResolversTypes['String']>>, ParentType, ContextType>;
+  purpose?: Resolver<
+    Array<Maybe<ResolversTypes['String']>>,
+    ParentType,
+    ContextType
+  >;
+  role?: Resolver<
+    Array<Maybe<ResolversTypes['String']>>,
+    ParentType,
+    ContextType
+  >;
   skill?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   skill_type?: Resolver<ResolversTypes['Skill_Type'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type UniversityResolvers<ContextType = Context, ParentType extends ResolversParentTypes['University'] = ResolversParentTypes['University']> = {
+export type UniversityResolvers<
+  ContextType = Context,
+  ParentType extends ResolversParentTypes['University'] = ResolversParentTypes['University'],
+> = {
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   category?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  city?: Resolver<Array<Maybe<ResolversTypes['String']>>, ParentType, ContextType>;
+  city?: Resolver<
+    Array<Maybe<ResolversTypes['String']>>,
+    ParentType,
+    ContextType
+  >;
   country?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   language?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -362,31 +674,54 @@ export type UniversityResolvers<ContextType = Context, ParentType extends Resolv
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type UserResolvers<ContextType = Context, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
+export type UserResolvers<
+  ContextType = Context,
+  ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User'],
+> = {
   id?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
   email?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   password?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   mentee?: Resolver<Maybe<ResolversTypes['Mentee']>, ParentType, ContextType>;
   mentor?: Resolver<Maybe<ResolversTypes['Mentor']>, ParentType, ContextType>;
-  language?: Resolver<Maybe<Array<Maybe<ResolversTypes['Language']>>>, ParentType, ContextType>;
-  majors?: Resolver<Maybe<Array<Maybe<ResolversTypes['Majors']>>>, ParentType, ContextType>;
-  skills?: Resolver<Maybe<Array<Maybe<ResolversTypes['Skills']>>>, ParentType, ContextType>;
-  university?: Resolver<Maybe<Array<Maybe<ResolversTypes['University']>>>, ParentType, ContextType>;
+  language?: Resolver<
+    Maybe<Array<Maybe<ResolversTypes['Language']>>>,
+    ParentType,
+    ContextType
+  >;
+  majors?: Resolver<
+    Maybe<Array<Maybe<ResolversTypes['Majors']>>>,
+    ParentType,
+    ContextType
+  >;
+  skills?: Resolver<
+    Maybe<Array<Maybe<ResolversTypes['Skills']>>>,
+    ParentType,
+    ContextType
+  >;
+  university?: Resolver<
+    Maybe<Array<Maybe<ResolversTypes['University']>>>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type Resolvers<ContextType = Context> = {
+  Availability?: AvailabilityResolvers<ContextType>;
+  Date?: GraphQLScalarType;
   Language?: LanguageResolvers<ContextType>;
   Majors?: MajorsResolvers<ContextType>;
+  Meeting?: MeetingResolvers<ContextType>;
   Mentee?: MenteeResolvers<ContextType>;
   Mentor?: MentorResolvers<ContextType>;
   MentorWithScore?: MentorWithScoreResolvers<ContextType>;
+  Mutation?: MutationResolvers<ContextType>;
+  Proposed_Time?: Proposed_TimeResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Skills?: SkillsResolvers<ContextType>;
   University?: UniversityResolvers<ContextType>;
   User?: UserResolvers<ContextType>;
 };
-
 
 /**
  * @deprecated

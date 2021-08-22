@@ -24,7 +24,7 @@
       "@schema": ["api/generated/graphql.ts"],
       // "@api/context": ["api/generated/graphql.ts"],
       "@api/*": ["api/*"],
-      "@db/*": ["generated/prisma/*"]
+      "@db/*": ["node_modules/.prisma/*"]
     }
   },
   "exclude": ["node_modules"],

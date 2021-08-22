@@ -106,35 +106,35 @@ CREATE TABLE "Language" (
 );
 
 -- CreateTable
-CREATE TABLE "UserUniversity" (
-    "userId" INTEGER NOT NULL,
-    "universityId" INTEGER NOT NULL,
+CREATE TABLE "Meeting" (
+    "id" SERIAL NOT NULL,
+    "topic" "Services" NOT NULL,
+    "start_time" TIMESTAMP(3),
+    "end_time" TIMESTAMP(3),
+    "cancelled" BOOLEAN,
+    "cancel_reason" TEXT,
+    "menteeId" INTEGER NOT NULL,
+    "mentorId" INTEGER NOT NULL,
 
-    PRIMARY KEY ("userId","universityId")
+    PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "UserLanguage" (
-    "userId" INTEGER NOT NULL,
-    "languageId" INTEGER NOT NULL,
+CREATE TABLE "Proposed_Time" (
+    "id" SERIAL NOT NULL,
+    "time" TIMESTAMP(3) NOT NULL,
+    "meetingId" INTEGER NOT NULL,
 
-    PRIMARY KEY ("userId","languageId")
+    PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "UserMajor" (
-    "userId" INTEGER NOT NULL,
-    "majorId" INTEGER NOT NULL,
+CREATE TABLE "Availability" (
+    "id" SERIAL NOT NULL,
+    "time" TIMESTAMP(3) NOT NULL,
+    "mentorId" INTEGER NOT NULL,
 
-    PRIMARY KEY ("userId","majorId")
-);
-
--- CreateTable
-CREATE TABLE "UserSkills" (
-    "userId" INTEGER NOT NULL,
-    "skillId" INTEGER NOT NULL,
-
-    PRIMARY KEY ("userId","skillId")
+    PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -225,6 +225,30 @@ CREATE TABLE "MajorSimilarity" (
     PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "_LanguageToUser" (
+    "A" INTEGER NOT NULL,
+    "B" INTEGER NOT NULL
+);
+
+-- CreateTable
+CREATE TABLE "_MajorsToUser" (
+    "A" INTEGER NOT NULL,
+    "B" INTEGER NOT NULL
+);
+
+-- CreateTable
+CREATE TABLE "_SkillsToUser" (
+    "A" INTEGER NOT NULL,
+    "B" INTEGER NOT NULL
+);
+
+-- CreateTable
+CREATE TABLE "_UniversityToUser" (
+    "A" INTEGER NOT NULL,
+    "B" INTEGER NOT NULL
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "Mentor.userId_unique" ON "Mentor"("userId");
 
@@ -232,10 +256,40 @@ CREATE UNIQUE INDEX "Mentor.userId_unique" ON "Mentor"("userId");
 CREATE UNIQUE INDEX "Mentee.userId_unique" ON "Mentee"("userId");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "University.name_unique" ON "University"("name");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "Majors.major_unique" ON "Majors"("major");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "Skills.skill_unique" ON "Skills"("skill");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "Language.language_unique" ON "Language"("language");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "_LanguageToUser_AB_unique" ON "_LanguageToUser"("A", "B");
+
+-- CreateIndex
+CREATE INDEX "_LanguageToUser_B_index" ON "_LanguageToUser"("B");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "_MajorsToUser_AB_unique" ON "_MajorsToUser"("A", "B");
+
+-- CreateIndex
+CREATE INDEX "_MajorsToUser_B_index" ON "_MajorsToUser"("B");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "_SkillsToUser_AB_unique" ON "_SkillsToUser"("A", "B");
+
+-- CreateIndex
+CREATE INDEX "_SkillsToUser_B_index" ON "_SkillsToUser"("B");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "_UniversityToUser_AB_unique" ON "_UniversityToUser"("A", "B");
+
+-- CreateIndex
+CREATE INDEX "_UniversityToUser_B_index" ON "_UniversityToUser"("B");
 
 -- AddForeignKey
 ALTER TABLE "Mentor" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -244,25 +298,37 @@ ALTER TABLE "Mentor" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELET
 ALTER TABLE "Mentee" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "UserUniversity" ADD FOREIGN KEY ("universityId") REFERENCES "University"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Meeting" ADD FOREIGN KEY ("menteeId") REFERENCES "Mentee"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "UserUniversity" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Meeting" ADD FOREIGN KEY ("mentorId") REFERENCES "Mentor"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "UserLanguage" ADD FOREIGN KEY ("languageId") REFERENCES "Language"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Proposed_Time" ADD FOREIGN KEY ("meetingId") REFERENCES "Meeting"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "UserLanguage" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Availability" ADD FOREIGN KEY ("mentorId") REFERENCES "Mentor"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "UserMajor" ADD FOREIGN KEY ("majorId") REFERENCES "Majors"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "_LanguageToUser" ADD FOREIGN KEY ("A") REFERENCES "Language"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "UserMajor" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "_LanguageToUser" ADD FOREIGN KEY ("B") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "UserSkills" ADD FOREIGN KEY ("skillId") REFERENCES "Skills"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "_MajorsToUser" ADD FOREIGN KEY ("A") REFERENCES "Majors"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "UserSkills" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "_MajorsToUser" ADD FOREIGN KEY ("B") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "_SkillsToUser" ADD FOREIGN KEY ("A") REFERENCES "Skills"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "_SkillsToUser" ADD FOREIGN KEY ("B") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "_UniversityToUser" ADD FOREIGN KEY ("A") REFERENCES "University"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "_UniversityToUser" ADD FOREIGN KEY ("B") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;

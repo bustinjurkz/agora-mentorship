@@ -42,6 +42,11 @@ export const users = [
       birthyear: 1993,
       highest_education: 4,
       degree_type: 'B.SC',
+      availability: [
+        '2021-08-16T14:00:00.000Z',
+        '2021-08-16T09:00:00.000Z',
+        '2021-08-16T12:00:00.000Z',
+      ],
     },
     skills: ['Leadership', 'Market Research', 'Problem-solving'],
     university: ['Université de Montréal'],
@@ -51,6 +56,7 @@ export const users = [
   {
     email: 'atinderbharaj@gmail.com',
     password: '3333',
+
     skills: ['Objective-C', 'NoSQL', 'Node.js'],
     mentor: {
       name: 'Atinder Bharaj',
@@ -59,6 +65,11 @@ export const users = [
       preferred_services: [
         Services.RESUME_CRITIQUE,
         Services.SKILLS_FOR_SUCCESS,
+      ],
+      availability: [
+        '2021-08-16T15:00:00.000Z',
+        '2021-08-16T16:00:00.000Z',
+        '2021-08-16T09:00:00.000Z',
       ],
       school_year: 2017,
       birthyear: 1993,

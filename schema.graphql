@@ -1,3 +1,5 @@
+scalar Date
+
 enum Family {
   GENERAL
   MULTIMEDIA
@@ -46,6 +48,7 @@ type Mentee {
   school_year: Int
   years_experience: Int!
   mentors: [MentorWithScore]
+  meetings: [Meeting]
   userId: ID
 }
 
@@ -67,6 +70,32 @@ type Mentor {
   name: String!
   years_experience: Int!
   userId: ID
+  meetings: [Meeting]
+  availabilities: [Availability]
+}
+
+type Meeting {
+  id: Int!
+  topic: [Services]
+  start_time: Date
+  end_time: Date
+  cancelled: Boolean
+  cancel_reason: String
+  proposed_times: [Proposed_Time]!
+  menteeId: ID!
+  mentorId: ID!
+}
+
+type Proposed_Time {
+  id: Int!
+  meeting_id: Int
+  time: [Date]
+}
+
+type Availability {
+  id: ID!
+  time: [Date]
+  mentorId: ID!
 }
 
 type Language {
@@ -125,4 +154,18 @@ type Query {
 
   "Find all languages"
   languages: [Language]
+}
+
+# "Generates the calendar from the input data and sends it forward to the user defined email address."
+# calendarSend(input: CalendarSendInput!): Boolean!
+
+type Mutation {
+  createMeeting(input: CreateMeetingInput!): ID
+}
+
+input CreateMeetingInput {
+  topic: Services!
+  proposed_times: [Date!]! #2021-08-16T14:00:00.000
+  menteeId: ID!
+  mentorId: ID!
 }
