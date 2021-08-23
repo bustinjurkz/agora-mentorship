@@ -1,4 +1,4 @@
-import { createMuiTheme } from '@material-ui/core/styles';
+import { createTheme } from '@material-ui/core/styles';
 import { Services } from '../api/generated/graphql';
 import styled, { createGlobalStyle } from 'styled-components';
 import Fuse from 'fuse.js';
@@ -34,7 +34,7 @@ export const theme = {
   lightGrey: '#b3b3b3',
 };
 
-export const MuiTheme = createMuiTheme({
+export const MuiTheme = createTheme({
   typography: {
     fontFamily: `"Rubik",sans-serif;`,
   },

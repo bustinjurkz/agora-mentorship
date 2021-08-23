@@ -33,7 +33,7 @@ export const Query: QueryResolvers = {
 
     // Fetches all mentors
     const mentors = await ctx.prisma.user.findMany({
-      where: { mentor: null },
+      where: { mentee: null },
       include: {
         language: true,
         majors: true,

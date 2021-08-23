@@ -15,7 +15,7 @@ const MenteeAdmin: React.FC = () => {
   //TODO make dynamic, not 50
   const { data, loading, error } = useGetUserQuery({
     variables: {
-      input: '50',
+      input: '15',
     },
   });
   if (loading) {

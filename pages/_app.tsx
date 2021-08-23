@@ -11,6 +11,8 @@ import Navbar from 'components/Navbar';
 import Layout from 'components/Layout';
 import Footer from 'components/Footer';
 import { GlobalStyle, MuiTheme, theme } from 'components/helperFunctions';
+import MuiPickersUtilsProvider from '@material-ui/pickers/MuiPickersUtilsProvider';
+import MomentUtils from '@date-io/moment';
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
@@ -28,16 +30,17 @@ export default function App({ Component, pageProps }: AppProps) {
               rel="stylesheet"
             />
           </Helmet>
-
-          <ReduxProvider store={store}>
-            <ApolloProvider client={client}>
-              <Navbar />
-              <Layout>
-                <Component {...pageProps} />
-                <Footer />
-              </Layout>
-            </ApolloProvider>
-          </ReduxProvider>
+          <MuiPickersUtilsProvider utils={MomentUtils}>
+            <ReduxProvider store={store}>
+              <ApolloProvider client={client}>
+                <Navbar />
+                <Layout>
+                  <Component {...pageProps} />
+                  <Footer />
+                </Layout>
+              </ApolloProvider>
+            </ReduxProvider>
+          </MuiPickersUtilsProvider>
         </ThemeProvider>
       </MuiThemeProvider>
     </>

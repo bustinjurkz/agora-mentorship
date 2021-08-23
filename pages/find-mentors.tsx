@@ -13,7 +13,7 @@ const FindMentors: React.FC = () => {
   const [mentorSearch, setMentorSearch] = useState('');
   const { data, loading, error } = useGetUserMentorsQuery({
     variables: {
-      input: '50',
+      input: '15',
     },
   });
   const [mentorRequested, setMentorRequested] = useState<MentorWithScore>();
@@ -31,9 +31,7 @@ const FindMentors: React.FC = () => {
   }
   const mentors = data?.userMentors;
   const sortedMentors = mentors?.slice().sort((a, b) => b!.score! - a!.score!);
-  // let filteredMentors: MentorWithScore[] | undefined = undefined;
   const filteredMentors = applySearchQuery(sortedMentors!, mentorSearch);
-  console.log('filteredMentors: ', filteredMentors);
 
   return (
     <FindMentorsStyle>
