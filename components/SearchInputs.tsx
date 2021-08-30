@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import FilterAltIcon from '@material-ui/icons/FilterList';
 import Button from '@material-ui/core/Button/Button';
-import { BackgroundStyle } from './helperFunctions';
+import { BackgroundStyle } from './utils';
 import Collapse from '@material-ui/core/Collapse/Collapse';
 import FormControl from '@material-ui/core/FormControl';
 import Input from '@material-ui/core/Input/Input';

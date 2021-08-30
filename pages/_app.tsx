@@ -10,9 +10,9 @@ import { client } from '../client';
 import Navbar from 'components/Navbar';
 import Layout from 'components/Layout';
 import Footer from 'components/Footer';
-import { GlobalStyle, MuiTheme, theme } from 'components/helperFunctions';
+import { GlobalStyle, MuiTheme, theme } from 'components/utils';
 import MuiPickersUtilsProvider from '@material-ui/pickers/MuiPickersUtilsProvider';
-import MomentUtils from '@date-io/moment';
+import DateFnsUtils from '@date-io/date-fns';
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
@@ -30,7 +30,7 @@ export default function App({ Component, pageProps }: AppProps) {
               rel="stylesheet"
             />
           </Helmet>
-          <MuiPickersUtilsProvider utils={MomentUtils}>
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <ReduxProvider store={store}>
               <ApolloProvider client={client}>
                 <Navbar />

@@ -1,7 +1,7 @@
 import { MentorWithScore, Services } from 'generated/graphql';
 import React from 'react';
 import styled from 'styled-components';
-import { BackgroundStyle, servicePrettier } from './helperFunctions';
+import { BackgroundStyle, servicePrettier } from './utils';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import WorkIcon from '@material-ui/icons/Work';
 import SchoolIcon from '@material-ui/icons/School';

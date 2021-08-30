@@ -9,7 +9,12 @@ export const Query: QueryResolvers = {
         language: true,
         majors: true,
         mentee: true,
-        mentor: true,
+        mentor: {
+          include: {
+            availability: true,
+            meetings: true,
+          },
+        },
         skills: true,
         university: true,
       },
@@ -38,7 +43,12 @@ export const Query: QueryResolvers = {
         language: true,
         majors: true,
         mentee: true,
-        mentor: true,
+        mentor: {
+          include: {
+            availability: true,
+            meetings: true,
+          },
+        },
         skills: true,
         university: true,
       },

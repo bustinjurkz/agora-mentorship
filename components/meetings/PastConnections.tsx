@@ -1,7 +1,7 @@
 import Button from '@material-ui/core/Button/Button';
 import React from 'react';
 import styled from 'styled-components';
-import { BackgroundStyle } from '../helperFunctions';
+import { BackgroundStyle } from '../utils';
 import { PastConnectionsCard } from './PastConnectionCard';
 
 const sampleData = [

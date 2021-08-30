@@ -6,7 +6,7 @@ import MailIcon from '@material-ui/icons/Mail';
 import HelpIcon from '@material-ui/icons/Help';
 import SettingsIcon from '@material-ui/icons/Settings';
 import Divider from '@material-ui/core/Divider';
-import { BackgroundStyle } from './helperFunctions';
+import { BackgroundStyle } from './utils';
 import { Mentee } from 'generated/graphql';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import { useRouter } from 'next/dist/client/router';

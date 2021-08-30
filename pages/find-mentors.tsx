@@ -7,7 +7,7 @@ import { SearchInputs } from 'components/SearchInputs';
 import MentorCard from 'components/MentorCard';
 import RequestMentor from 'components/RequestMentor';
 import ErrorMessage from 'components/ErrorMessage';
-import { applySearchQuery } from 'components/helperFunctions';
+import { applySearchQuery } from 'components/utils';
 
 const FindMentors: React.FC = () => {
   const [mentorSearch, setMentorSearch] = useState('');

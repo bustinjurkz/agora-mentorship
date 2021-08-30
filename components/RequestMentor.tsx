@@ -11,6 +11,7 @@ import Radio from '@material-ui/core/Radio';
 import Divider from '@material-ui/core/Divider';
 import RequestConfirmation from './RequestConfirmation';
 import TimeSelect from './TimeSelect';
+import { isEqual } from 'date-fns';
 
 export interface RequestMentorProps {
   mentor: MentorWithScore;
@@ -23,10 +24,12 @@ const RequestMentor: React.FC<RequestMentorProps> = ({ mentor, back }) => {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTopic((event.target as HTMLInputElement).value as Services);
   };
-  const [times, setTimes] = useState(['']);
-  const handleSetTime = (time: string) => {
-    if (times.some((timeAdded) => time === timeAdded)) {
-      setTimes((times) => [...times.filter((timeAdded) => timeAdded !== time)]);
+  const [times, setTimes] = useState<Date[]>([]);
+  const handleSetTime = (time: Date) => {
+    if (times.some((timeAdded) => isEqual(time, timeAdded))) {
+      setTimes((times) => [
+        ...times.filter((timeAdded) => !isEqual(time, timeAdded)),
+      ]);
     } else {
       setTimes((times) => [...times, time]);
     }
@@ -83,10 +86,14 @@ const RequestMentor: React.FC<RequestMentorProps> = ({ mentor, back }) => {
         </RadioGroup>
       </FormControl>
       <Divider className="divider" />
-      <TimeSelect handleSetTime={handleSetTime} times={times} />
+      <TimeSelect
+        handleSetTime={handleSetTime}
+        times={times}
+        mentor={mentorSelected!}
+      />
       <Button
         variant="contained"
-        disabled={times.length < 4 || !topic}
+        disabled={times.length < 3 || !topic}
         disableElevation
         className="finish"
         onClick={() => setFinish(true)}

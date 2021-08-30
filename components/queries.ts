@@ -23,6 +23,14 @@ gql`
         highest_education
         name
         years_experience
+        availability {
+          id
+          time
+        }
+        meetings {
+          id
+          start_time
+        }
       }
       mentee {
         id
@@ -91,6 +99,14 @@ gql`
           highest_education
           name
           years_experience
+          availability {
+            id
+            time
+          }
+          meetings {
+            id
+            start_time
+          }
         }
 
         majors {

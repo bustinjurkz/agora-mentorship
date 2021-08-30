@@ -6,7 +6,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import { Services } from 'generated/graphql';
 import React from 'react';
 import styled from 'styled-components';
-import { servicePrettier } from './helperFunctions';
+import { servicePrettier } from './utils';
 
 export interface RequestConfirmationProps {
   finish: boolean;

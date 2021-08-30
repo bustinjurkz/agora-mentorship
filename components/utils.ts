@@ -40,6 +40,11 @@ export const MuiTheme = createTheme({
   },
 });
 
+export const parseDate = (selectedDate: Date, hour: number) => {
+  const adjustedHourDate = new Date(selectedDate.setHours(hour, 0));
+  return adjustedHourDate;
+};
+
 export const servicePrettier = (service: Services) => {
   let prettyService;
   switch (service) {

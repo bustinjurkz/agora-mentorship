@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { useGetUserQuery } from 'generated/graphql';
 import Loading from 'components/Loading';
 import ProfileDashboard from 'components/ProfileDashboard';
-import { BackgroundStyle } from 'components/helperFunctions';
+import { BackgroundStyle } from 'components/utils';
 import MeetingsCalendar from 'components/meetings/MeetingsCalendar';
 import UpcomingMeetings from 'components/meetings/UpcomingMeetings';
 import PendingMeetings from 'components/meetings/PendingMeetings';

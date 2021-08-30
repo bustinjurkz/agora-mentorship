@@ -71,7 +71,7 @@ type Mentor {
   years_experience: Int!
   userId: ID
   meetings: [Meeting]
-  availabilities: [Availability]
+  availability: [Availability]
 }
 
 type Meeting {
@@ -89,12 +89,12 @@ type Meeting {
 type Proposed_Time {
   id: Int!
   meeting_id: Int
-  time: [Date]
+  time: Date
 }
 
 type Availability {
   id: ID!
-  time: [Date]
+  time: Date
   mentorId: ID!
 }
 
