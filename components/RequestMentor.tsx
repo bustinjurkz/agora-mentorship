@@ -98,13 +98,14 @@ const RequestMentor: React.FC<RequestMentorProps> = ({ mentor, back }) => {
         className="finish"
         onClick={() => setFinish(true)}
       >
-        Finish
+        Book Mentor
       </Button>
       <RequestConfirmation
         finish={finish}
         setFinish={setFinish}
         topic={topic!}
         times={times}
+        mentor={mentor}
       />
     </RequestMentorStyle>
   );

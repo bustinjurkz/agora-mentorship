@@ -214,6 +214,16 @@ export type User = {
   university?: Maybe<Array<Maybe<University>>>;
 };
 
+export type CreateMeetingMutationVariables = Exact<{
+  input: CreateMeetingInput;
+}>;
+
+
+export type CreateMeetingMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'createMeeting'>
+);
+
 export type GetUserQueryVariables = Exact<{
   input: Scalars['ID'];
 }>;
@@ -294,6 +304,36 @@ export type GetUserMentorsQuery = (
 );
 
 
+export const CreateMeetingDocument = gql`
+    mutation CreateMeeting($input: CreateMeetingInput!) {
+  createMeeting(input: $input)
+}
+    `;
+export type CreateMeetingMutationFn = Apollo.MutationFunction<CreateMeetingMutation, CreateMeetingMutationVariables>;
+
+/**
+ * __useCreateMeetingMutation__
+ *
+ * To run a mutation, you first call `useCreateMeetingMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateMeetingMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createMeetingMutation, { data, loading, error }] = useCreateMeetingMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateMeetingMutation(baseOptions?: Apollo.MutationHookOptions<CreateMeetingMutation, CreateMeetingMutationVariables>) {
+        return Apollo.useMutation<CreateMeetingMutation, CreateMeetingMutationVariables>(CreateMeetingDocument, baseOptions);
+      }
+export type CreateMeetingMutationHookResult = ReturnType<typeof useCreateMeetingMutation>;
+export type CreateMeetingMutationResult = Apollo.MutationResult<CreateMeetingMutation>;
+export type CreateMeetingMutationOptions = Apollo.BaseMutationOptions<CreateMeetingMutation, CreateMeetingMutationVariables>;
 export const GetUserDocument = gql`
     query GetUser($input: ID!) {
   user(id: $input) {
