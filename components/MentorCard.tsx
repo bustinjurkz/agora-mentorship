@@ -1,7 +1,7 @@
-import { Mentor, MentorWithScore, Services } from 'generated/graphql';
+import { MentorWithScore, Services } from 'generated/graphql';
 import React from 'react';
 import styled from 'styled-components';
-import { BackgroundStyle, servicePrettier } from './helperFunctions';
+import { BackgroundStyle, servicePrettier } from './utils';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import WorkIcon from '@material-ui/icons/Work';
 import SchoolIcon from '@material-ui/icons/School';
@@ -13,7 +13,7 @@ import ForumIcon from '@material-ui/icons/Forum';
 export interface MentorCardProps {
   mentorWithScore: MentorWithScore;
   request?: boolean;
-  setMentorRequested?: (x: Mentor) => void;
+  setMentorRequested?: (x: MentorWithScore) => void;
 }
 const MentorCard: React.FC<MentorCardProps> = ({
   mentorWithScore,
@@ -77,7 +77,9 @@ const MentorCard: React.FC<MentorCardProps> = ({
             <Button
               variant="outlined"
               className="button"
-              onClick={() => setMentorRequested && setMentorRequested(mentor)}
+              onClick={() =>
+                setMentorRequested && setMentorRequested(mentorWithScore)
+              }
               startIcon={<MeetingRoomIcon className="meeting-icon" />}
             >
               Request Mentor

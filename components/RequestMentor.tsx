@@ -1,4 +1,4 @@
-import { Mentor, Services } from 'generated/graphql';
+import { MentorWithScore, Services } from 'generated/graphql';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
@@ -10,9 +10,11 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Radio from '@material-ui/core/Radio';
 import Divider from '@material-ui/core/Divider';
 import RequestConfirmation from './RequestConfirmation';
+import TimeSelect from './TimeSelect';
+import { isEqual } from 'date-fns';
 
 export interface RequestMentorProps {
-  mentor: Mentor;
+  mentor: MentorWithScore;
   back: () => void;
 }
 
@@ -22,46 +24,30 @@ const RequestMentor: React.FC<RequestMentorProps> = ({ mentor, back }) => {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTopic((event.target as HTMLInputElement).value as Services);
   };
-  const [times, setTimes] = useState(['']);
-  const handleSetTime = (time: string) => {
-    if (times.some((timeAdded) => time === timeAdded)) {
-      setTimes((times) => [...times.filter((timeAdded) => timeAdded !== time)]);
+  const [times, setTimes] = useState<Date[]>([]);
+  const handleSetTime = (time: Date) => {
+    if (times.some((timeAdded) => isEqual(time, timeAdded))) {
+      setTimes((times) => [
+        ...times.filter((timeAdded) => !isEqual(time, timeAdded)),
+      ]);
     } else {
       setTimes((times) => [...times, time]);
     }
   };
-  const renderTime = (timeslot: 'MORNING' | 'AFTERNOON' | 'EVENING') => {
-    const morning = ['7:00 AM', '8:00 AM', '9:00 AM', '10:00 AM', '11:00 AM'];
-    const afternoon = ['12:00 PM', '1:00 PM', '2:00 PM', '3:00 PM', '4:00 PM'];
-    const evening = ['5:00 PM', '6:00 PM', '7:00 PM', '8:00 PM', '9:00 PM'];
 
-    const renderButton = (t: string, i: number) => {
-      return (
-        <Button
-          key={i}
-          className="container"
-          onClick={() => handleSetTime(t)}
-          value={t}
-          style={{
-            background: times.some((timeAdded) => timeAdded === t)
-              ? '#1a5336'
-              : '',
-            color: times.some((timeAdded) => timeAdded === t) ? 'white' : '',
-          }}
-        >
-          {t}
-        </Button>
-      );
-    };
-    switch (timeslot) {
-      case 'MORNING':
-        return morning.map((m, i: number) => renderButton(m, i));
-      case 'AFTERNOON':
-        return afternoon.map((a, i: number) => renderButton(a, i));
-      case 'EVENING':
-        return evening.map((e, i: number) => renderButton(e, i));
-    }
-  };
+  const mentorSelected = mentor.mentor?.mentor;
+
+  const services = [
+    { value: Services.CareerDevelopment, label: 'Career Development' },
+    { value: Services.CareerPlanning, label: 'Career Planning' },
+    { value: Services.General, label: 'General' },
+    { value: Services.MockInterview, label: 'Mock Interview' },
+    { value: Services.ResumeCritique, label: 'Resume/CV Critique' },
+    { value: Services.SkillsForSuccess, label: 'Skills for Success' },
+    { value: Services.SuccessAtWork, label: 'Success at Work' },
+    { value: Services.WorkLifeBalance, label: 'Work-Life Balance' },
+  ];
+
   return (
     <RequestMentorStyle>
       <div className="header">
@@ -75,9 +61,9 @@ const RequestMentor: React.FC<RequestMentorProps> = ({ mentor, back }) => {
 
         <h1>You've Selected:</h1>
       </div>
-      <MentorCard mentor={mentor} request={true} />
+      <MentorCard mentorWithScore={mentor} request={true} />
       <div className="topic-question">
-        <h2>Which topic do you want to discuss with {mentor.name}?</h2>
+        <h2>Which topic do you want to discuss with {mentorSelected?.name}?</h2>
         <h4 className="select-one">(Select one)</h4>
       </div>
       <FormControl className="select-service" component="fieldset">
@@ -87,80 +73,39 @@ const RequestMentor: React.FC<RequestMentorProps> = ({ mentor, back }) => {
           value={topic}
           onChange={handleChange}
         >
-          <FormControlLabel
-            value={Services.SkillsForSuccess}
-            control={<Radio />}
-            label="Skills for Success"
-          />
-          <FormControlLabel
-            value={Services.CareerDevelopment}
-            control={<Radio />}
-            label="Career Development"
-          />
-          <FormControlLabel
-            value={Services.General}
-            control={<Radio />}
-            label="General"
-          />
-          <FormControlLabel
-            value={Services.WorkLifeBalance}
-            control={<Radio />}
-            label="Work-Life Balance"
-          />
-          <FormControlLabel
-            value={Services.CareerPlanning}
-            control={<Radio />}
-            label="Career Planning"
-          />
-          <FormControlLabel
-            value={Services.MockInterview}
-            control={<Radio />}
-            label="Mock Interview"
-          />
-          <FormControlLabel
-            value={Services.ResumeCritique}
-            control={<Radio />}
-            label="Resume/CV Critique"
-          />
-          <FormControlLabel
-            value={Services.SuccessAtWork}
-            control={<Radio />}
-            label="Success at Work"
-          />
+          {services.map((x, key: number) => {
+            return (
+              <FormControlLabel
+                value={x.value}
+                control={<Radio />}
+                label={x.label}
+                key={key}
+              />
+            );
+          })}
         </RadioGroup>
       </FormControl>
       <Divider className="divider" />
-      <div className="select-times">
-        <h2>Please choose 3 or more suitable timeslots:</h2>
-        <div className="times">
-          <div className="morning">
-            <h4 className="label">MORNING</h4>
-            {renderTime('MORNING')}
-          </div>
-          <div className="afternoon">
-            <h4 className="label">AFTERNOON</h4>
-            {renderTime('AFTERNOON')}
-          </div>
-          <div className="evening">
-            <h4 className="label">EVENING</h4>
-            {renderTime('EVENING')}
-          </div>
-        </div>
-      </div>
+      <TimeSelect
+        handleSetTime={handleSetTime}
+        times={times}
+        mentor={mentorSelected!}
+      />
       <Button
         variant="contained"
-        disabled={times.length < 4 || !topic}
+        disabled={times.length < 3 || !topic}
         disableElevation
         className="finish"
         onClick={() => setFinish(true)}
       >
-        Finish
+        Book Mentor
       </Button>
       <RequestConfirmation
         finish={finish}
         setFinish={setFinish}
         topic={topic!}
         times={times}
+        mentor={mentor}
       />
     </RequestMentorStyle>
   );
@@ -189,30 +134,6 @@ const RequestMentorStyle = styled.div`
 
   .divider {
     margin: 40px 0px;
-  }
-
-  .select-times {
-    .times {
-      display: flex;
-      justify-content: space-around;
-      .label {
-        align-self: center;
-      }
-      .morning,
-      .afternoon,
-      .evening {
-        display: flex;
-        flex-direction: column;
-      }
-      .container {
-        border: 2px solid #008a00;
-        margin: 10px 0px;
-        padding: 8px 60px;
-        font-size: larger;
-        font-weight: 600;
-      }
-    }
-    margin-bottom: 50px;
   }
 
   .finish {

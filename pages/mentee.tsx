@@ -2,7 +2,7 @@ import PersonalInfo from 'components/PersonalInfo';
 import React from 'react';
 import Loading from 'components/Loading';
 import ProfileDashboard from 'components/ProfileDashboard';
-import { BackgroundStyle } from 'components/helperFunctions';
+import { BackgroundStyle } from 'components/utils';
 import MeetingsCalendar from 'components/meetings/MeetingsCalendar';
 import UpcomingMeetings from 'components/meetings/UpcomingMeetings';
 import PendingMeetings from 'components/meetings/PendingMeetings';
@@ -11,14 +11,11 @@ import { AdminStyle } from './mentor';
 import ErrorMessage from 'components/ErrorMessage';
 import { useGetUserQuery } from 'generated/graphql';
 
-// import { useRouter } from 'next/router';
-
 const MenteeAdmin: React.FC = () => {
-  // const router = useRouter();
   //TODO make dynamic, not 50
   const { data, loading, error } = useGetUserQuery({
     variables: {
-      input: '50',
+      input: '15',
     },
   });
   if (loading) {

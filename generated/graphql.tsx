@@ -11,15 +11,31 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  Date: any;
   /** The `Upload` scalar type represents a file upload. */
   Upload: any;
 };
 
 
+export type Availability = {
+  __typename?: 'Availability';
+  id: Scalars['ID'];
+  time?: Maybe<Scalars['Date']>;
+  mentorId: Scalars['ID'];
+};
+
 export enum CacheControlScope {
   Public = 'PUBLIC',
   Private = 'PRIVATE'
 }
+
+export type CreateMeetingInput = {
+  topic: Services;
+  proposed_times: Array<Scalars['Date']>;
+  menteeId: Scalars['ID'];
+  mentorId: Scalars['ID'];
+};
+
 
 export enum Family {
   General = 'GENERAL',
@@ -44,6 +60,19 @@ export type Majors = {
   major: Scalars['String'];
 };
 
+export type Meeting = {
+  __typename?: 'Meeting';
+  id: Scalars['Int'];
+  topic?: Maybe<Array<Maybe<Services>>>;
+  start_time?: Maybe<Scalars['Date']>;
+  end_time?: Maybe<Scalars['Date']>;
+  cancelled?: Maybe<Scalars['Boolean']>;
+  cancel_reason?: Maybe<Scalars['String']>;
+  proposed_times: Array<Maybe<Proposed_Time>>;
+  menteeId: Scalars['ID'];
+  mentorId: Scalars['ID'];
+};
+
 export type Mentee = {
   __typename?: 'Mentee';
   id?: Maybe<Scalars['ID']>;
@@ -58,6 +87,7 @@ export type Mentee = {
   school_year?: Maybe<Scalars['Int']>;
   years_experience: Scalars['Int'];
   mentors?: Maybe<Array<Maybe<MentorWithScore>>>;
+  meetings?: Maybe<Array<Maybe<Meeting>>>;
   userId?: Maybe<Scalars['ID']>;
 };
 
@@ -75,12 +105,31 @@ export type Mentor = {
   name: Scalars['String'];
   years_experience: Scalars['Int'];
   userId?: Maybe<Scalars['ID']>;
+  meetings?: Maybe<Array<Maybe<Meeting>>>;
+  availability?: Maybe<Array<Maybe<Availability>>>;
 };
 
 export type MentorWithScore = {
   __typename?: 'MentorWithScore';
   mentor?: Maybe<User>;
   score?: Maybe<Scalars['Int']>;
+};
+
+export type Mutation = {
+  __typename?: 'Mutation';
+  createMeeting?: Maybe<Scalars['ID']>;
+};
+
+
+export type MutationCreateMeetingArgs = {
+  input: CreateMeetingInput;
+};
+
+export type Proposed_Time = {
+  __typename?: 'Proposed_Time';
+  id: Scalars['Int'];
+  meeting_id?: Maybe<Scalars['Int']>;
+  time?: Maybe<Scalars['Date']>;
 };
 
 export type Query = {
@@ -165,6 +214,16 @@ export type User = {
   university?: Maybe<Array<Maybe<University>>>;
 };
 
+export type CreateMeetingMutationVariables = Exact<{
+  input: CreateMeetingInput;
+}>;
+
+
+export type CreateMeetingMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'createMeeting'>
+);
+
 export type GetUserQueryVariables = Exact<{
   input: Scalars['ID'];
 }>;
@@ -181,6 +240,13 @@ export type GetUserQuery = (
     )>>>, mentor?: Maybe<(
       { __typename?: 'Mentor' }
       & Pick<Mentor, 'id' | 'bio' | 'job_title_primary' | 'job_title_secondary' | 'preferred_services' | 'birthyear' | 'degree_type' | 'school_year' | 'highest_education' | 'name' | 'years_experience'>
+      & { availability?: Maybe<Array<Maybe<(
+        { __typename?: 'Availability' }
+        & Pick<Availability, 'id' | 'time'>
+      )>>>, meetings?: Maybe<Array<Maybe<(
+        { __typename?: 'Meeting' }
+        & Pick<Meeting, 'id' | 'start_time'>
+      )>>> }
     )>, mentee?: Maybe<(
       { __typename?: 'Mentee' }
       & Pick<Mentee, 'id' | 'bio' | 'job_title_primary' | 'job_title_secondary' | 'preferred_services' | 'birthyear' | 'school_year' | 'degree_type' | 'highest_education' | 'name' | 'years_experience'>
@@ -216,6 +282,13 @@ export type GetUserMentorsQuery = (
       )>>>, mentor?: Maybe<(
         { __typename?: 'Mentor' }
         & Pick<Mentor, 'id' | 'bio' | 'job_title_primary' | 'job_title_secondary' | 'preferred_services' | 'birthyear' | 'degree_type' | 'highest_education' | 'name' | 'years_experience'>
+        & { availability?: Maybe<Array<Maybe<(
+          { __typename?: 'Availability' }
+          & Pick<Availability, 'id' | 'time'>
+        )>>>, meetings?: Maybe<Array<Maybe<(
+          { __typename?: 'Meeting' }
+          & Pick<Meeting, 'id' | 'start_time'>
+        )>>> }
       )>, majors?: Maybe<Array<Maybe<(
         { __typename?: 'Majors' }
         & Pick<Majors, 'id' | 'major' | 'faculty'>
@@ -231,6 +304,36 @@ export type GetUserMentorsQuery = (
 );
 
 
+export const CreateMeetingDocument = gql`
+    mutation CreateMeeting($input: CreateMeetingInput!) {
+  createMeeting(input: $input)
+}
+    `;
+export type CreateMeetingMutationFn = Apollo.MutationFunction<CreateMeetingMutation, CreateMeetingMutationVariables>;
+
+/**
+ * __useCreateMeetingMutation__
+ *
+ * To run a mutation, you first call `useCreateMeetingMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateMeetingMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createMeetingMutation, { data, loading, error }] = useCreateMeetingMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateMeetingMutation(baseOptions?: Apollo.MutationHookOptions<CreateMeetingMutation, CreateMeetingMutationVariables>) {
+        return Apollo.useMutation<CreateMeetingMutation, CreateMeetingMutationVariables>(CreateMeetingDocument, baseOptions);
+      }
+export type CreateMeetingMutationHookResult = ReturnType<typeof useCreateMeetingMutation>;
+export type CreateMeetingMutationResult = Apollo.MutationResult<CreateMeetingMutation>;
+export type CreateMeetingMutationOptions = Apollo.BaseMutationOptions<CreateMeetingMutation, CreateMeetingMutationVariables>;
 export const GetUserDocument = gql`
     query GetUser($input: ID!) {
   user(id: $input) {
@@ -254,6 +357,14 @@ export const GetUserDocument = gql`
       highest_education
       name
       years_experience
+      availability {
+        id
+        time
+      }
+      meetings {
+        id
+        start_time
+      }
     }
     mentee {
       id
@@ -347,6 +458,14 @@ export const GetUserMentorsDocument = gql`
         highest_education
         name
         years_experience
+        availability {
+          id
+          time
+        }
+        meetings {
+          id
+          start_time
+        }
       }
       majors {
         id

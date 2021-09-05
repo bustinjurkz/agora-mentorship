@@ -1,6 +1,7 @@
-import { createMuiTheme } from '@material-ui/core/styles';
+import { createTheme } from '@material-ui/core/styles';
 import { Services } from '../api/generated/graphql';
 import styled, { createGlobalStyle } from 'styled-components';
+import Fuse from 'fuse.js';
 
 export const GlobalStyle = createGlobalStyle`
   body {
@@ -33,11 +34,16 @@ export const theme = {
   lightGrey: '#b3b3b3',
 };
 
-export const MuiTheme = createMuiTheme({
+export const MuiTheme = createTheme({
   typography: {
     fontFamily: `"Rubik",sans-serif;`,
   },
 });
+
+export const parseDate = (selectedDate: Date, hour: number) => {
+  const adjustedHourDate = new Date(selectedDate.setHours(hour, 0));
+  return adjustedHourDate;
+};
 
 export const servicePrettier = (service: Services) => {
   let prettyService;
@@ -75,3 +81,15 @@ export const BackgroundStyle = styled.div<{
   box-shadow: 2px 3px 3px 1px #dbdbdb;
   height: ${(props) => props.fullHeight && '100%'};
 `;
+
+export function applySearchQuery<T>(data: T[], query: string): T[] {
+  if (query === '') return data;
+
+  //TODO append more specific search variables
+  const fuse = new Fuse(data, {
+    keys: ['mentor.mentor.name', 'mentor.university.name'],
+    threshold: 0.3,
+    shouldSort: true,
+  });
+  return fuse.search(query.trim().substring(0, 32)).map((x) => x.item);
+}

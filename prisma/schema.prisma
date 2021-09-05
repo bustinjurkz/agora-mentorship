@@ -22,7 +22,7 @@ model User {
 }
 
 model Mentor {
-  id                  Int        @id @default(autoincrement())
+  id                  Int            @id @default(autoincrement())
   bio                 String?
   job_title_primary   String
   job_title_secondary String?
@@ -33,8 +33,10 @@ model Mentor {
   name                String
   years_experience    Int
   school_year         Int?
-  userId              Int        @unique
-  user                User       @relation(fields: [userId], references: [id])
+  meetings            Meeting[]
+  availability        Availability[]
+  userId              Int            @unique
+  user                User           @relation(fields: [userId], references: [id])
 }
 
 model Mentee {
@@ -49,6 +51,7 @@ model Mentee {
   highest_education   Int
   name                String
   years_experience    Int
+  meetings            Meeting[]
   userId              Int        @unique
   user                User       @relation(fields: [userId], references: [id])
 }
@@ -95,41 +98,33 @@ model Language {
   users      User[]
 }
 
-// model UserUniversity {
-//   userId       Int
-//   universityId Int
-//   university   University @relation(fields: [universityId], references: [id])
-//   user         User       @relation(fields: [userId], references: [id])
+model Meeting {
+  id             Int             @id @default(autoincrement())
+  topic          Services
+  start_time     DateTime?
+  end_time       DateTime?
+  cancelled      Boolean?
+  cancel_reason  String?
+  proposed_times Proposed_Time[]
+  menteeId       Int
+  mentee         Mentee          @relation(fields: [menteeId], references: [id])
+  mentorId       Int
+  mentor         Mentor          @relation(fields: [mentorId], references: [id])
+}
 
-//   @@id([userId, universityId])
-// }
+model Proposed_Time {
+  id         Int      @id @default(autoincrement())
+  time       DateTime
+  meetingId  Int      
+  meeting    Meeting  @relation(fields: [meetingId], references: [id])
+}
 
-// model UserLanguage {
-//   userId     Int
-//   languageId Int
-//   language   Language @relation(fields: [languageId], references: [id])
-//   user       User     @relation(fields: [userId], references: [id])
-
-//   @@id([userId, languageId])
-// }
-
-// model UserMajor {
-//   userId  Int
-//   majorId Int
-//   major   Majors @relation(fields: [majorId], references: [id])
-//   user    User   @relation(fields: [userId], references: [id])
-
-//   @@id([userId, majorId])
-// }
-
-// model UserSkills {
-//   userId  Int
-//   skillId Int
-//   skill   Skills @relation(fields: [skillId], references: [id])
-//   user    User   @relation(fields: [userId], references: [id])
-
-//   @@id([userId, skillId])
-// }
+model Availability {
+  id       Int      @id @default(autoincrement())
+  time     DateTime
+  Mentor   Mentor   @relation(fields: [mentorId], references: [id])
+  mentorId Int
+}
 
 model MajorSimilarity {
   id                                            Int      @id @default(autoincrement())

@@ -1,18 +1,26 @@
 import Button from '@material-ui/core/Button';
-import ButtonGroup from '@material-ui/core/ButtonGroup';
 import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import { Services } from 'generated/graphql';
-import React from 'react';
+import List from '@material-ui/core/List';
+import ListItemText from '@material-ui/core/ListItemText';
+import {
+  MentorWithScore,
+  Services,
+  useCreateMeetingMutation,
+} from 'generated/graphql';
+import ListItem from '@material-ui/core/ListItem';
+import { format } from 'date-fns';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import { servicePrettier } from './helperFunctions';
+import { servicePrettier } from './utils';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 export interface RequestConfirmationProps {
   finish: boolean;
   setFinish: (x: boolean) => void;
   topic: Services;
-  times: string[];
+  times: Date[];
+  mentor: MentorWithScore;
 }
 
 const RequestConfirmation: React.FC<RequestConfirmationProps> = ({
@@ -20,7 +28,26 @@ const RequestConfirmation: React.FC<RequestConfirmationProps> = ({
   setFinish,
   topic,
   times,
+  mentor,
 }) => {
+  const [loading, setLoading] = useState(false);
+
+  const [createMeeting] = useCreateMeetingMutation({
+    variables: {
+      input: {
+        topic: topic,
+        menteeId: '4',
+        mentorId: mentor.mentor!.mentor!.id,
+        proposed_times: times,
+      },
+    },
+  });
+  const handleBooking = () => {
+    setLoading(true);
+    createMeeting()
+      .catch(() => alert('Failed to create meeting.  Please contact support.'))
+      .finally(() => setLoading(false));
+  };
   return (
     <Dialog
       open={finish}
@@ -30,51 +57,51 @@ const RequestConfirmation: React.FC<RequestConfirmationProps> = ({
     >
       <RequestConfirmationStyle>
         <DialogContent>
-          <h1>You've Selected:</h1>
-          <div className="item">
-            <span className="label">Topic: </span>
-            <span className="topic">{servicePrettier(topic)}</span>
-          </div>
-
-          <div className="item">
-            <span className="label">Date: </span>
-            <div className="date">Thursday June 17 2021</div>
-          </div>
-
-          <div className="times">
+          <h1 className="header">Confirm Booking</h1>
+          <div className="info-row">
             <div className="item">
-              <span className="label">Times: </span>
-              <div className="times">
-                {times.map(
-                  (time: string, i: number) =>
-                    time && (
-                      <div className="time" key={i}>
-                        {time}
-                      </div>
-                    ),
-                )}
-              </div>
+              <span className="label">Mentor: </span>
+              <span className="topic">{mentor.mentor?.mentor?.name}</span>
             </div>
+
+            <div className="item">
+              <span className="label">Topic: </span>
+              <span className="topic">{servicePrettier(topic)}</span>
+            </div>
+          </div>
+
+          <div className="item">
+            <span className="label">Times: </span>
+            <List className="times">
+              {times.map((time: Date, i: number) => (
+                <ListItem key={i}>
+                  <ListItemText
+                    primary={format(time, "h:mm aaaaa'm'")}
+                    secondary={format(time, `PPPP`)}
+                  />
+                </ListItem>
+              ))}
+            </List>
+          </div>
+
+          <div className="buttons">
+            <Button
+              variant="contained"
+              className="change-button"
+              onClick={() => setFinish(false)}
+            >
+              Change
+            </Button>
+            <Button
+              variant="contained"
+              className="confirm-button"
+              onClick={() => handleBooking()}
+            >
+              {loading ? <CircularProgress /> : 'Book'}
+            </Button>
           </div>
         </DialogContent>
       </RequestConfirmationStyle>
-      <DialogActions className="Buttons">
-        <ButtonGroup
-          disableElevation
-          color="primary"
-          aria-label="text primary button group"
-          size="large"
-        >
-          <Button
-            variant="contained"
-            className="confirm-buton"
-            onClick={() => setFinish(false)}
-          >
-            Confirm
-          </Button>
-          <Button onClick={() => setFinish(false)}>Change</Button>
-        </ButtonGroup>
-      </DialogActions>
     </Dialog>
   );
 };
@@ -87,6 +114,41 @@ export const RequestConfirmationStyle = styled.div`
   font-size: larger;
   margin-bottom: 30px;
 
+  .times {
+    .MuiListItemText-primary {
+      font-size: larger;
+    }
+    .MuiListItemText-secondary {
+      font-size: large;
+    }
+  }
+  .header {
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 40px;
+  }
+  .buttons {
+    margin-top: 30px;
+    display: flex;
+    place-content: center;
+    .confirm-button,
+    .change-button {
+      width: 175px;
+      height: 60px;
+      align-self: center;
+      color: white;
+      font-size: larger;
+    }
+    .confirm-button {
+      background: ${(props) => props.theme.TDGreen};
+    }
+    .change-button {
+      background: #979797;
+      margin-right: 30px;
+    }
+  }
+  .info-row {
+  }
   .item {
     display: flex;
     flex-direction: row;
@@ -97,12 +159,6 @@ export const RequestConfirmationStyle = styled.div`
       font-size: large;
       margin-right: 20px;
       width: 100px;
-    }
-    .times {
-      display: inline-flex;
-      .time {
-        margin-right: 20px;
-      }
     }
   }
 `;

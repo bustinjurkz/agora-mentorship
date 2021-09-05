@@ -101,6 +101,7 @@ export const scoreAlgorithm = (
       return 5;
     };
     const currentYear = new Date();
+
     const menteeAgeGroup = ageGroup(
       currentYear.getFullYear() - mentee.mentee!.birthyear,
     );

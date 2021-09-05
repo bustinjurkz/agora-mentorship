@@ -2,7 +2,7 @@ import Button from '@material-ui/core/Button';
 import { Mentee, Mentor } from 'generated/graphql';
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { BackgroundStyle } from './helperFunctions';
+import { BackgroundStyle } from './utils';
 
 export enum FieldType {
   'bio',

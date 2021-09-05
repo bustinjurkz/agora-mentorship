@@ -1,20 +1,22 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Mentor, useGetUserMentorsQuery } from 'generated/graphql';
+import { MentorWithScore, useGetUserMentorsQuery } from 'generated/graphql';
 import Loading from 'components/Loading';
 
 import { SearchInputs } from 'components/SearchInputs';
 import MentorCard from 'components/MentorCard';
 import RequestMentor from 'components/RequestMentor';
 import ErrorMessage from 'components/ErrorMessage';
+import { applySearchQuery } from 'components/utils';
 
 const FindMentors: React.FC = () => {
+  const [mentorSearch, setMentorSearch] = useState('');
   const { data, loading, error } = useGetUserMentorsQuery({
     variables: {
-      input: '50',
+      input: '15',
     },
   });
-  const [mentorRequested, setMentorRequested] = useState<Mentor>();
+  const [mentorRequested, setMentorRequested] = useState<MentorWithScore>();
   const back = () => {
     setMentorRequested(undefined);
   };
@@ -27,6 +29,9 @@ const FindMentors: React.FC = () => {
       <ErrorMessage msg={'Unknown network error.  Please try again later'} />
     );
   }
+  const mentors = data?.userMentors;
+  const sortedMentors = mentors?.slice().sort((a, b) => b!.score! - a!.score!);
+  const filteredMentors = applySearchQuery(sortedMentors!, mentorSearch);
 
   return (
     <FindMentorsStyle>
@@ -34,9 +39,9 @@ const FindMentors: React.FC = () => {
         <RequestMentor mentor={mentorRequested} back={back} />
       ) : (
         <>
-          <SearchInputs />
+          <SearchInputs setMentorSearch={setMentorSearch} />
           <h1>Mentors</h1>
-          {data?.userMentors?.map((x, i: number) => (
+          {filteredMentors?.map((x, i: number) => (
             <MentorCard
               key={i}
               mentorWithScore={x!}
