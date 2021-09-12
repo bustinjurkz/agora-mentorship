@@ -1,26 +1,33 @@
 import styled from 'styled-components';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import { Meeting, Mentee, Mentor } from 'generated/graphql';
+import format from 'date-fns/format';
+import { servicePrettier } from 'components/utils';
+import addHours from 'date-fns/addHours';
 
 export interface UpcomingMeetingCardProps {
-  sampleData: any;
+  meeting: Meeting;
+  otherUser: Mentor | Mentee;
 }
 
 export const UpcomingMeetingCard: React.FC<UpcomingMeetingCardProps> = ({
-  sampleData,
+  meeting,
+  otherUser,
 }) => {
   return (
     <UpcomingCardStyle>
-      <h4 className="date">{sampleData.date}</h4>
+      <h4 className="date">{format(new Date(meeting.start_time), 'PPPP')}</h4>
       <div className="card-container">
-        <span className="meeting-type">{sampleData.type}</span>
-        <span className="meeting-time">{sampleData.time}</span>
+        <span className="meeting-type">{servicePrettier(meeting.topic!)}</span>
+        <span className="meeting-time">
+          {format(new Date(meeting.start_time), "h:mm aaaaa'm'")} -{' '}
+          {format(addHours(new Date(meeting.start_time), 1), "h:mm aaaaa'm'")}
+        </span>
         <div className="mentee">
           <AccountCircleIcon className="avatar" />
           <div className="info">
-            <span className="name">{sampleData.mentee}</span>
-            <span className="jobtitle">{sampleData.jobtitle}</span>
-            <span className="position">{sampleData.position}</span>
-            <span className="company">{sampleData.company}</span>
+            <span className="name">{otherUser.name}</span>
+            <span className="jobtitle">{otherUser.job_title_primary}</span>
           </div>
         </div>
       </div>
@@ -48,7 +55,7 @@ const UpcomingCardStyle = styled.div`
       margin-bottom: 10px;
     }
     .meeting-time {
-      font-size: smaller;
+      font-size: medium;
     }
   }
 

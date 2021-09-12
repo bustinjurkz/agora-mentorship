@@ -30,6 +30,20 @@ gql`
         meetings {
           id
           start_time
+          end_time
+          cancelled
+          proposed_times {
+            id
+            meeting_id
+            time
+          }
+          topic
+          mentee {
+            id
+            name
+            job_title_primary
+            job_title_secondary
+          }
         }
       }
       mentee {
@@ -44,6 +58,24 @@ gql`
         highest_education
         name
         years_experience
+        meetings {
+          id
+          start_time
+          end_time
+          cancelled
+          proposed_times {
+            id
+            meeting_id
+            time
+          }
+          topic
+          mentor {
+            id
+            name
+            job_title_primary
+            job_title_secondary
+          }
+        }
       }
       majors {
         id

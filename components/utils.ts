@@ -45,6 +45,10 @@ export const parseDate = (selectedDate: Date, hour: number) => {
   return adjustedHourDate;
 };
 
+export const majorPrettier = (major: string) => {
+  return major.replace(/_/g, ' ');
+};
+
 export const servicePrettier = (service: Services) => {
   let prettyService;
   switch (service) {
@@ -92,4 +96,9 @@ export function applySearchQuery<T>(data: T[], query: string): T[] {
     shouldSort: true,
   });
   return fuse.search(query.trim().substring(0, 32)).map((x) => x.item);
+}
+
+export enum UserType {
+  mentee,
+  mentor,
 }

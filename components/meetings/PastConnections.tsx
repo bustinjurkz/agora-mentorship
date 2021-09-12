@@ -1,27 +1,19 @@
 import Button from '@material-ui/core/Button/Button';
+import { Meeting } from 'generated/graphql';
 import React from 'react';
 import styled from 'styled-components';
-import { BackgroundStyle } from '../utils';
+import { BackgroundStyle, UserType } from '../utils';
 import { PastConnectionsCard } from './PastConnectionCard';
 
-const sampleData = [
-  {
-    rating: 3,
-    mentee: 'Steven Du',
-    jobtitle: 'Co-Op',
-    position: 'Enterprise Analyst',
-    company: 'TD Bank',
-  },
-  {
-    rating: 4,
-    mentee: 'Jessie Bharaj',
-    jobtitle: 'Co-Op',
-    position: 'Advanced Analytics',
-    company: 'TD Bank',
-  },
-];
+export interface PendingMeetingsProps {
+  meetings: Meeting[];
+  userType: UserType;
+}
 
-const PastConnections: React.FC = () => {
+const PastConnections: React.FC<PendingMeetingsProps> = ({
+  meetings,
+  userType,
+}) => {
   return (
     <BackgroundStyle style={{ marginTop: 20 }}>
       <PastConnectionsStyle>
@@ -31,10 +23,18 @@ const PastConnections: React.FC = () => {
             View All
           </Button>
         </div>
-        <div className="cards-container">
-          {sampleData.map((x: any, i: number) => (
-            <PastConnectionsCard key={i} sampleData={x} />
-          ))}
+        <div className="card-container">
+          {meetings.length > 0 ? (
+            meetings?.map((x, i: number) => (
+              <PastConnectionsCard
+                key={i}
+                meeting={x}
+                otherUser={userType === UserType.mentee ? x.mentor! : x.mentee!}
+              />
+            ))
+          ) : (
+            <div className="none">You have not yet completed a session.</div>
+          )}
         </div>
       </PastConnectionsStyle>
     </BackgroundStyle>

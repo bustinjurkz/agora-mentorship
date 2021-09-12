@@ -63,14 +63,16 @@ export type Majors = {
 export type Meeting = {
   __typename?: 'Meeting';
   id: Scalars['Int'];
-  topic?: Maybe<Array<Maybe<Services>>>;
+  topic?: Maybe<Services>;
   start_time?: Maybe<Scalars['Date']>;
   end_time?: Maybe<Scalars['Date']>;
   cancelled?: Maybe<Scalars['Boolean']>;
   cancel_reason?: Maybe<Scalars['String']>;
-  proposed_times: Array<Maybe<Proposed_Time>>;
+  proposed_times?: Maybe<Array<Maybe<Proposed_Time>>>;
   menteeId: Scalars['ID'];
   mentorId: Scalars['ID'];
+  mentor?: Maybe<Mentor>;
+  mentee?: Maybe<Mentee>;
 };
 
 export type Mentee = {
@@ -245,11 +247,29 @@ export type GetUserQuery = (
         & Pick<Availability, 'id' | 'time'>
       )>>>, meetings?: Maybe<Array<Maybe<(
         { __typename?: 'Meeting' }
-        & Pick<Meeting, 'id' | 'start_time'>
+        & Pick<Meeting, 'id' | 'start_time' | 'end_time' | 'cancelled' | 'topic'>
+        & { proposed_times?: Maybe<Array<Maybe<(
+          { __typename?: 'Proposed_Time' }
+          & Pick<Proposed_Time, 'id' | 'meeting_id' | 'time'>
+        )>>>, mentee?: Maybe<(
+          { __typename?: 'Mentee' }
+          & Pick<Mentee, 'id' | 'name' | 'job_title_primary' | 'job_title_secondary'>
+        )> }
       )>>> }
     )>, mentee?: Maybe<(
       { __typename?: 'Mentee' }
       & Pick<Mentee, 'id' | 'bio' | 'job_title_primary' | 'job_title_secondary' | 'preferred_services' | 'birthyear' | 'school_year' | 'degree_type' | 'highest_education' | 'name' | 'years_experience'>
+      & { meetings?: Maybe<Array<Maybe<(
+        { __typename?: 'Meeting' }
+        & Pick<Meeting, 'id' | 'start_time' | 'end_time' | 'cancelled' | 'topic'>
+        & { proposed_times?: Maybe<Array<Maybe<(
+          { __typename?: 'Proposed_Time' }
+          & Pick<Proposed_Time, 'id' | 'meeting_id' | 'time'>
+        )>>>, mentor?: Maybe<(
+          { __typename?: 'Mentor' }
+          & Pick<Mentor, 'id' | 'name' | 'job_title_primary' | 'job_title_secondary'>
+        )> }
+      )>>> }
     )>, majors?: Maybe<Array<Maybe<(
       { __typename?: 'Majors' }
       & Pick<Majors, 'id' | 'major' | 'faculty'>
@@ -364,6 +384,20 @@ export const GetUserDocument = gql`
       meetings {
         id
         start_time
+        end_time
+        cancelled
+        proposed_times {
+          id
+          meeting_id
+          time
+        }
+        topic
+        mentee {
+          id
+          name
+          job_title_primary
+          job_title_secondary
+        }
       }
     }
     mentee {
@@ -378,6 +412,24 @@ export const GetUserDocument = gql`
       highest_education
       name
       years_experience
+      meetings {
+        id
+        start_time
+        end_time
+        cancelled
+        proposed_times {
+          id
+          meeting_id
+          time
+        }
+        topic
+        mentor {
+          id
+          name
+          job_title_primary
+          job_title_secondary
+        }
+      }
     }
     majors {
       id

@@ -6,14 +6,13 @@ import MailIcon from '@material-ui/icons/Mail';
 import HelpIcon from '@material-ui/icons/Help';
 import SettingsIcon from '@material-ui/icons/Settings';
 import Divider from '@material-ui/core/Divider';
-import { BackgroundStyle } from './utils';
-import { Mentee } from 'generated/graphql';
+import { BackgroundStyle, UserType } from './utils';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import { useRouter } from 'next/dist/client/router';
 export interface ProfileDashboardProps {
-  menteeInfo?: Mentee;
+  userType: UserType;
 }
-const ProfileDashboard: React.FC<ProfileDashboardProps> = ({ menteeInfo }) => {
+const ProfileDashboard: React.FC<ProfileDashboardProps> = ({ userType }) => {
   const router = useRouter();
 
   return (
@@ -23,7 +22,7 @@ const ProfileDashboard: React.FC<ProfileDashboardProps> = ({ menteeInfo }) => {
         <Button className="item" startIcon={<DashboardIcon className="icon" />}>
           Dashboard
         </Button>
-        {menteeInfo && (
+        {userType === UserType.mentee && (
           <Button
             className="item"
             onClick={() => router.push(`/find-mentors`, `/find-mentors`)}

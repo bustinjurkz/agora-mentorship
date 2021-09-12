@@ -1,12 +1,15 @@
 import styled from 'styled-components';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import Rating from '@material-ui/lab/Rating';
+import { Meeting, Mentee, Mentor } from 'generated/graphql';
 export interface PastConnectionsCardProps {
-  sampleData: any;
+  meeting: Meeting;
+  otherUser: Mentor | Mentee;
 }
 
 export const PastConnectionsCard: React.FC<PastConnectionsCardProps> = ({
-  sampleData,
+  meeting,
+  otherUser,
 }) => {
   return (
     <PastConnectionsCardStyle>
@@ -14,14 +17,16 @@ export const PastConnectionsCard: React.FC<PastConnectionsCardProps> = ({
         <div className="header">
           <AccountCircleIcon className="avatar" />
           <div className="info">
-            <span className="name">{sampleData.mentee}</span>
-            <span className="history">1 Consult, 1 Upcoming</span>
+            <span className="name">{otherUser.name}</span>
+            <span className="history">
+              {otherUser.meetings?.filter((x) => x?.end_time).length}
+              meetings completed.
+            </span>
           </div>
         </div>
         <div className="card-body">
-          <span className="jobtitle">{sampleData.jobtitle}</span>
-          <span className="position">{sampleData.position}</span>
-          <span className="company">{sampleData.company}</span>
+          <span className="jobtitle">{otherUser.job_title_primary}</span>
+
           <div className="rating">
             <Rating className="stars" name="read-only" value={4} readOnly />
           </div>

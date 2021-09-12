@@ -1,33 +1,41 @@
 import styled from 'styled-components';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import { servicePrettier } from 'components/utils';
+import format from 'date-fns/format';
+import { Meeting, Mentee, Mentor } from 'generated/graphql';
+import addHours from 'date-fns/addHours';
 
 export interface PendingMeetingCardProps {
-  sampleData: any;
+  meeting: Meeting;
+  otherUser: Mentor | Mentee;
 }
 
 export const PendingMeetingCard: React.FC<PendingMeetingCardProps> = ({
-  sampleData,
+  meeting,
+  otherUser,
 }) => {
   return (
     <PendingMeetingCardStyle>
       <div className="card-container">
-        <span className="meeting-type">{sampleData.type}</span>
-        <span className="date">{sampleData.date}</span>
+        <span className="meeting-type">{servicePrettier(meeting.topic!)}</span>
+
+        <span className="date">
+          {format(new Date(meeting.start_time), 'PPPP')}
+        </span>
 
         <div className="meeting-times">
-          {sampleData.times.map((x: string, i: number) => (
+          {meeting?.proposed_times?.map((x, i: number) => (
             <div key={i} className="time">
-              {x}
+              {format(new Date(x?.time), "h:mm aaaaa'm'")} -{' '}
+              {format(addHours(new Date(x?.time), 1), "h:mm aaaaa'm'")}
             </div>
           ))}
         </div>
         <div className="mentee">
           <AccountCircleIcon className="avatar" />
           <div className="info">
-            <span className="name">{sampleData.mentee}</span>
-            <span className="jobtitle">{sampleData.jobtitle}</span>
-            <span className="position">{sampleData.position}</span>
-            <span className="company">{sampleData.company}</span>
+            <span className="name">{otherUser.name}</span>
+            <span className="jobtitle">{otherUser.job_title_primary}</span>
           </div>
         </div>
       </div>

@@ -8,11 +8,23 @@ export const Query: QueryResolvers = {
       include: {
         language: true,
         majors: true,
-        mentee: true,
+        mentee: {
+          include: {
+            meetings: {
+              include: {
+                mentor: true,
+              },
+            },
+          },
+        },
         mentor: {
           include: {
             availability: true,
-            meetings: true,
+            meetings: {
+              include: {
+                mentee: true,
+              },
+            },
           },
         },
         skills: true,
@@ -20,6 +32,7 @@ export const Query: QueryResolvers = {
       },
     });
   },
+
   userMentors: async (_, { id }, ctx) => {
     // Fetches mentee to be used in the score calculation
     const mentee = await ctx.prisma.user.findFirst({

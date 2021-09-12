@@ -31,13 +31,6 @@ const TimeSelect: React.FC<TimeSelectProps> = ({
     (x) => new Date(x?.start_time),
   );
 
-  console.log('mentorMeetings: ', mentorMeetings);
-  console.log('times: ', times[0]);
-  console.log(
-    'includes? :',
-    mentorMeetings?.some((x) => isEqual(times[0], x)),
-  );
-
   const viableTime = (time: Date, compareTimes: Date[]) => {
     return compareTimes?.some((x) => isEqual(time, x));
   };
