@@ -30,6 +30,7 @@ const PendingMeetings: React.FC<PendingMeetingsProps> = ({
               <PendingMeetingCard
                 key={i}
                 meeting={x}
+                userType={userType}
                 otherUser={userType === UserType.mentee ? x.mentor! : x.mentee!}
               />
             ))

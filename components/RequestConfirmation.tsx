@@ -6,7 +6,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import {
   MentorWithScore,
   Services,
-  useCreateMeetingMutation,
+  useProposeMeetingMutation,
 } from 'generated/graphql';
 import ListItem from '@material-ui/core/ListItem';
 import { format } from 'date-fns';
@@ -32,7 +32,7 @@ const RequestConfirmation: React.FC<RequestConfirmationProps> = ({
 }) => {
   const [loading, setLoading] = useState(false);
 
-  const [createMeeting] = useCreateMeetingMutation({
+  const [proposeMeeting] = useProposeMeetingMutation({
     variables: {
       input: {
         topic: topic,
@@ -44,7 +44,7 @@ const RequestConfirmation: React.FC<RequestConfirmationProps> = ({
   });
   const handleBooking = () => {
     setLoading(true);
-    createMeeting()
+    proposeMeeting()
       .catch(() => alert('Failed to create meeting.  Please contact support.'))
       .finally(() => setLoading(false));
   };

@@ -1,7 +1,7 @@
 import { MutationResolvers } from '../../generated/graphql';
 
 export const Mutation: MutationResolvers = {
-  createMeeting: async (_, { input }, ctx) => {
+  proposeMeeting: async (_, { input }, ctx) => {
     const res = await ctx.prisma.meeting.create({
       data: {
         topic: input.topic,
@@ -20,5 +20,32 @@ export const Mutation: MutationResolvers = {
 
     console.log('res:', res);
     return res.id.toString();
+  },
+  createMeeting: async (_, { input }, ctx) => {
+    const res = await ctx.prisma.meeting.update({
+      where: {
+        id: parseInt(input.id),
+      },
+      data: {
+        start_time: input.start_time,
+      },
+    });
+
+    console.log('res:', res);
+    return true;
+  },
+  cancelMeeting: async (_, { input }, ctx) => {
+    const res = await ctx.prisma.meeting.update({
+      where: {
+        id: parseInt(input.id),
+      },
+      data: {
+        cancelled: true,
+        cancel_reason: input.cancel_reason,
+      },
+    });
+
+    console.log('res:', res);
+    return true;
   },
 };

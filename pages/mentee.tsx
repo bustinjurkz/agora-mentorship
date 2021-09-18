@@ -9,7 +9,7 @@ import PendingMeetings from 'components/meetings/PendingMeetings';
 import PastConnections from 'components/meetings/PastConnections';
 import { AdminStyle } from './mentor';
 import ErrorMessage from 'components/ErrorMessage';
-import { useGetUserQuery } from 'generated/graphql';
+import { Majors, Meeting, Mentee, useGetUserQuery } from 'generated/graphql';
 
 const MenteeAdmin: React.FC = () => {
   const { data, loading, error } = useGetUserQuery({
@@ -53,6 +53,7 @@ const MenteeAdmin: React.FC = () => {
       </BackgroundStyle>
     );
   };
+
   return (
     <AdminStyle>
       <ProfileDashboard userType={UserType.mentee} />
@@ -60,22 +61,25 @@ const MenteeAdmin: React.FC = () => {
         {renderNotificationBanner()}
         <div className="info-cal-container">
           <PersonalInfo
-            user={data?.user?.mentee!}
+            user={data?.user?.mentee! as Mentee}
             userType={UserType.mentee}
-            schoolName={data?.user?.university[0]!.name!}
-            majors={data?.user?.majors}
+            schoolName={data?.user?.university[0]?.name as string}
+            majors={data?.user?.majors as Majors[]}
           />
-          <MeetingsCalendar />
+          <MeetingsCalendar upcomingMeetings={upcomingMeetings as Meeting[]} />
         </div>
         <UpcomingMeetings
-          meetings={upcomingMeetings}
+          meetings={upcomingMeetings as Meeting[]}
           userType={UserType.mentee}
         />
         <PendingMeetings
-          meetings={pendingMeetings}
+          meetings={pendingMeetings as Meeting[]}
           userType={UserType.mentee}
         />
-        <PastConnections meetings={pastMeetings} userType={UserType.mentee} />
+        <PastConnections
+          meetings={pastMeetings as Meeting[]}
+          userType={UserType.mentee}
+        />
       </div>
     </AdminStyle>
   );

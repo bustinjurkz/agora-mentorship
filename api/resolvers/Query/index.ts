@@ -13,6 +13,7 @@ export const Query: QueryResolvers = {
             meetings: {
               include: {
                 mentor: true,
+                proposed_times: true,
               },
             },
           },
@@ -23,6 +24,7 @@ export const Query: QueryResolvers = {
             meetings: {
               include: {
                 mentee: true,
+                proposed_times: true,
               },
             },
           },

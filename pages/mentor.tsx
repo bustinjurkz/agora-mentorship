@@ -1,7 +1,7 @@
 import PersonalInfo from 'components/PersonalInfo';
 import React from 'react';
 import styled from 'styled-components';
-import { useGetUserQuery } from 'generated/graphql';
+import { Majors, Meeting, Mentor, useGetUserQuery } from 'generated/graphql';
 import Loading from 'components/Loading';
 import ProfileDashboard from 'components/ProfileDashboard';
 import { BackgroundStyle, UserType } from 'components/utils';
@@ -59,22 +59,25 @@ const MentorAdmin: React.FC = () => {
         {renderNotificationBanner()}
         <div className="info-cal-container">
           <PersonalInfo
-            user={data?.user?.mentor!}
+            user={data?.user?.mentor! as Mentor}
             userType={UserType.mentor}
-            schoolName={data?.user?.university[0]!.name!}
-            majors={data?.user?.majors}
+            schoolName={data?.user?.university[0]?.name as string}
+            majors={data?.user?.majors as Majors[]}
           />
-          <MeetingsCalendar />
+          <MeetingsCalendar upcomingMeetings={upcomingMeetings as Meeting[]} />
         </div>
         <UpcomingMeetings
-          meetings={upcomingMeetings}
+          meetings={upcomingMeetings as Meeting[]}
           userType={UserType.mentor}
         />
         <PendingMeetings
-          meetings={pendingMeetings}
+          meetings={pendingMeetings as Meeting[]}
           userType={UserType.mentor}
         />
-        <PastConnections meetings={pastMeetings} userType={UserType.mentor} />
+        <PastConnections
+          meetings={pastMeetings as Meeting[]}
+          userType={UserType.mentor}
+        />
       </div>
     </AdminStyle>
   );

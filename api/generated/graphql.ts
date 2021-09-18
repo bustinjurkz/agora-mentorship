@@ -24,11 +24,14 @@ export type Availability = {
   mentorId: Scalars['ID'];
 };
 
+export type CancelMeetingInput = {
+  id: Scalars['ID'];
+  cancel_reason: Scalars['String'];
+};
+
 export type CreateMeetingInput = {
-  topic: Services;
-  proposed_times: Array<Scalars['Date']>;
-  menteeId: Scalars['ID'];
-  mentorId: Scalars['ID'];
+  id: Scalars['ID'];
+  start_time: Scalars['Date'];
 };
 
 
@@ -114,12 +117,34 @@ export type MentorWithScore = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  createMeeting?: Maybe<Scalars['ID']>;
+  /** Proposes a meeting with 3 suggested times */
+  proposeMeeting?: Maybe<Scalars['ID']>;
+  /** Cancels a meeting with the reason */
+  cancelMeeting?: Maybe<Scalars['Boolean']>;
+  /** Confirms a meeting with the agreed-upon time */
+  createMeeting?: Maybe<Scalars['Boolean']>;
+};
+
+
+export type MutationProposeMeetingArgs = {
+  input: ProposeMeetingInput;
+};
+
+
+export type MutationCancelMeetingArgs = {
+  input: CancelMeetingInput;
 };
 
 
 export type MutationCreateMeetingArgs = {
   input: CreateMeetingInput;
+};
+
+export type ProposeMeetingInput = {
+  topic: Services;
+  proposed_times: Array<Scalars['Date']>;
+  menteeId: Scalars['ID'];
+  mentorId: Scalars['ID'];
 };
 
 export type Proposed_Time = {
@@ -290,11 +315,12 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 export type ResolversTypes = {
   Availability: ResolverTypeWrapper<Availability>;
   ID: ResolverTypeWrapper<Scalars['ID']>;
+  CancelMeetingInput: CancelMeetingInput;
+  String: ResolverTypeWrapper<Scalars['String']>;
   CreateMeetingInput: CreateMeetingInput;
   Date: ResolverTypeWrapper<Scalars['Date']>;
   Family: Family;
   Language: ResolverTypeWrapper<LanguageModel>;
-  String: ResolverTypeWrapper<Scalars['String']>;
   Int: ResolverTypeWrapper<Scalars['Int']>;
   Majors: ResolverTypeWrapper<MajorsModel>;
   Meeting: ResolverTypeWrapper<Omit<Meeting, 'mentor' | 'mentee'> & { mentor?: Maybe<ResolversTypes['Mentor']>, mentee?: Maybe<ResolversTypes['Mentee']> }>;
@@ -303,6 +329,7 @@ export type ResolversTypes = {
   Mentor: ResolverTypeWrapper<Omit<Mentor, 'meetings'> & { meetings?: Maybe<Array<Maybe<ResolversTypes['Meeting']>>> }>;
   MentorWithScore: ResolverTypeWrapper<Omit<MentorWithScore, 'mentor'> & { mentor?: Maybe<ResolversTypes['User']> }>;
   Mutation: ResolverTypeWrapper<{}>;
+  ProposeMeetingInput: ProposeMeetingInput;
   Proposed_Time: ResolverTypeWrapper<Proposed_Time>;
   Query: ResolverTypeWrapper<{}>;
   Services: Services;
@@ -316,10 +343,11 @@ export type ResolversTypes = {
 export type ResolversParentTypes = {
   Availability: Availability;
   ID: Scalars['ID'];
+  CancelMeetingInput: CancelMeetingInput;
+  String: Scalars['String'];
   CreateMeetingInput: CreateMeetingInput;
   Date: Scalars['Date'];
   Language: LanguageModel;
-  String: Scalars['String'];
   Int: Scalars['Int'];
   Majors: MajorsModel;
   Meeting: Omit<Meeting, 'mentor' | 'mentee'> & { mentor?: Maybe<ResolversParentTypes['Mentor']>, mentee?: Maybe<ResolversParentTypes['Mentee']> };
@@ -328,6 +356,7 @@ export type ResolversParentTypes = {
   Mentor: Omit<Mentor, 'meetings'> & { meetings?: Maybe<Array<Maybe<ResolversParentTypes['Meeting']>>> };
   MentorWithScore: Omit<MentorWithScore, 'mentor'> & { mentor?: Maybe<ResolversParentTypes['User']> };
   Mutation: {};
+  ProposeMeetingInput: ProposeMeetingInput;
   Proposed_Time: Proposed_Time;
   Query: {};
   Skills: SkillsModel;
@@ -420,7 +449,9 @@ export type MentorWithScoreResolvers<ContextType = Context, ParentType extends R
 };
 
 export type MutationResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
-  createMeeting?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType, RequireFields<MutationCreateMeetingArgs, 'input'>>;
+  proposeMeeting?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType, RequireFields<MutationProposeMeetingArgs, 'input'>>;
+  cancelMeeting?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationCancelMeetingArgs, 'input'>>;
+  createMeeting?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationCreateMeetingArgs, 'input'>>;
 };
 
 export type Proposed_TimeResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Proposed_Time'] = ResolversParentTypes['Proposed_Time']> = {

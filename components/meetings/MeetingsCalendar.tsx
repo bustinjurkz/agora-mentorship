@@ -3,13 +3,39 @@ import Calendar from 'react-calendar';
 import styled from 'styled-components';
 import 'react-calendar/dist/Calendar.css';
 import { BackgroundStyle } from '../utils';
+import { Meeting } from 'generated/graphql';
 
-const MeetingsCalendar: React.FC = () => {
+export interface MeetingsCalendarProps {
+  upcomingMeetings: Meeting[];
+}
+
+const MeetingsCalendar: React.FC<MeetingsCalendarProps> = ({
+  upcomingMeetings,
+}) => {
   const [value, onChange] = useState(new Date());
+  const renderTiles = (date: Date) => {
+    const dateObj = upcomingMeetings.find((x) => {
+      return (
+        date.getDay() === new Date(x.start_time).getDay() &&
+        date.getMonth() === new Date(x.start_time).getMonth() &&
+        date.getDate() === new Date(x.start_time).getDate()
+      );
+    });
+    // returns css className for custom styling
+    return dateObj ? 'upcoming-tile' : '';
+  };
+
   return (
     <MeetingsCalendarStyle>
       <BackgroundStyle>
-        <Calendar onChange={onChange} value={value} />
+        <Calendar
+          next2Label={null}
+          prev2Label={null}
+          onChange={onChange}
+          minDetail={'year'}
+          tileClassName={({ date }) => renderTiles(date)}
+          value={value}
+        />
       </BackgroundStyle>
     </MeetingsCalendarStyle>
   );
@@ -49,6 +75,11 @@ const MeetingsCalendarStyle = styled.div`
   }
   .react-calendar__month-view__days__day {
     font-size: large;
+  }
+
+  .upcoming-tile {
+    background: #1a5336;
+    color: white;
   }
 
   abbr {

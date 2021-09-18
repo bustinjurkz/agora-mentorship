@@ -1,26 +1,45 @@
 import styled from 'styled-components';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import { servicePrettier } from 'components/utils';
+import { servicePrettier, UserType } from 'components/utils';
 import format from 'date-fns/format';
 import { Meeting, Mentee, Mentor } from 'generated/graphql';
 import addHours from 'date-fns/addHours';
+import React, { useState } from 'react';
+import TimerIcon from '@material-ui/icons/Timer';
+import CheckBoxIcon from '@material-ui/icons/CheckBox';
+import CancelIcon from '@material-ui/icons/Cancel';
+import Button from '@material-ui/core/Button';
+import ConfirmMeetingAction from './MeetingActionModal';
 
 export interface PendingMeetingCardProps {
   meeting: Meeting;
   otherUser: Mentor | Mentee;
+  userType: UserType;
 }
 
 export const PendingMeetingCard: React.FC<PendingMeetingCardProps> = ({
   meeting,
   otherUser,
+  userType,
 }) => {
+  const [action, setAction] = useState<
+    'change' | 'accept' | 'status' | undefined
+  >(undefined);
+  const [finish, setFinish] = useState(false);
   return (
     <PendingMeetingCardStyle>
       <div className="card-container">
+        <div className="mentee">
+          <AccountCircleIcon className="avatar" />
+          <div className="info">
+            <span className="name">{otherUser.name}</span>
+            <span className="jobtitle">{otherUser.job_title_primary}</span>
+          </div>
+        </div>
         <span className="meeting-type">{servicePrettier(meeting.topic!)}</span>
 
         <span className="date">
-          {format(new Date(meeting.start_time), 'PPPP')}
+          {format(new Date(meeting?.proposed_times[0]?.time), 'PPPP')}
         </span>
 
         <div className="meeting-times">
@@ -31,14 +50,47 @@ export const PendingMeetingCard: React.FC<PendingMeetingCardProps> = ({
             </div>
           ))}
         </div>
-        <div className="mentee">
-          <AccountCircleIcon className="avatar" />
-          <div className="info">
-            <span className="name">{otherUser.name}</span>
-            <span className="jobtitle">{otherUser.job_title_primary}</span>
-          </div>
+
+        <div className="action-buttons">
+          <Button
+            className="button decline"
+            onClick={() => setAction('change')}
+          >
+            <CancelIcon fontSize="large" />
+            {userType === UserType.mentor ? 'Decline' : 'Cancel'}
+          </Button>
+          {userType === UserType.mentor ? (
+            <Button
+              className="button accept"
+              onClick={() => setAction('accept')}
+            >
+              <CheckBoxIcon fontSize="large" />
+              Accept
+            </Button>
+          ) : (
+            <Button
+              className="button accept"
+              onClick={() => setAction('status')}
+              disabled={true}
+            >
+              <TimerIcon fontSize="large" />
+              Status
+            </Button>
+          )}
         </div>
       </div>
+
+      {action !== undefined && (
+        <ConfirmMeetingAction
+          finish={finish}
+          setFinish={setFinish}
+          topic={meeting.topic!}
+          times={meeting.proposed_times}
+          mentee={meeting.mentee as Mentee}
+          action={action}
+          setAction={setAction}
+        />
+      )}
     </PendingMeetingCardStyle>
   );
 };
@@ -50,11 +102,22 @@ const PendingMeetingCardStyle = styled.div`
   .date {
     color: ${({ theme }) => theme.mainGreen};
   }
+
+  .action-buttons {
+    display: flex;
+    flex-direction: row;
+    .accept {
+      color: ${({ theme }) => theme.TDGreen};
+    }
+    .decline {
+      color: #e01111;
+    }
+  }
   .card-container {
     display: flex;
     border-radius: 5px;
     border-left: 5px solid #ff9500;
-    padding: 20px 45px;
+    padding: 0px 30px 15px 30px;
     flex-direction: column;
     background: ${({ theme }) => theme.lightGreen};
     .meeting-type {
@@ -66,11 +129,13 @@ const PendingMeetingCardStyle = styled.div`
       display: flex;
       flex-direction: column;
       font-size: smaller;
+      margin-bottom: 2rem;
       margin-top: 12px;
       background: #ececec;
       padding: 12px;
       border-radius: 5px;
       .time {
+        font-size: medium;
         margin-bottom: 8px;
       }
     }
@@ -79,6 +144,7 @@ const PendingMeetingCardStyle = styled.div`
   .mentee {
     display: inline-flex;
     margin-top: 25px;
+    margin-bottom: 30px;
     .avatar {
       color: ${({ theme }) => theme.TDGreen};
       font-size: 3rem;
