@@ -9,7 +9,7 @@ import TimerIcon from '@material-ui/icons/Timer';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import CancelIcon from '@material-ui/icons/Cancel';
 import Button from '@material-ui/core/Button';
-import ConfirmMeetingAction from './MeetingActionModal';
+import { MeetingActionModal } from './MeetingActionModal';
 
 export interface PendingMeetingCardProps {
   meeting: Meeting;
@@ -39,7 +39,7 @@ export const PendingMeetingCard: React.FC<PendingMeetingCardProps> = ({
         <span className="meeting-type">{servicePrettier(meeting.topic!)}</span>
 
         <span className="date">
-          {format(new Date(meeting?.proposed_times[0]?.time), 'PPPP')}
+          {format(new Date(meeting!.proposed_times![0]?.time as Date), 'PPPP')}
         </span>
 
         <div className="meeting-times">
@@ -81,11 +81,10 @@ export const PendingMeetingCard: React.FC<PendingMeetingCardProps> = ({
       </div>
 
       {action !== undefined && (
-        <ConfirmMeetingAction
+        <MeetingActionModal
           finish={finish}
           setFinish={setFinish}
-          topic={meeting.topic!}
-          times={meeting.proposed_times}
+          meeting={meeting}
           mentee={meeting.mentee as Mentee}
           action={action}
           setAction={setAction}

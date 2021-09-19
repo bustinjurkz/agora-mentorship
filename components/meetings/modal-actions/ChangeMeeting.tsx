@@ -1,5 +1,5 @@
 import Button from '@material-ui/core/Button';
-import { Mentee, Proposed_Time, Services } from 'generated/graphql';
+import { Meeting, Mentee, useCancelMeetingMutation } from 'generated/graphql';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -9,12 +9,9 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Radio from '@material-ui/core/Radio';
 
 export interface ChangeMeetingProps {
-  finish?: boolean;
-  setFinish?: (x: boolean) => void;
   setAction: (x: undefined) => void;
-  topic: Services;
-  times: Proposed_Time[];
   mentee?: Mentee;
+  meeting: Meeting;
 }
 export enum CancelReason {
   Conflict = 'Schedule Conflict',
@@ -23,14 +20,26 @@ export enum CancelReason {
 }
 
 export const ChangeMeeting: React.FC<ChangeMeetingProps> = ({
-  topic,
   mentee,
   setAction,
+  meeting,
 }) => {
   const [reason, setReason] = useState<CancelReason>();
+  const [cancelMeeting] = useCancelMeetingMutation({
+    variables: {
+      input: {
+        id: meeting.id.toString(),
+        cancel_reason: meeting.cancel_reason ?? '',
+      },
+    },
+  });
   const handleCancel = () => {
-    console.log('ye');
+    setLoading(true);
+    cancelMeeting()
+      .catch(() => alert('Failed to cancel meeting.  Please contact support.'))
+      .finally(() => setLoading(false));
   };
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setReason((event.target as HTMLInputElement).value as CancelReason);
   };

@@ -1,7 +1,7 @@
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 
-import { Mentee, Proposed_Time, Services } from 'generated/graphql';
+import { Meeting, Mentee } from 'generated/graphql';
 
 import React from 'react';
 import styled from 'styled-components';
@@ -13,21 +13,17 @@ export interface MeetingActionModalProps {
   finish: boolean;
   setFinish: (x: boolean) => void;
   setAction: (x: undefined) => void;
-  topic: Services;
-  times: Proposed_Time[];
+  meeting: Meeting;
   mentee?: Mentee;
   action: 'accept' | 'change' | 'status';
 }
 
-const MeetingActionModal: React.FC<MeetingActionModalProps> = ({
-  topic,
-  times,
+export const MeetingActionModal: React.FC<MeetingActionModalProps> = ({
+  meeting,
   mentee,
   action,
   setAction,
 }) => {
-  console.log('times: ', times);
-
   // const [createMeeting] = useCreateMeetingMutation({
   //   variables: {
   //     input: {
@@ -55,24 +51,21 @@ const MeetingActionModal: React.FC<MeetingActionModalProps> = ({
         <DialogContent>
           {action === 'accept' && (
             <AcceptMeeting
-              topic={topic}
-              times={times}
+              meeting={meeting}
               mentee={mentee}
               setAction={setAction}
             />
           )}
           {action === 'change' && (
             <ChangeMeeting
-              topic={topic}
-              times={times}
+              meeting={meeting}
               mentee={mentee}
               setAction={setAction}
             />
           )}
           {action === 'status' && (
             <StatusMeeting
-              topic={topic}
-              times={times}
+              meeting={meeting}
               mentee={mentee}
               setAction={setAction}
             />
@@ -83,9 +76,7 @@ const MeetingActionModal: React.FC<MeetingActionModalProps> = ({
   );
 };
 
-export default MeetingActionModal;
-
-export const MeetingActionModalStyle = styled.div`
+const MeetingActionModalStyle = styled.div`
   width: 600px;
   color: ${(props) => props.theme.mainGreen};
   font-size: larger;

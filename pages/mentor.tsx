@@ -61,7 +61,7 @@ const MentorAdmin: React.FC = () => {
           <PersonalInfo
             user={data?.user?.mentor! as Mentor}
             userType={UserType.mentor}
-            schoolName={data?.user?.university[0]?.name as string}
+            schoolName={data?.user?.university[0]?.name}
             majors={data?.user?.majors as Majors[]}
           />
           <MeetingsCalendar upcomingMeetings={upcomingMeetings as Meeting[]} />

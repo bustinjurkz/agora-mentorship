@@ -1,27 +1,19 @@
 import Button from '@material-ui/core/Button';
-import { Mentee, Proposed_Time, Services } from 'generated/graphql';
+import { Meeting, Mentee } from 'generated/graphql';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
 export interface StatusMeetingProps {
-  finish?: boolean;
-  setFinish?: (x: boolean) => void;
   setAction: (x: undefined) => void;
-  topic: Services;
-  times: Proposed_Time[];
   mentee?: Mentee;
+  meeting: Meeting;
 }
 
 export const StatusMeeting: React.FC<StatusMeetingProps> = ({
-  topic,
-  times,
+  meeting,
   mentee,
   setAction,
 }) => {
-  const [selectedTime, setSelectedTime] = useState(0);
-  const handleBooking = () => {
-    console.log('ye');
-  };
   const [loading, setLoading] = useState(false);
 
   return (

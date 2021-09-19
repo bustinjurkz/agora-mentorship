@@ -2,7 +2,12 @@ import Button from '@material-ui/core/Button';
 
 import List from '@material-ui/core/List';
 import ListItemText from '@material-ui/core/ListItemText';
-import { Mentee, Proposed_Time, Services } from 'generated/graphql';
+import {
+  Meeting,
+  Mentee,
+  Proposed_Time,
+  useCreateMeetingMutation,
+} from 'generated/graphql';
 import ListItem from '@material-ui/core/ListItem';
 import format from 'date-fns/format';
 import React, { useState } from 'react';
@@ -11,25 +16,32 @@ import { servicePrettier } from '../../utils';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 export interface AcceptMeetingProps {
-  finish?: boolean;
-  setFinish?: (x: boolean) => void;
-  setAction: (x: undefined) => void;
-  topic: Services;
-  times: Proposed_Time[];
+  meeting: Meeting;
   mentee?: Mentee;
+  setAction: (x: undefined) => void;
 }
 
 export const AcceptMeeting: React.FC<AcceptMeetingProps> = ({
-  finish,
-  setFinish,
-  topic,
-  times,
+  meeting,
   mentee,
   setAction,
 }) => {
+  const proposedTimes = meeting.proposed_times as Proposed_Time[];
   const [selectedTime, setSelectedTime] = useState(0);
+
+  const [createMeeting] = useCreateMeetingMutation({
+    variables: {
+      input: {
+        id: meeting.id.toString(),
+        start_time: meeting.start_time,
+      },
+    },
+  });
+
   const handleBooking = () => {
-    console.log('ye');
+    createMeeting()
+      .catch(() => alert('Failed to create meeting.  Please contact support.'))
+      .finally(() => setLoading(false));
   };
   const [loading, setLoading] = useState(false);
 
@@ -44,14 +56,14 @@ export const AcceptMeeting: React.FC<AcceptMeetingProps> = ({
 
         <div className="item">
           <span className="label">Topic: </span>
-          <span className="value">{servicePrettier(topic)}</span>
+          <span className="value">{servicePrettier(meeting.topic!)}</span>
         </div>
       </div>
 
       <div className="item">
         <span className="label time">Select a time: </span>
         <List className="times">
-          {times.map((time: Proposed_Time, i: number) => (
+          {proposedTimes.map((time, i: number) => (
             <Button
               key={i}
               onClick={() => setSelectedTime(time.id)}

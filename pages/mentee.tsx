@@ -27,13 +27,13 @@ const MenteeAdmin: React.FC = () => {
   }
 
   const upcomingMeetings = data?.user?.mentee?.meetings?.filter(
-    (x) => x?.start_time && !x.end_time,
+    (x) => x?.start_time && !x.end_time && !x.cancelled,
   );
   const pendingMeetings = data?.user?.mentee?.meetings?.filter(
-    (x) => !x?.start_time && x?.proposed_times,
+    (x) => !x?.start_time && x?.proposed_times && !x.cancelled,
   );
   const pastMeetings = data?.user?.mentee?.meetings?.filter(
-    (x) => !x?.start_time && x?.end_time,
+    (x) => !x?.start_time && x?.end_time && !x.cancelled,
   );
 
   const renderNotificationBanner = () => {
@@ -63,7 +63,7 @@ const MenteeAdmin: React.FC = () => {
           <PersonalInfo
             user={data?.user?.mentee! as Mentee}
             userType={UserType.mentee}
-            schoolName={data?.user?.university[0]?.name as string}
+            schoolName={data?.user?.university[0]?.name}
             majors={data?.user?.majors as Majors[]}
           />
           <MeetingsCalendar upcomingMeetings={upcomingMeetings as Meeting[]} />

@@ -29,6 +29,7 @@ const UpcomingMeetings: React.FC<UpcomingMeetingsProps> = ({
               <UpcomingMeetingCard
                 key={i}
                 meeting={x}
+                userType={userType}
                 otherUser={userType === UserType.mentee ? x.mentor! : x.mentee!}
               />
             ))

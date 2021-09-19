@@ -2,18 +2,26 @@ import styled from 'styled-components';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { Meeting, Mentee, Mentor } from 'generated/graphql';
 import format from 'date-fns/format';
-import { servicePrettier } from 'components/utils';
+import { servicePrettier, UserType } from 'components/utils';
 import addHours from 'date-fns/addHours';
-
+import Button from '@material-ui/core/Button';
+import { MeetingActionModal } from './MeetingActionModal';
+import { useState } from 'react';
 export interface UpcomingMeetingCardProps {
   meeting: Meeting;
   otherUser: Mentor | Mentee;
+  userType: UserType;
 }
 
 export const UpcomingMeetingCard: React.FC<UpcomingMeetingCardProps> = ({
   meeting,
   otherUser,
+  userType,
 }) => {
+  const [action, setAction] = useState<
+    'change' | 'accept' | 'status' | undefined
+  >(undefined);
+  const [finish, setFinish] = useState(false);
   return (
     <UpcomingCardStyle>
       <h4 className="date">{format(new Date(meeting.start_time), 'PPPP')}</h4>
@@ -30,7 +38,22 @@ export const UpcomingMeetingCard: React.FC<UpcomingMeetingCardProps> = ({
             <span className="jobtitle">{otherUser.job_title_primary}</span>
           </div>
         </div>
+
+        <Button className="button decline" onClick={() => setAction('change')}>
+          {userType === UserType.mentor ? 'Decline' : 'Cancel'}
+        </Button>
       </div>
+
+      {action !== undefined && (
+        <MeetingActionModal
+          finish={finish}
+          setFinish={setFinish}
+          meeting={meeting}
+          mentee={meeting.mentee as Mentee}
+          action={action}
+          setAction={setAction}
+        />
+      )}
     </UpcomingCardStyle>
   );
 };
@@ -56,6 +79,11 @@ const UpcomingCardStyle = styled.div`
     }
     .meeting-time {
       font-size: medium;
+    }
+    .decline {
+      margin-top: 10px;
+      display: flex;
+      justify-content: flex-start;
     }
   }
 
