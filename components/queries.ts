@@ -40,6 +40,7 @@ gql`
           topic
           mentee {
             id
+            userId
             name
             job_title_primary
             job_title_secondary

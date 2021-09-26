@@ -15,12 +15,16 @@ export interface PendingMeetingCardProps {
   meeting: Meeting;
   otherUser: Mentor | Mentee;
   userType: UserType;
+  mentorEmail?: string;
+  mentorName?: string;
 }
 
 export const PendingMeetingCard: React.FC<PendingMeetingCardProps> = ({
   meeting,
   otherUser,
   userType,
+  mentorEmail,
+  mentorName,
 }) => {
   const [action, setAction] = useState<
     'change' | 'accept' | 'status' | undefined
@@ -88,6 +92,8 @@ export const PendingMeetingCard: React.FC<PendingMeetingCardProps> = ({
           mentee={meeting.mentee as Mentee}
           action={action}
           setAction={setAction}
+          mentorEmail={mentorEmail}
+          mentorName={mentorName}
         />
       )}
     </PendingMeetingCardStyle>

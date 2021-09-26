@@ -16,6 +16,8 @@ export interface MeetingActionModalProps {
   meeting: Meeting;
   mentee?: Mentee;
   action: 'accept' | 'change' | 'status';
+  mentorEmail?: string;
+  mentorName?: string;
 }
 
 export const MeetingActionModal: React.FC<MeetingActionModalProps> = ({
@@ -23,6 +25,8 @@ export const MeetingActionModal: React.FC<MeetingActionModalProps> = ({
   mentee,
   action,
   setAction,
+  mentorEmail,
+  mentorName,
 }) => {
   // const [createMeeting] = useCreateMeetingMutation({
   //   variables: {
@@ -52,8 +56,9 @@ export const MeetingActionModal: React.FC<MeetingActionModalProps> = ({
           {action === 'accept' && (
             <AcceptMeeting
               meeting={meeting}
-              mentee={mentee}
               setAction={setAction}
+              mentorEmail={mentorEmail!}
+              mentorName={mentorName!}
             />
           )}
           {action === 'change' && (

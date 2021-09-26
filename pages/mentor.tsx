@@ -27,13 +27,13 @@ const MentorAdmin: React.FC = () => {
   }
 
   const upcomingMeetings = data?.user?.mentor?.meetings?.filter(
-    (x) => x?.start_time && !x.end_time,
+    (x) => x?.start_time && !x.end_time && !x.cancelled,
   );
   const pendingMeetings = data?.user?.mentor?.meetings?.filter(
-    (x) => !x?.start_time && x?.proposed_times,
+    (x) => !x?.start_time && x?.proposed_times && !x.cancelled,
   );
   const pastMeetings = data?.user?.mentor?.meetings?.filter(
-    (x) => !x?.start_time && x?.end_time,
+    (x) => !x?.start_time && x?.end_time && !x.cancelled,
   );
   const renderNotificationBanner = () => {
     return (
@@ -61,7 +61,7 @@ const MentorAdmin: React.FC = () => {
           <PersonalInfo
             user={data?.user?.mentor! as Mentor}
             userType={UserType.mentor}
-            schoolName={data?.user?.university[0]?.name}
+            schoolName={data?.user?.university![0]?.name as string}
             majors={data?.user?.majors as Majors[]}
           />
           <MeetingsCalendar upcomingMeetings={upcomingMeetings as Meeting[]} />
@@ -73,6 +73,8 @@ const MentorAdmin: React.FC = () => {
         <PendingMeetings
           meetings={pendingMeetings as Meeting[]}
           userType={UserType.mentor}
+          mentorName={data?.user?.mentor?.name!}
+          mentorEmail={data?.user?.email as string}
         />
         <PastConnections
           meetings={pastMeetings as Meeting[]}

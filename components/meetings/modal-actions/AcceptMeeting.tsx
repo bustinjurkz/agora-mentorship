@@ -4,7 +4,6 @@ import List from '@material-ui/core/List';
 import ListItemText from '@material-ui/core/ListItemText';
 import {
   Meeting,
-  Mentee,
   Proposed_Time,
   useCreateMeetingMutation,
 } from 'generated/graphql';
@@ -17,23 +16,30 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 export interface AcceptMeetingProps {
   meeting: Meeting;
-  mentee?: Mentee;
   setAction: (x: undefined) => void;
+  mentorName: string;
+  mentorEmail: string;
 }
 
 export const AcceptMeeting: React.FC<AcceptMeetingProps> = ({
   meeting,
-  mentee,
   setAction,
+  mentorName,
+  mentorEmail,
 }) => {
   const proposedTimes = meeting.proposed_times as Proposed_Time[];
-  const [selectedTime, setSelectedTime] = useState(0);
+  const [selectedTime, setSelectedTime] = useState(-1);
 
   const [createMeeting] = useCreateMeetingMutation({
     variables: {
       input: {
         id: meeting.id.toString(),
-        start_time: meeting.start_time,
+        start_time: proposedTimes[selectedTime]?.time,
+        topic: meeting.topic!,
+        mentorEmail: mentorEmail,
+        mentorName: mentorName,
+        menteeName: meeting.mentee?.name!,
+        menteeUserId: meeting.mentee?.userId!,
       },
     },
   });
@@ -51,7 +57,7 @@ export const AcceptMeeting: React.FC<AcceptMeetingProps> = ({
       <div className="info-row">
         <div className="item">
           <span className="label">Name: </span>
-          <span className="value">{mentee?.name}</span>
+          <span className="value">{meeting.mentee?.name}</span>
         </div>
 
         <div className="item">
@@ -66,9 +72,9 @@ export const AcceptMeeting: React.FC<AcceptMeetingProps> = ({
           {proposedTimes.map((time, i: number) => (
             <Button
               key={i}
-              onClick={() => setSelectedTime(time.id)}
+              onClick={() => setSelectedTime(i)}
               style={{
-                background: selectedTime === time.id ? '#e8e8e8' : undefined,
+                background: selectedTime === i ? '#e8e8e8' : undefined,
               }}
             >
               <ListItem>
@@ -94,8 +100,8 @@ export const AcceptMeeting: React.FC<AcceptMeetingProps> = ({
         <Button
           variant="contained"
           className="confirm-button"
-          disabled={selectedTime === 0}
-          style={{ background: selectedTime === 0 ? '#979797' : '#008a00' }}
+          disabled={selectedTime === -1}
+          style={{ background: selectedTime === -1 ? '#979797' : '#008a00' }}
           onClick={() => handleBooking()}
         >
           {loading ? <CircularProgress /> : 'Confirm'}

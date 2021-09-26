@@ -50,7 +50,6 @@ export const Query: QueryResolvers = {
     });
 
     // TODO: Add logic to only return mentors that are compatible with the mentee
-
     // Fetches all mentors
     const mentors = await ctx.prisma.user.findMany({
       where: { mentee: null },

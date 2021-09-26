@@ -37,6 +37,11 @@ export type CancelMeetingInput = {
 export type CreateMeetingInput = {
   id: Scalars['ID'];
   start_time: Scalars['Date'];
+  topic: Services;
+  mentorEmail: Scalars['String'];
+  mentorName: Scalars['String'];
+  menteeName: Scalars['String'];
+  menteeUserId: Scalars['ID'];
 };
 
 
@@ -298,7 +303,7 @@ export type GetUserQuery = (
           & Pick<Proposed_Time, 'id' | 'meeting_id' | 'time'>
         )>>>, mentee?: Maybe<(
           { __typename?: 'Mentee' }
-          & Pick<Mentee, 'id' | 'name' | 'job_title_primary' | 'job_title_secondary'>
+          & Pick<Mentee, 'id' | 'userId' | 'name' | 'job_title_primary' | 'job_title_secondary'>
         )> }
       )>>> }
     )>, mentee?: Maybe<(
@@ -499,6 +504,7 @@ export const GetUserDocument = gql`
         topic
         mentee {
           id
+          userId
           name
           job_title_primary
           job_title_secondary

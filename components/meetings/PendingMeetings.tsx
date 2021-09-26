@@ -8,11 +8,15 @@ import { PendingMeetingCard } from './PendingMeetingCard';
 export interface PendingMeetingsProps {
   meetings: Meeting[];
   userType: UserType;
+  mentorName?: string;
+  mentorEmail?: string;
 }
 
 const PendingMeetings: React.FC<PendingMeetingsProps> = ({
   meetings,
   userType,
+  mentorName,
+  mentorEmail,
 }) => {
   return (
     <BackgroundStyle style={{ marginTop: 20 }}>
@@ -32,6 +36,8 @@ const PendingMeetings: React.FC<PendingMeetingsProps> = ({
                 meeting={x}
                 userType={userType}
                 otherUser={userType === UserType.mentee ? x.mentor! : x.mentee!}
+                mentorEmail={mentorEmail}
+                mentorName={mentorName}
               />
             ))
           ) : (

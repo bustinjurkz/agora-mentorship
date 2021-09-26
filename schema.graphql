@@ -184,4 +184,9 @@ input CancelMeetingInput {
 input CreateMeetingInput {
   id: ID!
   start_time: Date!
+  topic: Services!
+  mentorEmail: String!
+  mentorName: String!
+  menteeName: String!
+  menteeUserId: ID!
 }

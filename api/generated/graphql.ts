@@ -32,6 +32,11 @@ export type CancelMeetingInput = {
 export type CreateMeetingInput = {
   id: Scalars['ID'];
   start_time: Scalars['Date'];
+  topic: Services;
+  mentorEmail: Scalars['String'];
+  mentorName: Scalars['String'];
+  menteeName: Scalars['String'];
+  menteeUserId: Scalars['ID'];
 };
 
 
