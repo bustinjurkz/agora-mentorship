@@ -7006,6 +7006,11 @@ swap-case@^2.0.2:
   dependencies:
     tslib "^2.0.3"
 
+sweetalert2@^11.1.7:
+  version "11.1.7"
+  resolved "https://registry.yarnpkg.com/sweetalert2/-/sweetalert2-11.1.7.tgz#0ff2851eae77a76a3fe0ab289d3c32493e811b6d"
+  integrity sha512-7MHQVtKCTORfA9e58g9ZOfT3X58DkSBtvoCQJnqSHobXXb5C7aB8Yg/tAccTFnefCUBU41PoStjXMkzG3bNeig==
+
 symbol-observable@^1.0.4, symbol-observable@^1.1.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/symbol-observable/-/symbol-observable-1.2.0.tgz#c22688aed4eab3cdc2dfeacbb561660560a00804"

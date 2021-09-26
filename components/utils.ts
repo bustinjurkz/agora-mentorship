@@ -2,6 +2,7 @@ import { createTheme } from '@material-ui/core/styles';
 import { Services } from '../api/generated/graphql';
 import styled, { createGlobalStyle } from 'styled-components';
 import Fuse from 'fuse.js';
+import Swal from 'sweetalert2';
 
 export const GlobalStyle = createGlobalStyle`
   body {
@@ -71,6 +72,14 @@ export const servicePrettier = (service: Services) => {
     default:
       return prettyService;
   }
+};
+
+export const renderError = (msg: string) => {
+  Swal.fire({
+    icon: 'error',
+    title: 'Sorry!',
+    text: msg,
+  });
 };
 
 export const BackgroundStyle = styled.div<{

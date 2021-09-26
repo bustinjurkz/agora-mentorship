@@ -4,12 +4,12 @@ import styled from 'styled-components';
 import { Majors, Meeting, Mentor, useGetUserQuery } from 'generated/graphql';
 import Loading from 'components/Loading';
 import ProfileDashboard from 'components/ProfileDashboard';
-import { BackgroundStyle, UserType } from 'components/utils';
+import { BackgroundStyle, renderError, UserType } from 'components/utils';
 import MeetingsCalendar from 'components/meetings/MeetingsCalendar';
 import UpcomingMeetings from 'components/meetings/UpcomingMeetings';
 import PendingMeetings from 'components/meetings/PendingMeetings';
 import PastConnections from 'components/meetings/PastConnections';
-import ErrorMessage from 'components/ErrorMessage';
+import isAfter from 'date-fns/isAfter';
 
 const MentorAdmin: React.FC = () => {
   const { data, loading, error } = useGetUserQuery({
@@ -21,13 +21,15 @@ const MentorAdmin: React.FC = () => {
     return <Loading />;
   }
   if (error) {
-    return (
-      <ErrorMessage msg={'Unknown network error.  Please try again later'} />
-    );
+    renderError('Unknown network error. Please try again later.');
   }
 
   const upcomingMeetings = data?.user?.mentor?.meetings?.filter(
-    (x) => x?.start_time && !x.end_time && !x.cancelled,
+    (x) =>
+      x?.start_time &&
+      isAfter(new Date(x?.start_time), new Date()) &&
+      !x.end_time &&
+      !x.cancelled,
   );
   const pendingMeetings = data?.user?.mentor?.meetings?.filter(
     (x) => !x?.start_time && x?.proposed_times && !x.cancelled,

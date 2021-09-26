@@ -7,6 +7,7 @@ import FormControl from '@material-ui/core/FormControl';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Radio from '@material-ui/core/Radio';
+import { renderError } from 'components/utils';
 
 export interface ChangeMeetingProps {
   setAction: (x: undefined) => void;
@@ -36,8 +37,13 @@ export const ChangeMeeting: React.FC<ChangeMeetingProps> = ({
   const handleCancel = () => {
     setLoading(true);
     cancelMeeting()
-      .catch(() => alert('Failed to cancel meeting.  Please contact support.'))
-      .finally(() => setLoading(false));
+      .catch(() =>
+        renderError('Failed to cancel meeting.  Please contact support.'),
+      )
+      .finally(() => {
+        setLoading(false);
+        setAction(undefined);
+      });
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {

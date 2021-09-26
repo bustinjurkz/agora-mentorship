@@ -28,22 +28,6 @@ export const MeetingActionModal: React.FC<MeetingActionModalProps> = ({
   mentorEmail,
   mentorName,
 }) => {
-  // const [createMeeting] = useCreateMeetingMutation({
-  //   variables: {
-  //     input: {
-  //       topic: topic,
-  //       menteeId: '4',
-  //       mentorId: mentor.mentor!.mentor!.id,
-  //       proposed_times: times,
-  //     },
-  //   },
-  // });
-  // const handleBooking = () => {
-  //   setLoading(true);
-  //   createMeeting()
-  //     .catch(() => alert('Failed to create meeting.  Please contact support.'))
-  //     .finally(() => setLoading(false));
-  // };
   return (
     <Dialog
       open={action !== undefined}

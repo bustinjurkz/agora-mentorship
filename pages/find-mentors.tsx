@@ -6,8 +6,7 @@ import Loading from 'components/Loading';
 import { SearchInputs } from 'components/SearchInputs';
 import MentorCard from 'components/MentorCard';
 import RequestMentor from 'components/RequestMentor';
-import ErrorMessage from 'components/ErrorMessage';
-import { applySearchQuery } from 'components/utils';
+import { applySearchQuery, renderError } from 'components/utils';
 
 const FindMentors: React.FC = () => {
   const [mentorSearch, setMentorSearch] = useState('');
@@ -25,9 +24,7 @@ const FindMentors: React.FC = () => {
   }
 
   if (error) {
-    return (
-      <ErrorMessage msg={'Unknown network error.  Please try again later'} />
-    );
+    renderError('Unknown network error. Please try again later.');
   }
   const mentors = data?.userMentors;
   const sortedMentors = mentors?.slice().sort((a, b) => b!.score! - a!.score!);

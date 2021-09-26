@@ -11,7 +11,7 @@ import ListItem from '@material-ui/core/ListItem';
 import format from 'date-fns/format';
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { servicePrettier } from '../../utils';
+import { renderError, servicePrettier } from '../../utils';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 export interface AcceptMeetingProps {
@@ -46,8 +46,13 @@ export const AcceptMeeting: React.FC<AcceptMeetingProps> = ({
 
   const handleBooking = () => {
     createMeeting()
-      .catch(() => alert('Failed to create meeting.  Please contact support.'))
-      .finally(() => setLoading(false));
+      .catch(() =>
+        renderError('Failed to create meeting.  Please contact support.'),
+      )
+      .finally(() => {
+        setLoading(false);
+        setAction(undefined);
+      });
   };
   const [loading, setLoading] = useState(false);
 

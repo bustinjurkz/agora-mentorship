@@ -2,13 +2,12 @@ import PersonalInfo from 'components/PersonalInfo';
 import React from 'react';
 import Loading from 'components/Loading';
 import ProfileDashboard from 'components/ProfileDashboard';
-import { BackgroundStyle, UserType } from 'components/utils';
+import { BackgroundStyle, renderError, UserType } from 'components/utils';
 import MeetingsCalendar from 'components/meetings/MeetingsCalendar';
 import UpcomingMeetings from 'components/meetings/UpcomingMeetings';
 import PendingMeetings from 'components/meetings/PendingMeetings';
 import PastConnections from 'components/meetings/PastConnections';
 import { AdminStyle } from './mentor';
-import ErrorMessage from 'components/ErrorMessage';
 import { Majors, Meeting, Mentee, useGetUserQuery } from 'generated/graphql';
 
 const MenteeAdmin: React.FC = () => {
@@ -21,9 +20,7 @@ const MenteeAdmin: React.FC = () => {
     return <Loading />;
   }
   if (error || !data) {
-    return (
-      <ErrorMessage msg="Unknown network error.  Please try again later" />
-    );
+    renderError('Unknown network error. Please try again later.');
   }
 
   const upcomingMeetings = data?.user?.mentee?.meetings?.filter(
