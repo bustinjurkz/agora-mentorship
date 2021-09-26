@@ -29,11 +29,19 @@ export enum CacheControlScope {
   Private = 'PRIVATE'
 }
 
+export type CancelMeetingInput = {
+  id: Scalars['ID'];
+  cancel_reason: Scalars['String'];
+};
+
 export type CreateMeetingInput = {
+  id: Scalars['ID'];
+  start_time: Scalars['Date'];
   topic: Services;
-  proposed_times: Array<Scalars['Date']>;
-  menteeId: Scalars['ID'];
-  mentorId: Scalars['ID'];
+  mentorEmail: Scalars['String'];
+  mentorName: Scalars['String'];
+  menteeName: Scalars['String'];
+  menteeUserId: Scalars['ID'];
 };
 
 
@@ -63,14 +71,16 @@ export type Majors = {
 export type Meeting = {
   __typename?: 'Meeting';
   id: Scalars['Int'];
-  topic?: Maybe<Array<Maybe<Services>>>;
+  topic?: Maybe<Services>;
   start_time?: Maybe<Scalars['Date']>;
   end_time?: Maybe<Scalars['Date']>;
   cancelled?: Maybe<Scalars['Boolean']>;
   cancel_reason?: Maybe<Scalars['String']>;
-  proposed_times: Array<Maybe<Proposed_Time>>;
+  proposed_times?: Maybe<Array<Maybe<Proposed_Time>>>;
   menteeId: Scalars['ID'];
   mentorId: Scalars['ID'];
+  mentor?: Maybe<Mentor>;
+  mentee?: Maybe<Mentee>;
 };
 
 export type Mentee = {
@@ -117,12 +127,34 @@ export type MentorWithScore = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  createMeeting?: Maybe<Scalars['ID']>;
+  /** Proposes a meeting with 3 suggested times */
+  proposeMeeting?: Maybe<Scalars['ID']>;
+  /** Cancels a meeting with the reason */
+  cancelMeeting?: Maybe<Scalars['Boolean']>;
+  /** Confirms a meeting with the agreed-upon time */
+  createMeeting?: Maybe<Scalars['Boolean']>;
+};
+
+
+export type MutationProposeMeetingArgs = {
+  input: ProposeMeetingInput;
+};
+
+
+export type MutationCancelMeetingArgs = {
+  input: CancelMeetingInput;
 };
 
 
 export type MutationCreateMeetingArgs = {
   input: CreateMeetingInput;
+};
+
+export type ProposeMeetingInput = {
+  topic: Services;
+  proposed_times: Array<Scalars['Date']>;
+  menteeId: Scalars['ID'];
+  mentorId: Scalars['ID'];
 };
 
 export type Proposed_Time = {
@@ -214,6 +246,16 @@ export type User = {
   university?: Maybe<Array<Maybe<University>>>;
 };
 
+export type ProposeMeetingMutationVariables = Exact<{
+  input: ProposeMeetingInput;
+}>;
+
+
+export type ProposeMeetingMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'proposeMeeting'>
+);
+
 export type CreateMeetingMutationVariables = Exact<{
   input: CreateMeetingInput;
 }>;
@@ -222,6 +264,16 @@ export type CreateMeetingMutationVariables = Exact<{
 export type CreateMeetingMutation = (
   { __typename?: 'Mutation' }
   & Pick<Mutation, 'createMeeting'>
+);
+
+export type CancelMeetingMutationVariables = Exact<{
+  input: CancelMeetingInput;
+}>;
+
+
+export type CancelMeetingMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'cancelMeeting'>
 );
 
 export type GetUserQueryVariables = Exact<{
@@ -245,11 +297,29 @@ export type GetUserQuery = (
         & Pick<Availability, 'id' | 'time'>
       )>>>, meetings?: Maybe<Array<Maybe<(
         { __typename?: 'Meeting' }
-        & Pick<Meeting, 'id' | 'start_time'>
+        & Pick<Meeting, 'id' | 'start_time' | 'end_time' | 'cancelled' | 'topic'>
+        & { proposed_times?: Maybe<Array<Maybe<(
+          { __typename?: 'Proposed_Time' }
+          & Pick<Proposed_Time, 'id' | 'meeting_id' | 'time'>
+        )>>>, mentee?: Maybe<(
+          { __typename?: 'Mentee' }
+          & Pick<Mentee, 'id' | 'userId' | 'name' | 'job_title_primary' | 'job_title_secondary'>
+        )> }
       )>>> }
     )>, mentee?: Maybe<(
       { __typename?: 'Mentee' }
       & Pick<Mentee, 'id' | 'bio' | 'job_title_primary' | 'job_title_secondary' | 'preferred_services' | 'birthyear' | 'school_year' | 'degree_type' | 'highest_education' | 'name' | 'years_experience'>
+      & { meetings?: Maybe<Array<Maybe<(
+        { __typename?: 'Meeting' }
+        & Pick<Meeting, 'id' | 'start_time' | 'end_time' | 'cancelled' | 'topic'>
+        & { proposed_times?: Maybe<Array<Maybe<(
+          { __typename?: 'Proposed_Time' }
+          & Pick<Proposed_Time, 'id' | 'meeting_id' | 'time'>
+        )>>>, mentor?: Maybe<(
+          { __typename?: 'Mentor' }
+          & Pick<Mentor, 'id' | 'name' | 'job_title_primary' | 'job_title_secondary'>
+        )> }
+      )>>> }
     )>, majors?: Maybe<Array<Maybe<(
       { __typename?: 'Majors' }
       & Pick<Majors, 'id' | 'major' | 'faculty'>
@@ -304,6 +374,36 @@ export type GetUserMentorsQuery = (
 );
 
 
+export const ProposeMeetingDocument = gql`
+    mutation ProposeMeeting($input: ProposeMeetingInput!) {
+  proposeMeeting(input: $input)
+}
+    `;
+export type ProposeMeetingMutationFn = Apollo.MutationFunction<ProposeMeetingMutation, ProposeMeetingMutationVariables>;
+
+/**
+ * __useProposeMeetingMutation__
+ *
+ * To run a mutation, you first call `useProposeMeetingMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useProposeMeetingMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [proposeMeetingMutation, { data, loading, error }] = useProposeMeetingMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useProposeMeetingMutation(baseOptions?: Apollo.MutationHookOptions<ProposeMeetingMutation, ProposeMeetingMutationVariables>) {
+        return Apollo.useMutation<ProposeMeetingMutation, ProposeMeetingMutationVariables>(ProposeMeetingDocument, baseOptions);
+      }
+export type ProposeMeetingMutationHookResult = ReturnType<typeof useProposeMeetingMutation>;
+export type ProposeMeetingMutationResult = Apollo.MutationResult<ProposeMeetingMutation>;
+export type ProposeMeetingMutationOptions = Apollo.BaseMutationOptions<ProposeMeetingMutation, ProposeMeetingMutationVariables>;
 export const CreateMeetingDocument = gql`
     mutation CreateMeeting($input: CreateMeetingInput!) {
   createMeeting(input: $input)
@@ -334,6 +434,36 @@ export function useCreateMeetingMutation(baseOptions?: Apollo.MutationHookOption
 export type CreateMeetingMutationHookResult = ReturnType<typeof useCreateMeetingMutation>;
 export type CreateMeetingMutationResult = Apollo.MutationResult<CreateMeetingMutation>;
 export type CreateMeetingMutationOptions = Apollo.BaseMutationOptions<CreateMeetingMutation, CreateMeetingMutationVariables>;
+export const CancelMeetingDocument = gql`
+    mutation CancelMeeting($input: CancelMeetingInput!) {
+  cancelMeeting(input: $input)
+}
+    `;
+export type CancelMeetingMutationFn = Apollo.MutationFunction<CancelMeetingMutation, CancelMeetingMutationVariables>;
+
+/**
+ * __useCancelMeetingMutation__
+ *
+ * To run a mutation, you first call `useCancelMeetingMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCancelMeetingMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [cancelMeetingMutation, { data, loading, error }] = useCancelMeetingMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCancelMeetingMutation(baseOptions?: Apollo.MutationHookOptions<CancelMeetingMutation, CancelMeetingMutationVariables>) {
+        return Apollo.useMutation<CancelMeetingMutation, CancelMeetingMutationVariables>(CancelMeetingDocument, baseOptions);
+      }
+export type CancelMeetingMutationHookResult = ReturnType<typeof useCancelMeetingMutation>;
+export type CancelMeetingMutationResult = Apollo.MutationResult<CancelMeetingMutation>;
+export type CancelMeetingMutationOptions = Apollo.BaseMutationOptions<CancelMeetingMutation, CancelMeetingMutationVariables>;
 export const GetUserDocument = gql`
     query GetUser($input: ID!) {
   user(id: $input) {
@@ -364,6 +494,21 @@ export const GetUserDocument = gql`
       meetings {
         id
         start_time
+        end_time
+        cancelled
+        proposed_times {
+          id
+          meeting_id
+          time
+        }
+        topic
+        mentee {
+          id
+          userId
+          name
+          job_title_primary
+          job_title_secondary
+        }
       }
     }
     mentee {
@@ -378,6 +523,24 @@ export const GetUserDocument = gql`
       highest_education
       name
       years_experience
+      meetings {
+        id
+        start_time
+        end_time
+        cancelled
+        proposed_times {
+          id
+          meeting_id
+          time
+        }
+        topic
+        mentor {
+          id
+          name
+          job_title_primary
+          job_title_secondary
+        }
+      }
     }
     majors {
       id

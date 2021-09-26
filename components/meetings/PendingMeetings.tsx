@@ -1,39 +1,23 @@
 import Button from '@material-ui/core/Button/Button';
+import { Meeting } from 'generated/graphql';
 import React from 'react';
 import styled from 'styled-components';
-import { BackgroundStyle } from '../utils';
+import { BackgroundStyle, UserType } from '../utils';
 import { PendingMeetingCard } from './PendingMeetingCard';
 
-const sampleData = [
-  {
-    date: 'June 30 2021',
-    type: 'Career Development',
-    times: [
-      '3:00 PM - 4:00 PM EST',
-      '5:00 PM - 6:00 PM EST',
-      '6:00 PM - 7:00 PM EST',
-    ],
-    mentee: 'Randy Miess',
-    jobtitle: 'Co-Op',
-    position: 'Enterprise Analyst',
-    company: 'TD Bank',
-  },
-  {
-    date: 'July 7 2021',
-    type: 'General',
-    times: [
-      '9:00 AM - 10:00 AM EST',
-      '11:00 AM - 12:00 PM EST',
-      '6:00 PM - 7:00 PM EST',
-    ],
-    mentee: 'Jane Day',
-    jobtitle: 'Co-Op',
-    position: 'Personal Banking',
-    company: 'TD Bank',
-  },
-];
+export interface PendingMeetingsProps {
+  meetings: Meeting[];
+  userType: UserType;
+  mentorName?: string;
+  mentorEmail?: string;
+}
 
-const PendingMeetings: React.FC = () => {
+const PendingMeetings: React.FC<PendingMeetingsProps> = ({
+  meetings,
+  userType,
+  mentorName,
+  mentorEmail,
+}) => {
   return (
     <BackgroundStyle style={{ marginTop: 20 }}>
       <PendingMeetingsStyle>
@@ -43,10 +27,22 @@ const PendingMeetings: React.FC = () => {
             View All
           </Button>
         </div>
+
         <div className="card-container">
-          {sampleData.map((x: any, i: number) => (
-            <PendingMeetingCard key={i} sampleData={x} />
-          ))}
+          {meetings.length > 0 ? (
+            meetings?.map((x, i: number) => (
+              <PendingMeetingCard
+                key={i}
+                meeting={x}
+                userType={userType}
+                otherUser={userType === UserType.mentee ? x.mentor! : x.mentee!}
+                mentorEmail={mentorEmail}
+                mentorName={mentorName}
+              />
+            ))
+          ) : (
+            <div className="none">You currently have no pending meetings</div>
+          )}
         </div>
       </PendingMeetingsStyle>
     </BackgroundStyle>

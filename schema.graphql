@@ -76,14 +76,16 @@ type Mentor {
 
 type Meeting {
   id: Int!
-  topic: [Services]
+  topic: Services
   start_time: Date
   end_time: Date
   cancelled: Boolean
   cancel_reason: String
-  proposed_times: [Proposed_Time]!
+  proposed_times: [Proposed_Time]
   menteeId: ID!
   mentorId: ID!
+  mentor: Mentor
+  mentee: Mentee
 }
 
 type Proposed_Time {
@@ -156,16 +158,35 @@ type Query {
   languages: [Language]
 }
 
-# "Generates the calendar from the input data and sends it forward to the user defined email address."
-# calendarSend(input: CalendarSendInput!): Boolean!
-
 type Mutation {
-  createMeeting(input: CreateMeetingInput!): ID
+  "Proposes a meeting with 3 suggested times"
+  proposeMeeting(input: ProposeMeetingInput!): ID
+
+  "Cancels a meeting with the reason"
+  cancelMeeting(input: CancelMeetingInput!): Boolean
+
+  "Confirms a meeting with the agreed-upon time"
+  createMeeting(input: CreateMeetingInput!): Boolean
 }
 
-input CreateMeetingInput {
+input ProposeMeetingInput {
   topic: Services!
   proposed_times: [Date!]! #2021-08-16T14:00:00.000
   menteeId: ID!
   mentorId: ID!
+}
+
+input CancelMeetingInput {
+  id: ID!
+  cancel_reason: String!
+}
+
+input CreateMeetingInput {
+  id: ID!
+  start_time: Date!
+  topic: Services!
+  mentorEmail: String!
+  mentorName: String!
+  menteeName: String!
+  menteeUserId: ID!
 }

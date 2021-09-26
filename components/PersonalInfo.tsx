@@ -1,8 +1,13 @@
 import Button from '@material-ui/core/Button';
-import { Mentee, Mentor } from 'generated/graphql';
+import { Majors, Mentee, Mentor } from 'generated/graphql';
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { BackgroundStyle } from './utils';
+import {
+  BackgroundStyle,
+  majorPrettier,
+  servicePrettier,
+  UserType,
+} from './utils';
 
 export enum FieldType {
   'bio',
@@ -12,15 +17,20 @@ export enum FieldType {
 }
 
 export interface PersonalInfoProps {
-  mentorInfo?: Mentor;
-  menteeInfo?: Mentee;
+  user: Mentor | Mentee;
+  schoolName: string;
+  userType: UserType;
+  majors: Majors[];
 }
 
 const PersonalInfo: React.FC<PersonalInfoProps> = ({
-  mentorInfo,
-  menteeInfo,
+  user,
+  schoolName,
+  majors,
+  userType,
 }) => {
-  const user = mentorInfo ? mentorInfo : menteeInfo;
+  const major = majorPrettier(majors[0]!.major);
+
   const [fieldSelected, setFieldSelected] = useState<FieldType>(FieldType.bio);
   const renderContentHeader = () => {
     switch (fieldSelected) {
@@ -31,7 +41,7 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({
       case FieldType.position:
         return 'Job Position';
       case FieldType.services:
-        return 'Services Offered';
+        return userType === UserType.mentor && 'Services Offered';
     }
   };
   const renderContentBody = () => {
@@ -41,8 +51,8 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({
       case FieldType.education:
         return (
           <div className="education">
-            <div className="school">{user?.school}</div>
-            <div className="major">{user?.school_major}</div>
+            <div className="major">{major}</div>
+            <div className="school">{schoolName}</div>
             <div className="year">{user?.school_year}</div>
           </div>
         );
@@ -54,13 +64,16 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({
           </div>
         );
       case FieldType.services:
-        return user?.preferred_services.map((x) => {
-          return (
-            <div key={x} className="services">
-              {x}
-            </div>
-          );
-        });
+        return (
+          userType === UserType.mentor &&
+          user?.preferred_services.map((x) => {
+            return (
+              <div key={x} className="service">
+                {servicePrettier(x!)}
+              </div>
+            );
+          })
+        );
     }
   };
   return (
@@ -107,18 +120,20 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({
           >
             Education
           </Button>
-          <Button
-            disableElevation
-            onClick={() => {
-              setFieldSelected(FieldType.services);
-            }}
-            variant={
-              fieldSelected === FieldType.services ? 'contained' : 'text'
-            }
-            className="field services"
-          >
-            Services
-          </Button>
+          {userType === UserType.mentor && (
+            <Button
+              disableElevation
+              onClick={() => {
+                setFieldSelected(FieldType.services);
+              }}
+              variant={
+                fieldSelected === FieldType.services ? 'contained' : 'text'
+              }
+              className="field services"
+            >
+              Services
+            </Button>
+          )}
         </div>
       </BackgroundStyle>
       <BackgroundStyle style={{ marginTop: 17 }} fullHeight>
@@ -143,6 +158,16 @@ const PersonalInfoStyle = styled.div`
   display: flex;
   flex-direction: column;
   width: 400px;
+  .service {
+    margin: 5px 0px 15px 0px;
+    font-weight: 600;
+  }
+  .job-info {
+    .primary {
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+  }
   .header {
     display: inline-flex;
     justify-content: space-between;
@@ -161,6 +186,12 @@ const PersonalInfoStyle = styled.div`
     .content-body {
       margin-left: 0px 10px;
       margin-bottom: 5px;
+      .education {
+        .major {
+          font-weight: 600;
+          margin-bottom: 5px;
+        }
+      }
     }
   }
 

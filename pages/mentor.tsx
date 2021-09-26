@@ -1,10 +1,10 @@
 import PersonalInfo from 'components/PersonalInfo';
 import React from 'react';
 import styled from 'styled-components';
-import { useGetUserQuery } from 'generated/graphql';
+import { Majors, Meeting, Mentor, useGetUserQuery } from 'generated/graphql';
 import Loading from 'components/Loading';
 import ProfileDashboard from 'components/ProfileDashboard';
-import { BackgroundStyle } from 'components/utils';
+import { BackgroundStyle, UserType } from 'components/utils';
 import MeetingsCalendar from 'components/meetings/MeetingsCalendar';
 import UpcomingMeetings from 'components/meetings/UpcomingMeetings';
 import PendingMeetings from 'components/meetings/PendingMeetings';
@@ -25,28 +25,61 @@ const MentorAdmin: React.FC = () => {
       <ErrorMessage msg={'Unknown network error.  Please try again later'} />
     );
   }
+
+  const upcomingMeetings = data?.user?.mentor?.meetings?.filter(
+    (x) => x?.start_time && !x.end_time && !x.cancelled,
+  );
+  const pendingMeetings = data?.user?.mentor?.meetings?.filter(
+    (x) => !x?.start_time && x?.proposed_times && !x.cancelled,
+  );
+  const pastMeetings = data?.user?.mentor?.meetings?.filter(
+    (x) => !x?.start_time && x?.end_time && !x.cancelled,
+  );
   const renderNotificationBanner = () => {
     return (
       <BackgroundStyle backgroundColor="#ff9500">
         <div className="notification-banner">
-          Hi {data?.user?.mentor?.name}, you have 1 upcoming & 3 pending
-          meetings!
+          Hi {data?.user?.mentor?.name}, you have{' '}
+          {upcomingMeetings && upcomingMeetings?.length > 0
+            ? upcomingMeetings?.length
+            : 'no'}{' '}
+          upcoming &{' '}
+          {pendingMeetings && pendingMeetings.length > 0
+            ? pendingMeetings.length
+            : 'no'}{' '}
+          pending meetings!
         </div>
       </BackgroundStyle>
     );
   };
   return (
     <AdminStyle>
-      <ProfileDashboard />
+      <ProfileDashboard userType={UserType.mentor} />
       <div className="profile-container">
         {renderNotificationBanner()}
         <div className="info-cal-container">
-          <PersonalInfo mentorInfo={data?.user?.mentor!} />
-          <MeetingsCalendar />
+          <PersonalInfo
+            user={data?.user?.mentor! as Mentor}
+            userType={UserType.mentor}
+            schoolName={data?.user?.university![0]?.name as string}
+            majors={data?.user?.majors as Majors[]}
+          />
+          <MeetingsCalendar upcomingMeetings={upcomingMeetings as Meeting[]} />
         </div>
-        <UpcomingMeetings />
-        <PendingMeetings />
-        <PastConnections />
+        <UpcomingMeetings
+          meetings={upcomingMeetings as Meeting[]}
+          userType={UserType.mentor}
+        />
+        <PendingMeetings
+          meetings={pendingMeetings as Meeting[]}
+          userType={UserType.mentor}
+          mentorName={data?.user?.mentor?.name!}
+          mentorEmail={data?.user?.email as string}
+        />
+        <PastConnections
+          meetings={pastMeetings as Meeting[]}
+          userType={UserType.mentor}
+        />
       </div>
     </AdminStyle>
   );

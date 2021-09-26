@@ -1,31 +1,19 @@
 import Button from '@material-ui/core/Button/Button';
+import { Meeting } from 'generated/graphql';
 import React from 'react';
 import styled from 'styled-components';
-import { BackgroundStyle } from '../utils';
+import { BackgroundStyle, UserType } from '../utils';
 import { UpcomingMeetingCard } from './UpcomingMeetingCard';
 
-const sampleData = [
-  {
-    date: 'Tomorrow, June 17',
-    type: 'Work-Life Balance',
-    time: '5:00 PM - 6:00 PM EST',
-    mentee: 'John Doe',
-    jobtitle: 'Co-Op',
-    position: 'Personal Banking',
-    company: 'TD Bank',
-  },
-  {
-    date: 'June 23 2021',
-    type: 'Mock Interview',
-    time: '2:00 PM - 3:00 PM EST',
-    mentee: 'Janet Dee',
-    jobtitle: 'Co-Op',
-    position: 'Personal Banking',
-    company: 'TD Bank',
-  },
-];
+export interface UpcomingMeetingsProps {
+  meetings: Meeting[];
+  userType: UserType;
+}
 
-const UpcomingMeetings: React.FC = () => {
+const UpcomingMeetings: React.FC<UpcomingMeetingsProps> = ({
+  meetings,
+  userType,
+}) => {
   return (
     <BackgroundStyle>
       <UpcomingMeetingsStyle>
@@ -36,9 +24,18 @@ const UpcomingMeetings: React.FC = () => {
           </Button>
         </div>
         <div className="card-container">
-          {sampleData.map((x: any, i: number) => (
-            <UpcomingMeetingCard key={i} sampleData={x} />
-          ))}
+          {meetings.length > 0 ? (
+            meetings.map((x, i: number) => (
+              <UpcomingMeetingCard
+                key={i}
+                meeting={x}
+                userType={userType}
+                otherUser={userType === UserType.mentee ? x.mentor! : x.mentee!}
+              />
+            ))
+          ) : (
+            <div className="none">You currently have no pending meetings</div>
+          )}
         </div>
       </UpcomingMeetingsStyle>
     </BackgroundStyle>
