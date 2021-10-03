@@ -3,7 +3,7 @@ import type { AppProps } from 'next/app';
 import { Helmet } from 'react-helmet';
 import { ApolloProvider } from '@apollo/client';
 import { Provider as ReduxProvider } from 'react-redux';
-import { store } from '../store/store';
+import { store } from '../redux/store';
 import React from 'react';
 import { MuiThemeProvider } from '@material-ui/core';
 import { client } from '../client';

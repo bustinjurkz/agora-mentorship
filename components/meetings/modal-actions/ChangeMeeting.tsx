@@ -1,5 +1,5 @@
 import Button from '@material-ui/core/Button';
-import { Meeting, Mentee, useCancelMeetingMutation } from 'generated/graphql';
+import { Meeting, useCancelMeetingMutation } from 'generated/graphql';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -10,17 +10,14 @@ import Radio from '@material-ui/core/Radio';
 
 export interface ChangeMeetingProps {
   setAction: (x: undefined) => void;
-  mentee?: Mentee;
   meeting: Meeting;
 }
 export enum CancelReason {
   Conflict = 'Schedule Conflict',
-  NoShow = 'Mentee not Committed',
   Other = 'Other',
 }
 
 export const ChangeMeeting: React.FC<ChangeMeetingProps> = ({
-  mentee,
   setAction,
   meeting,
 }) => {
@@ -46,15 +43,14 @@ export const ChangeMeeting: React.FC<ChangeMeetingProps> = ({
   const [loading, setLoading] = useState(false);
   const reasons = [
     { value: CancelReason.Conflict, label: 'Schedule Conflict' },
-    { value: CancelReason.NoShow, label: 'Mentee not Committed' },
     { value: CancelReason.Other, label: 'Other' },
   ];
   return (
     <ChangeMeetingStyle>
-      <h1 className="header">Decline Meeting</h1>
+      <h1 className="header">Cancel Meeting</h1>
 
       <div className="reason-question">
-        <h3>Select a reason for declining {mentee?.name}?</h3>
+        <h3>Select a reason for cancelling</h3>
         <h4 className="select-one">(Select one)</h4>
       </div>
       <FormControl className="select-reason" component="fieldset">

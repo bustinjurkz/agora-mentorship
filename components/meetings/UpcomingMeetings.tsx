@@ -1,19 +1,16 @@
 import Button from '@material-ui/core/Button/Button';
-import { Meeting } from 'generated/graphql';
 import React from 'react';
 import styled from 'styled-components';
 import { BackgroundStyle, UserType } from '../utils';
 import { UpcomingMeetingCard } from './UpcomingMeetingCard';
-
+import { useSelector } from 'react-redux';
+import { selectUpcomingMeetings } from 'redux/store';
 export interface UpcomingMeetingsProps {
-  meetings: Meeting[];
   userType: UserType;
 }
 
-const UpcomingMeetings: React.FC<UpcomingMeetingsProps> = ({
-  meetings,
-  userType,
-}) => {
+const UpcomingMeetings: React.FC<UpcomingMeetingsProps> = ({ userType }) => {
+  const upcomingMeetings = useSelector(selectUpcomingMeetings);
   return (
     <BackgroundStyle>
       <UpcomingMeetingsStyle>
@@ -24,13 +21,12 @@ const UpcomingMeetings: React.FC<UpcomingMeetingsProps> = ({
           </Button>
         </div>
         <div className="card-container">
-          {meetings.length > 0 ? (
-            meetings.map((x, i: number) => (
+          {upcomingMeetings.length > 0 ? (
+            upcomingMeetings.map((x, i: number) => (
               <UpcomingMeetingCard
                 key={i}
                 meeting={x}
-                userType={userType}
-                otherUser={userType === UserType.mentee ? x.mentor! : x.mentee!}
+                otherUser={userType === 'mentee' ? x.mentor! : x.mentee!}
               />
             ))
           ) : (

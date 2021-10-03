@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { Meeting, Mentee, Mentor } from 'generated/graphql';
 import format from 'date-fns/format';
-import { servicePrettier, UserType } from 'components/utils';
+import { servicePrettier } from 'components/utils';
 import addHours from 'date-fns/addHours';
 import Button from '@material-ui/core/Button';
 import { MeetingActionModal } from './MeetingActionModal';
@@ -10,13 +10,11 @@ import { useState } from 'react';
 export interface UpcomingMeetingCardProps {
   meeting: Meeting;
   otherUser: Mentor | Mentee;
-  userType: UserType;
 }
 
 export const UpcomingMeetingCard: React.FC<UpcomingMeetingCardProps> = ({
   meeting,
   otherUser,
-  userType,
 }) => {
   const [action, setAction] = useState<
     'change' | 'accept' | 'status' | undefined
@@ -40,7 +38,7 @@ export const UpcomingMeetingCard: React.FC<UpcomingMeetingCardProps> = ({
         </div>
 
         <Button className="button decline" onClick={() => setAction('change')}>
-          {userType === UserType.mentor ? 'Decline' : 'Cancel'}
+          Cancel
         </Button>
       </div>
 

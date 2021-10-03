@@ -41,7 +41,7 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({
       case FieldType.position:
         return 'Job Position';
       case FieldType.services:
-        return userType === UserType.mentor && 'Services Offered';
+        return userType === 'mentor' && 'Services Offered';
     }
   };
   const renderContentBody = () => {
@@ -65,7 +65,7 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({
         );
       case FieldType.services:
         return (
-          userType === UserType.mentor &&
+          userType === 'mentor' &&
           user?.preferred_services.map((x) => {
             return (
               <div key={x} className="service">
@@ -120,7 +120,7 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({
           >
             Education
           </Button>
-          {userType === UserType.mentor && (
+          {userType === 'mentor' && (
             <Button
               disableElevation
               onClick={() => {

@@ -22,7 +22,7 @@ const ProfileDashboard: React.FC<ProfileDashboardProps> = ({ userType }) => {
         <Button className="item" startIcon={<DashboardIcon className="icon" />}>
           Dashboard
         </Button>
-        {userType === UserType.mentee && (
+        {userType === 'mentee' && (
           <Button
             className="item"
             onClick={() => router.push(`/find-mentors`, `/find-mentors`)}

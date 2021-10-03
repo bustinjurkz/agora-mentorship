@@ -98,7 +98,6 @@ export function applySearchQuery<T>(data: T[], query: string): T[] {
   return fuse.search(query.trim().substring(0, 32)).map((x) => x.item);
 }
 
-export enum UserType {
-  mentee,
-  mentor,
-}
+export type UserType = 'mentee' | 'mentor';
+
+export type MeetingType = 'past' | 'upcoming' | 'pending';

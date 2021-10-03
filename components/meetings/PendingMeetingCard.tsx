@@ -61,9 +61,9 @@ export const PendingMeetingCard: React.FC<PendingMeetingCardProps> = ({
             onClick={() => setAction('change')}
           >
             <CancelIcon fontSize="large" />
-            {userType === UserType.mentor ? 'Decline' : 'Cancel'}
+            {userType === 'mentor' ? 'Decline' : 'Cancel'}
           </Button>
-          {userType === UserType.mentor ? (
+          {userType === 'mentor' ? (
             <Button
               className="button accept"
               onClick={() => setAction('accept')}

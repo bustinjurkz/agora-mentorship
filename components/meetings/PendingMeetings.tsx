@@ -1,23 +1,23 @@
 import Button from '@material-ui/core/Button/Button';
-import { Meeting } from 'generated/graphql';
 import React from 'react';
 import styled from 'styled-components';
 import { BackgroundStyle, UserType } from '../utils';
 import { PendingMeetingCard } from './PendingMeetingCard';
-
+import { useSelector } from 'react-redux';
+import { selectPendingMeetings } from 'redux/store';
 export interface PendingMeetingsProps {
-  meetings: Meeting[];
   userType: UserType;
   mentorName?: string;
   mentorEmail?: string;
 }
 
 const PendingMeetings: React.FC<PendingMeetingsProps> = ({
-  meetings,
   userType,
   mentorName,
   mentorEmail,
 }) => {
+  const pendingMeetings = useSelector(selectPendingMeetings);
+
   return (
     <BackgroundStyle style={{ marginTop: 20 }}>
       <PendingMeetingsStyle>
@@ -29,13 +29,13 @@ const PendingMeetings: React.FC<PendingMeetingsProps> = ({
         </div>
 
         <div className="card-container">
-          {meetings.length > 0 ? (
-            meetings?.map((x, i: number) => (
+          {pendingMeetings.length > 0 ? (
+            pendingMeetings?.map((x, i: number) => (
               <PendingMeetingCard
                 key={i}
                 meeting={x}
                 userType={userType}
-                otherUser={userType === UserType.mentee ? x.mentor! : x.mentee!}
+                otherUser={userType === 'mentee' ? x.mentor! : x.mentee!}
                 mentorEmail={mentorEmail}
                 mentorName={mentorName}
               />

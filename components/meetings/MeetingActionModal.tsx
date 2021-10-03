@@ -62,11 +62,7 @@ export const MeetingActionModal: React.FC<MeetingActionModalProps> = ({
             />
           )}
           {action === 'change' && (
-            <ChangeMeeting
-              meeting={meeting}
-              mentee={mentee}
-              setAction={setAction}
-            />
+            <ChangeMeeting meeting={meeting} setAction={setAction} />
           )}
           {action === 'status' && (
             <StatusMeeting
