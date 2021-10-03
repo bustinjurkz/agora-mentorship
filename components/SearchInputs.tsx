@@ -1,22 +1,22 @@
 import React, { useState } from 'react';
-// import Chip from '@material-ui/core/Chip';
+// import Chip from '@mui/material/Chip';
 import styled from 'styled-components';
-import FilterAltIcon from '@material-ui/icons/FilterList';
-import Button from '@material-ui/core/Button/Button';
+import FilterAltIcon from '@mui/icons-material/FilterList';
+import Button from '@mui/material/Button';
 import { BackgroundStyle } from './utils';
-import Collapse from '@material-ui/core/Collapse/Collapse';
-import FormControl from '@material-ui/core/FormControl';
-import Input from '@material-ui/core/Input/Input';
-import InputAdornment from '@material-ui/core/InputAdornment/InputAdornment';
-import SearchIcon from '@material-ui/icons/Search';
+import Collapse from '@mui/material/Collapse/Collapse';
+import FormControl from '@mui/material/FormControl';
+import Input from '@mui/material/Input/Input';
+import InputAdornment from '@mui/material/InputAdornment/InputAdornment';
+import SearchIcon from '@mui/icons-material/Search';
 
-import MenuItem from '@material-ui/core/MenuItem';
-import Checkbox from '@material-ui/core/Checkbox';
-import InputLabel from '@material-ui/core/InputLabel';
-import Select from '@material-ui/core/Select';
-import ListItemText from '@material-ui/core/ListItemText';
-import { makeStyles, Theme } from '@material-ui/core/styles';
-import { createStyles } from '@material-ui/core/styles';
+import MenuItem from '@mui/material/MenuItem';
+import Checkbox from '@mui/material/Checkbox';
+import InputLabel from '@mui/material/InputLabel';
+import Select from '@mui/material/Select';
+import ListItemText from '@mui/material/ListItemText';
+import { makeStyles, Theme } from '@mui/material/styles';
+import { createStyles } from '@mui/material/styles';
 
 export interface SearchInputsProps {
   setMentorSearch: (e: any) => void;

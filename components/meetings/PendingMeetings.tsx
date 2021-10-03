@@ -1,4 +1,4 @@
-import Button from '@material-ui/core/Button/Button';
+import Button from '@mui/material/Button';
 import React from 'react';
 import styled from 'styled-components';
 import { BackgroundStyle, UserType } from '../utils';

@@ -1,43 +1,55 @@
-import Button from '@material-ui/core/Button/Button';
-import React from 'react';
+import Button from '@mui/material/Button';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useRouter } from 'next/router';
+import { UserType } from 'components/utils';
+import Stepper from '@mui/material/Stepper';
+import Step from '@mui/material/Step';
+import { StepLabel } from '@mui/material';
 
 const Register: React.FC = () => {
   const router = useRouter();
+  const [userType, setUserType] = useState<UserType>();
+  const steps = [
+    'Select master blaster campaign settings',
+    'Create an ad group',
+    'Create an ad',
+  ];
+
   return (
     <RegisterStyle>
       <div className="sign-up-wrapper">
+        <Stepper activeStep={1} alternativeLabel className="stepper">
+          {steps.map((label) => (
+            <Step key={label}>
+              <StepLabel>{label}</StepLabel>
+            </Step>
+          ))}
+        </Stepper>
         <h1 className="sign-up-text">Sign up as a:</h1>
         <div className="buttons">
           <Button
             className="mentor button"
             variant="contained"
-            disableElevation
-            onClick={() => router.push(`/mentor`, `/mentor`)}
+            onClick={() => setUserType('mentor')}
           >
             Mentor
           </Button>
           <Button
             className="mentee button"
             variant="contained"
-            disableElevation
-            onClick={() => router.push(`/mentee`, `/mentee`)}
+            onClick={() => setUserType('mentee')}
           >
             Mentee
           </Button>
-          <Button className="hr button" variant="contained" disableElevation>
+          <Button
+            className="hr button"
+            variant="contained"
+            onClick={() => setUserType('hr')}
+          >
             HR Administrator
           </Button>
         </div>
-      </div>
-      <div className="profile-info-wrapper">
-        <h1 className="form-text">Profile Info</h1>
-        <div className="form-helper-text">
-          Fill in the data to create your profile Please use your work e-mail
-          and identification.
-        </div>
-        <div className="form-wrapper"></div>
       </div>
     </RegisterStyle>
   );
@@ -67,20 +79,5 @@ const RegisterStyle = styled.div`
 
   .mentee {
     margin: 50px 0px;
-  }
-
-  .profile-info-wrapper {
-    width: 400px;
-    .form-text {
-      margin-bottom: 47px;
-    }
-    .form-helper-text {
-      margin-bottom: 40px;
-    }
-    .form-wrapper {
-      height: 400px;
-      border: 3px solid #008a00;
-      border-radius: 5px;
-    }
   }
 `;

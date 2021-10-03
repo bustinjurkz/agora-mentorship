@@ -1,18 +1,18 @@
-import Button from '@material-ui/core/Button';
+import Button from '@mui/material/Button';
 
-import List from '@material-ui/core/List';
-import ListItemText from '@material-ui/core/ListItemText';
+import List from '@mui/material/List';
+import ListItemText from '@mui/material/ListItemText';
 import {
   Meeting,
   Proposed_Time,
   useCreateMeetingMutation,
 } from 'generated/graphql';
-import ListItem from '@material-ui/core/ListItem';
+import ListItem from '@mui/material/ListItem';
 import format from 'date-fns/format';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { renderAlert, servicePrettier } from '../../utils';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import CircularProgress from '@mui/material/CircularProgress';
 
 export interface AcceptMeetingProps {
   meeting: Meeting;

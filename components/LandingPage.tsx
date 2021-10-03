@@ -1,10 +1,14 @@
-import Button from '@material-ui/core/Button/Button';
+import Button from '@mui/material/Button';
 import { useRouter } from 'next/dist/client/router';
 import React from 'react';
 import styled from 'styled-components';
 
 const LandingPage: React.FC = () => {
   const router = useRouter();
+
+  const handleSignIn = () => {
+    console.log('yeet');
+  };
 
   return (
     <LandingPageStyle>
@@ -27,12 +31,21 @@ const LandingPage: React.FC = () => {
           </Button>
           <Button
             size={'large'}
-            className="sign-up"
+            className="login"
+            variant="outlined"
+            disableElevation
+            onClick={() => handleSignIn()}
+          >
+            Login
+          </Button>
+          <Button
+            size={'large'}
+            className="register"
             variant="outlined"
             disableElevation
             onClick={() => router.push(`/register`, `/register`)}
           >
-            Sign Up
+            Register
           </Button>
         </div>
       </div>
@@ -66,16 +79,21 @@ const LandingPageStyle = styled.div`
     }
   }
   .buttons {
+    display: inline-flex;
     .demo {
       background-color: ${({ theme }) => theme.TDGreen};
       color: ${({ theme }) => theme.white};
-      margin-right: 30px;
     }
-    .sign-up {
+    .login {
+      margin: 0px 30px;
+    }
+    .register,
+    .login {
       color: ${({ theme }) => theme.orange};
     }
     .demo,
-    .sign-up {
+    .register,
+    .login {
       width: 200px;
       height: 60px;
       font-size: large;

@@ -1,10 +1,10 @@
 import styled from 'styled-components';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { Meeting, Mentee, Mentor } from 'generated/graphql';
 import format from 'date-fns/format';
 import { servicePrettier } from 'components/utils';
 import addHours from 'date-fns/addHours';
-import Button from '@material-ui/core/Button';
+import Button from '@mui/material/Button';
 import { MeetingActionModal } from './MeetingActionModal';
 import { useState } from 'react';
 export interface UpcomingMeetingCardProps {

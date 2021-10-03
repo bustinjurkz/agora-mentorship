@@ -1,4 +1,4 @@
-import Button from '@material-ui/core/Button';
+import Button from '@mui/material/Button';
 import { Meeting, Mentee } from 'generated/graphql';
 import React, { useState } from 'react';
 import styled from 'styled-components';

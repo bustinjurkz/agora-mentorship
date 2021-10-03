@@ -1,25 +1,25 @@
-import { ThemeProvider } from 'styled-components';
+import { ThemeProvider as StyledTheme } from 'styled-components';
 import type { AppProps } from 'next/app';
 import { Helmet } from 'react-helmet';
 import { ApolloProvider } from '@apollo/client';
 import { Provider as ReduxProvider } from 'react-redux';
 import { store } from '../redux/store';
 import React from 'react';
-import { MuiThemeProvider } from '@material-ui/core';
+import { ThemeProvider } from '@mui/material';
 import { client } from '../client';
 import Navbar from 'components/Navbar';
 import Layout from 'components/Layout';
 import Footer from 'components/Footer';
 import { GlobalStyle, MuiTheme, theme } from 'components/utils';
-import MuiPickersUtilsProvider from '@material-ui/pickers/MuiPickersUtilsProvider';
-import DateFnsUtils from '@date-io/date-fns';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <GlobalStyle />
-      <MuiThemeProvider theme={MuiTheme}>
-        <ThemeProvider theme={theme}>
+      <ThemeProvider theme={MuiTheme}>
+        <StyledTheme theme={theme}>
           <Helmet>
             <meta charSet="utf-8" />
             <title>Agora Mentorship</title>
@@ -30,7 +30,7 @@ export default function App({ Component, pageProps }: AppProps) {
               rel="stylesheet"
             />
           </Helmet>
-          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
             <ReduxProvider store={store}>
               <ApolloProvider client={client}>
                 <Navbar />
@@ -40,9 +40,9 @@ export default function App({ Component, pageProps }: AppProps) {
                 </Layout>
               </ApolloProvider>
             </ReduxProvider>
-          </MuiPickersUtilsProvider>
-        </ThemeProvider>
-      </MuiThemeProvider>
+          </LocalizationProvider>
+        </StyledTheme>
+      </ThemeProvider>
     </>
   );
 }

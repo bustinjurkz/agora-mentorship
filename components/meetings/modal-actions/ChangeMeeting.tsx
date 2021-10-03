@@ -1,12 +1,12 @@
-import Button from '@material-ui/core/Button';
+import Button from '@mui/material/Button';
 import { Meeting, useCancelMeetingMutation } from 'generated/graphql';
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import FormControl from '@material-ui/core/FormControl';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Radio from '@material-ui/core/Radio';
+import CircularProgress from '@mui/material/CircularProgress';
+import FormControl from '@mui/material/FormControl';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Radio from '@mui/material/Radio';
 import { useDispatch } from 'react-redux';
 import { removeMeeting } from 'redux/store';
 import { renderAlert } from 'components/utils';

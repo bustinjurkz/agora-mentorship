@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Rating from '@material-ui/lab/Rating';
 import { Meeting, Mentee, Mentor } from 'generated/graphql';
 export interface PastConnectionsCardProps {

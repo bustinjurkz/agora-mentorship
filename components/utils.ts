@@ -1,4 +1,4 @@
-import { createTheme } from '@material-ui/core/styles';
+import { createTheme } from '@mui/material/styles';
 import { Services } from '../api/generated/graphql';
 import styled, { createGlobalStyle } from 'styled-components';
 import Fuse from 'fuse.js';
@@ -99,7 +99,7 @@ export function applySearchQuery<T>(data: T[], query: string): T[] {
   return fuse.search(query.trim().substring(0, 32)).map((x) => x.item);
 }
 
-export type UserType = 'mentee' | 'mentor';
+export type UserType = 'mentee' | 'mentor' | 'hr';
 
 export type MeetingType = 'past' | 'upcoming' | 'pending';
 

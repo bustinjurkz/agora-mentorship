@@ -40,7 +40,7 @@ const MenteeAdmin: React.FC = () => {
           <PersonalInfo
             user={data?.user?.mentee! as Mentee}
             userType="mentee"
-            schoolName={data?.user?.university[0]?.name}
+            schoolName={data?.user?.university![0]?.name as string}
             majors={data?.user?.majors as Majors[]}
           />
           <MeetingsCalendar />

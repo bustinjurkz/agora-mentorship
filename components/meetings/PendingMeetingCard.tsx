@@ -1,14 +1,14 @@
 import styled from 'styled-components';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { servicePrettier, UserType } from 'components/utils';
 import format from 'date-fns/format';
 import { Meeting, Mentee, Mentor } from 'generated/graphql';
 import addHours from 'date-fns/addHours';
 import React, { useState } from 'react';
-import TimerIcon from '@material-ui/icons/Timer';
-import CheckBoxIcon from '@material-ui/icons/CheckBox';
-import CancelIcon from '@material-ui/icons/Cancel';
-import Button from '@material-ui/core/Button';
+import TimerIcon from '@mui/icons-material/Timer';
+import CheckBoxIcon from '@mui/icons-material/CheckBox';
+import CancelIcon from '@mui/icons-material/Cancel';
+import Button from '@mui/material/Button';
 import { MeetingActionModal } from './MeetingActionModal';
 
 export interface PendingMeetingCardProps {
