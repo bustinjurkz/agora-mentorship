@@ -131,9 +131,9 @@ export const scoreAlgorithm = (
   const getLanguageScore = () => {
     let tempScore: number = 0;
     const menteeOnlyEnglish =
-      mentee.language.length === 1 && mentee.language[0].language === 'Engish';
+      mentee.language.length === 1 && mentee.language[0].language === 'English';
     const mentorOnlyEnglish =
-      mentor.language.length === 1 && mentor.language[0].language === 'Engish';
+      mentor.language.length === 1 && mentor.language[0].language === 'English';
 
     if (menteeOnlyEnglish && mentorOnlyEnglish) {
       return 0.701 * WEIGHTS.LANGUAGES_SIMILARITY;
