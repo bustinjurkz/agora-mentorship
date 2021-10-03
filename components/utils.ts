@@ -2,6 +2,7 @@ import { createTheme } from '@material-ui/core/styles';
 import { Services } from '../api/generated/graphql';
 import styled, { createGlobalStyle } from 'styled-components';
 import Fuse from 'fuse.js';
+import Swal from 'sweetalert2';
 
 export const GlobalStyle = createGlobalStyle`
   body {
@@ -101,3 +102,15 @@ export function applySearchQuery<T>(data: T[], query: string): T[] {
 export type UserType = 'mentee' | 'mentor';
 
 export type MeetingType = 'past' | 'upcoming' | 'pending';
+
+export function renderAlert(
+  msg: string,
+  type: 'success' | 'error',
+  title?: string,
+) {
+  Swal.fire({
+    icon: type === 'error' ? 'error' : 'success',
+    title: title ? title : type === 'error' ? 'Oh no!' : 'Nice one!',
+    text: msg,
+  });
+}

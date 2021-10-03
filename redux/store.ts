@@ -1,5 +1,4 @@
 import { configureStore, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { MeetingType } from 'components/utils';
 import { Meeting } from '../generated/graphql';
 
 interface MeetingSliceState {
@@ -31,27 +30,14 @@ export const meetingStoreSlice = createSlice({
       state.pendingMeetings = pendingFiltered;
       state.pastMeetings = pastFiltered;
     },
-    removeMeeting: (
-      state,
-      action: PayloadAction<{ meetingId: number; meetingType: MeetingType }>,
-    ) => {
-      switch (action.payload.meetingType) {
-        case 'past':
-          state.pastMeetings.filter((x) => x.id !== action.payload.meetingId);
-          break;
-        case 'pending':
-          state.pendingMeetings.filter(
-            (x) => x.id !== action.payload.meetingId,
-          );
-          break;
-        case 'upcoming':
-          state.upcomingMeetings.filter(
-            (x) => x.id !== action.payload.meetingId,
-          );
-          break;
-        default:
-          break;
-      }
+    removeMeeting: (state, action: PayloadAction<number>) => {
+      state.pendingMeetings = state.pendingMeetings.filter(
+        (x) => x.id !== action.payload,
+      );
+
+      state.upcomingMeetings = state.upcomingMeetings.filter(
+        (x) => x.id !== action.payload,
+      );
     },
   },
 });

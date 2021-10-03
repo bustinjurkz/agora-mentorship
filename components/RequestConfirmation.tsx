@@ -12,7 +12,7 @@ import ListItem from '@material-ui/core/ListItem';
 import { format } from 'date-fns';
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { servicePrettier } from './utils';
+import { renderAlert, servicePrettier } from './utils';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 export interface RequestConfirmationProps {
@@ -45,8 +45,20 @@ const RequestConfirmation: React.FC<RequestConfirmationProps> = ({
   const handleBooking = () => {
     setLoading(true);
     proposeMeeting()
-      .catch(() => alert('Failed to create meeting.  Please contact support.'))
-      .finally(() => setLoading(false));
+      .catch(() =>
+        renderAlert(
+          'Failed to create meeting.  Please contact support.',
+          'error',
+        ),
+      )
+      .finally(() => {
+        setLoading(false);
+        renderAlert(
+          `${mentor.mentor?.mentor?.name} has received your request`,
+          'success',
+        );
+        setFinish(false);
+      });
   };
   return (
     <Dialog
