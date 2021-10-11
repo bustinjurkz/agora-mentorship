@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import CircularProgress from '@mui/material/CircularProgress/CircularProgress';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const Loading: React.FC = () => {
   return (

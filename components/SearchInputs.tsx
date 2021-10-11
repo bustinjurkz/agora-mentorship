@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-// import Chip from '@mui/material/Chip';
 import styled from 'styled-components';
 import FilterAltIcon from '@mui/icons-material/FilterList';
 import Button from '@mui/material/Button';
@@ -9,15 +8,11 @@ import FormControl from '@mui/material/FormControl';
 import Input from '@mui/material/Input/Input';
 import InputAdornment from '@mui/material/InputAdornment/InputAdornment';
 import SearchIcon from '@mui/icons-material/Search';
-
 import MenuItem from '@mui/material/MenuItem';
 import Checkbox from '@mui/material/Checkbox';
 import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
 import ListItemText from '@mui/material/ListItemText';
-import { makeStyles, Theme } from '@mui/material/styles';
-import { createStyles } from '@mui/material/styles';
-
 export interface SearchInputsProps {
   setMentorSearch: (e: any) => void;
 }
@@ -31,10 +26,7 @@ export const SearchInputs: React.FC<SearchInputsProps> = ({
   const [schoolSelected, setSchoolSelected] = useState<string[]>([]);
   const [degreeSelected, setDegreeSelected] = useState<string[]>([]);
   const [degreeTypeSelected, setDegreeTypeSelected] = useState<string[]>([]);
-  const handleChange = (
-    event: React.ChangeEvent<{ value: unknown }>,
-    searchType: FilterFields,
-  ) => {
+  const handleChange = (event: any, searchType: FilterFields) => {
     switch (searchType) {
       case FilterFields.Services:
         return setServicesSelected(event.target.value as string[]);
@@ -96,28 +88,8 @@ export const SearchInputs: React.FC<SearchInputsProps> = ({
     },
   };
 
-  const useStyles = makeStyles((theme: Theme) =>
-    createStyles({
-      formControl: {
-        margin: theme.spacing(1),
-        minWidth: 120,
-        maxWidth: 300,
-      },
-      chips: {
-        display: 'flex',
-        flexWrap: 'wrap',
-      },
-      chip: {
-        margin: 2,
-      },
-      noLabel: {
-        marginTop: theme.spacing(3),
-      },
-    }),
-  );
-
   const [clicked, setClicked] = useState(false);
-  const classes = useStyles();
+
   return (
     <SearchFilterStyle>
       <div className="inputs">
@@ -145,7 +117,7 @@ export const SearchInputs: React.FC<SearchInputsProps> = ({
       <Collapse in={clicked}>
         <BackgroundStyle style={{ marginTop: 12 }}>
           <div className="filter-form">
-            <FormControl className={classes.formControl}>
+            <FormControl className="field">
               <InputLabel id="demo-mutiple-checkbox-label">Services</InputLabel>
               <Select
                 labelId="demo-mutiple-checkbox-label"
@@ -167,7 +139,7 @@ export const SearchInputs: React.FC<SearchInputsProps> = ({
                 ))}
               </Select>
             </FormControl>
-            <FormControl className={classes.formControl}>
+            <FormControl className="field">
               <InputLabel id="demo-mutiple-checkbox-label">Title</InputLabel>
               <Select
                 labelId="demo-mutiple-checkbox-label"
@@ -187,7 +159,7 @@ export const SearchInputs: React.FC<SearchInputsProps> = ({
                 ))}
               </Select>
             </FormControl>
-            <FormControl className={classes.formControl}>
+            <FormControl className="field">
               <InputLabel id="demo-mutiple-checkbox-label">
                 Department
               </InputLabel>
@@ -211,7 +183,7 @@ export const SearchInputs: React.FC<SearchInputsProps> = ({
                 ))}
               </Select>
             </FormControl>
-            <FormControl className={classes.formControl}>
+            <FormControl className="field">
               <InputLabel id="demo-mutiple-checkbox-label">School</InputLabel>
               <Select
                 labelId="demo-mutiple-checkbox-label"
@@ -231,7 +203,7 @@ export const SearchInputs: React.FC<SearchInputsProps> = ({
                 ))}
               </Select>
             </FormControl>
-            <FormControl className={classes.formControl}>
+            <FormControl className="field">
               <InputLabel id="demo-mutiple-checkbox-label">Degree</InputLabel>
               <Select
                 labelId="demo-mutiple-checkbox-label"
@@ -251,7 +223,7 @@ export const SearchInputs: React.FC<SearchInputsProps> = ({
                 ))}
               </Select>
             </FormControl>
-            <FormControl className={classes.formControl}>
+            <FormControl className="field">
               <InputLabel id="demo-mutiple-checkbox-label">
                 Degree Type
               </InputLabel>
@@ -298,5 +270,10 @@ const SearchFilterStyle = styled.div`
 
   .filter-form {
     display: inline-block;
+  }
+
+  .field {
+    min-width: 120px;
+    max-width: 300px;
   }
 `;

@@ -74,6 +74,17 @@ export const servicePrettier = (service: Services) => {
   }
 };
 
+export const services = [
+  Services.CareerDevelopment,
+  Services.CareerPlanning,
+  Services.General,
+  Services.MockInterview,
+  Services.ResumeCritique,
+  Services.SkillsForSuccess,
+  Services.SuccessAtWork,
+  Services.WorkLifeBalance,
+];
+
 export const BackgroundStyle = styled.div<{
   backgroundColor?: string;
   fullHeight?: boolean;

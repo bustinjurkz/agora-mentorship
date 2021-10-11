@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { format, getHours, isEqual } from 'date-fns';
 import { parseDate } from './utils';
-import TextField from '@mui/material/TextField/TextField';
+import TextField from '@mui/material/TextField';
 export interface TimeSelectProps {
   handleSetTime: (time: Date) => void;
   mentor: Mentor;

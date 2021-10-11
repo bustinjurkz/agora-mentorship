@@ -173,6 +173,8 @@ export type Query = {
   skills?: Maybe<Array<Maybe<Skills>>>;
   /** Find all languages */
   languages?: Maybe<Array<Maybe<Language>>>;
+  /** Find all register input selections */
+  registerInputs?: Maybe<RegisterInputs>;
 };
 
 
@@ -183,6 +185,14 @@ export type QueryUserArgs = {
 
 export type QueryUserMentorsArgs = {
   id: Scalars['ID'];
+};
+
+export type RegisterInputs = {
+  __typename?: 'RegisterInputs';
+  language?: Maybe<Array<Maybe<Language>>>;
+  skills?: Maybe<Array<Maybe<Skills>>>;
+  university?: Maybe<Array<Maybe<University>>>;
+  majors?: Maybe<Array<Maybe<Majors>>>;
 };
 
 export enum Services {
@@ -337,6 +347,7 @@ export type ResolversTypes = {
   ProposeMeetingInput: ProposeMeetingInput;
   Proposed_Time: ResolverTypeWrapper<Proposed_Time>;
   Query: ResolverTypeWrapper<{}>;
+  RegisterInputs: ResolverTypeWrapper<Omit<RegisterInputs, 'language' | 'skills' | 'university' | 'majors'> & { language?: Maybe<Array<Maybe<ResolversTypes['Language']>>>, skills?: Maybe<Array<Maybe<ResolversTypes['Skills']>>>, university?: Maybe<Array<Maybe<ResolversTypes['University']>>>, majors?: Maybe<Array<Maybe<ResolversTypes['Majors']>>> }>;
   Services: Services;
   Skill_Type: Skill_Type;
   Skills: ResolverTypeWrapper<SkillsModel>;
@@ -364,6 +375,7 @@ export type ResolversParentTypes = {
   ProposeMeetingInput: ProposeMeetingInput;
   Proposed_Time: Proposed_Time;
   Query: {};
+  RegisterInputs: Omit<RegisterInputs, 'language' | 'skills' | 'university' | 'majors'> & { language?: Maybe<Array<Maybe<ResolversParentTypes['Language']>>>, skills?: Maybe<Array<Maybe<ResolversParentTypes['Skills']>>>, university?: Maybe<Array<Maybe<ResolversParentTypes['University']>>>, majors?: Maybe<Array<Maybe<ResolversParentTypes['Majors']>>> };
   Skills: SkillsModel;
   University: UniversityModel;
   User: UserModel;
@@ -473,6 +485,15 @@ export type QueryResolvers<ContextType = Context, ParentType extends ResolversPa
   majors?: Resolver<Maybe<Array<Maybe<ResolversTypes['Majors']>>>, ParentType, ContextType>;
   skills?: Resolver<Maybe<Array<Maybe<ResolversTypes['Skills']>>>, ParentType, ContextType>;
   languages?: Resolver<Maybe<Array<Maybe<ResolversTypes['Language']>>>, ParentType, ContextType>;
+  registerInputs?: Resolver<Maybe<ResolversTypes['RegisterInputs']>, ParentType, ContextType>;
+};
+
+export type RegisterInputsResolvers<ContextType = Context, ParentType extends ResolversParentTypes['RegisterInputs'] = ResolversParentTypes['RegisterInputs']> = {
+  language?: Resolver<Maybe<Array<Maybe<ResolversTypes['Language']>>>, ParentType, ContextType>;
+  skills?: Resolver<Maybe<Array<Maybe<ResolversTypes['Skills']>>>, ParentType, ContextType>;
+  university?: Resolver<Maybe<Array<Maybe<ResolversTypes['University']>>>, ParentType, ContextType>;
+  majors?: Resolver<Maybe<Array<Maybe<ResolversTypes['Majors']>>>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type SkillsResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Skills'] = ResolversParentTypes['Skills']> = {
@@ -526,6 +547,7 @@ export type Resolvers<ContextType = Context> = {
   Mutation?: MutationResolvers<ContextType>;
   Proposed_Time?: Proposed_TimeResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
+  RegisterInputs?: RegisterInputsResolvers<ContextType>;
   Skills?: SkillsResolvers<ContextType>;
   University?: UniversityResolvers<ContextType>;
   User?: UserResolvers<ContextType>;

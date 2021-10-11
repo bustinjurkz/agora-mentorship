@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import Rating from '@material-ui/lab/Rating';
+import Rating from '@mui/material/Rating';
 import { Meeting, Mentee, Mentor } from 'generated/graphql';
 export interface PastConnectionsCardProps {
   meeting: Meeting;
@@ -8,7 +8,6 @@ export interface PastConnectionsCardProps {
 }
 
 export const PastConnectionsCard: React.FC<PastConnectionsCardProps> = ({
-  meeting,
   otherUser,
 }) => {
   return (

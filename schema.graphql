@@ -57,6 +57,13 @@ type MentorWithScore {
   score: Int
 }
 
+type RegisterInputs {
+  language: [Language]
+  skills: [Skills]
+  university: [University]
+  majors: [Majors]
+}
+
 type Mentor {
   id: ID!
   bio: String
@@ -156,6 +163,9 @@ type Query {
 
   "Find all languages"
   languages: [Language]
+
+  "Find all register input selections"
+  registerInputs: RegisterInputs
 }
 
 type Mutation {
