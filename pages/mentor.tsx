@@ -3,7 +3,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Majors, Meeting, Mentor, useGetUserQuery } from 'generated/graphql';
 import Loading from 'components/Loading';
-import ProfileDashboard from 'components/ProfileDashboard';
+// import ProfileDashboard from 'components/ProfileDashboard';
 import MeetingsCalendar from 'components/meetings/MeetingsCalendar';
 import UpcomingMeetings from 'components/meetings/UpcomingMeetings';
 import PendingMeetings from 'components/meetings/PendingMeetings';
@@ -34,7 +34,7 @@ const MentorAdmin: React.FC = () => {
 
   return (
     <AdminStyle>
-      <ProfileDashboard userType={'mentor'} />
+      {/* <ProfileDashboard userType={'mentor'} /> */}
       <div className="profile-container">
         <NotificationBanner userName={data?.user?.mentor?.name as string} />
         <div className="info-cal-container">
@@ -68,7 +68,7 @@ export const AdminStyle = styled.div`
   .profile-container {
     display: flex;
     width: 100%;
-    max-width: 875px;
+    min-width: 900px;
     flex-direction: column;
     .info-cal-container {
       display: inline-flex;

@@ -3,7 +3,6 @@ import { QueryResolvers } from '../../generated/graphql';
 
 export const Query: QueryResolvers = {
   user: (_, { id }, ctx) => {
-    console.log('YEET?');
     return ctx.prisma.user.findFirst({
       where: { id: parseInt(id) },
       include: {

@@ -93,6 +93,7 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({
             variant={fieldSelected === FieldType.bio ? 'contained' : 'text'}
             disableElevation
             className="field bio"
+            color="inherit"
           >
             Bio
           </Button>
@@ -104,6 +105,7 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({
             variant={
               fieldSelected === FieldType.position ? 'contained' : 'text'
             }
+            color="inherit"
             className="field position"
           >
             Job Position
@@ -117,6 +119,7 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({
               fieldSelected === FieldType.education ? 'contained' : 'text'
             }
             className="field education"
+            color="inherit"
           >
             Education
           </Button>
@@ -130,6 +133,7 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({
                 fieldSelected === FieldType.services ? 'contained' : 'text'
               }
               className="field services"
+              color="inherit"
             >
               Services
             </Button>

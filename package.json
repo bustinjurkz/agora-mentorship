@@ -18,7 +18,7 @@
     "@mui/icons-material": "^5.0.1",
     "@mui/lab": "^5.0.0-alpha.49",
     "@mui/material": "^5.0.2",
-    "@prisma/client": "^2.30.3",
+    "@prisma/client": "^3.2.1",
     "@reduxjs/toolkit": "^1.6.0",
     "@types/micro-cors": "^0.1.1",
     "@types/node": "^15.12.2",

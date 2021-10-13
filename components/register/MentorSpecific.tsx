@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import OutlinedInput from '@mui/material/OutlinedInput';
@@ -29,28 +29,38 @@ const MenuProps = {
   },
 };
 
-export const MentorSpecific: React.FC = () => {
+export interface MentorSpecificProps {
+  registerState: any;
+  setRegisterState: any;
+  times: Date[];
+  setTimes: any;
+}
+
+export const MentorSpecific: React.FC<MentorSpecificProps> = ({
+  registerState,
+  setRegisterState,
+  times,
+  setTimes,
+}) => {
   const theme = useTheme();
-  const [userServices, setUserServices] = useState<string[]>([]);
-  const handleServicesChange = (
-    event: SelectChangeEvent<typeof userServices>,
-  ) => {
+
+  const handleServicesChange = (event: SelectChangeEvent<string>) => {
     const {
       target: { value },
     } = event;
-    setUserServices(typeof value === 'string' ? value.split(',') : value);
+    setRegisterState({
+      userServices: typeof value === 'string' ? value.split(',') : value,
+    });
   };
-  const selectedDate = new Date();
 
-  const [times, setTimes] = useState<Date[]>([]);
+  const selectedDate = new Date();
   const handleSetTime = (time: Date) => {
-    console.log('time: ', time);
     if (times.some((timeAdded) => isSameHour(time, timeAdded))) {
-      setTimes((times) => [
+      setTimes((times: Date[]) => [
         ...times.filter((timeAdded) => !isSameHour(time, timeAdded)),
       ]);
     } else {
-      setTimes((times) => [...times, time]);
+      setTimes((times: Date[]) => [...times, time]);
     }
   };
 
@@ -116,7 +126,7 @@ export const MentorSpecific: React.FC = () => {
     <MentorSpecificStyle>
       {/* <h1 className="sign-up-text">Services and Availability</h1> */}
       <div className="services">
-        <h2>As a mentor, select your preferred meeting topics</h2>
+        <h2>Select your preferred meeting topics</h2>
         <FormControl sx={{ m: 1, width: 300 }}>
           <InputLabel id="demo-multiple-name-label">
             Preferred Services
@@ -125,7 +135,7 @@ export const MentorSpecific: React.FC = () => {
             labelId="demo-multiple-name-label"
             id="demo-multiple-name"
             multiple
-            value={userServices}
+            value={registerState.userServices}
             onChange={handleServicesChange}
             input={<OutlinedInput label="Skills" />}
             MenuProps={MenuProps}
@@ -134,7 +144,7 @@ export const MentorSpecific: React.FC = () => {
               <MenuItem
                 key={i}
                 value={service}
-                style={getStyles(service, userServices, theme)}
+                style={getStyles(service, registerState.userServices, theme)}
               >
                 {servicePrettier(service)}
               </MenuItem>
@@ -143,7 +153,7 @@ export const MentorSpecific: React.FC = () => {
         </FormControl>
       </div>
       <div className="availability">
-        <h2>Lastly, choose 3 or more suitable timeslots:</h2>
+        <h2>Choose 3 or more suitable timeslots</h2>
         <div className="times">
           <div className="morning">
             <h4 className="label">MORNING</h4>
@@ -184,6 +194,7 @@ const MentorSpecificStyle = styled.div`
     .container {
       margin: 10px 0px;
       padding: 8px 60px;
+      width: auto;
       font-size: larger;
       font-weight: 600;
     }

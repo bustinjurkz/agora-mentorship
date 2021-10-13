@@ -1,5 +1,5 @@
 import { Language, Majors, University } from 'generated/graphql';
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import TextField from '@mui/material/TextField';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
@@ -8,6 +8,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import { Theme, useTheme } from '@mui/material/styles';
+import { degrees, DegreeType } from 'components/utils';
 
 function getStyles(name: string, personName: string[], theme: Theme) {
   return {
@@ -28,91 +29,77 @@ const MenuProps = {
     },
   },
 };
-export type DegreeType =
-  | 'College Diploma'
-  | 'Bachelors (3 years)'
-  | 'Honours (4 years)'
-  | 'Masters'
-  | 'Professional Degree'
-  | 'PhD';
-
 export interface ProfileEducationProps {
   languages: Pick<Language, 'id' | 'language'>[];
   universities: Pick<University, 'id' | 'name'>[];
   majors: Pick<Majors, 'id' | 'major'>[];
+  registerState: any;
+  setRegisterState: any;
 }
 export const ProfileEducation: React.FC<ProfileEducationProps> = ({
   languages,
   universities,
   majors,
+  registerState,
+  setRegisterState,
 }) => {
   const theme = useTheme();
-  const degrees: DegreeType[] = [
-    'College Diploma',
-    'Bachelors (3 years)',
-    'Honours (4 years)',
-    'Masters',
-    'Professional Degree',
-    'PhD',
-  ];
-  const [fullName, setFullName] = useState('');
-  const [email, setEmail] = useState('');
-  const [birthYear, setBirthYear] = useState('');
-  const [userLanguage, setUserLanguage] = useState<string[]>([]);
-  const [userUniversity, setUserUniversity] = useState<string[]>([]);
-  const [userMajor, setUserMajor] = useState<string[]>([]);
-  const [userDegree, setUserDegree] = useState<DegreeType>();
-  const handleLanguageChange = (
-    event: SelectChangeEvent<typeof userLanguage>,
-  ) => {
+
+  const handleLanguageChange = (event: SelectChangeEvent<string>) => {
     const {
       target: { value },
     } = event;
-    setUserLanguage(typeof value === 'string' ? value.split(',') : value);
+    setRegisterState({
+      userLanguage: typeof value === 'string' ? value.split(',') : value,
+    });
   };
-  const handleUniversityChange = (
-    event: SelectChangeEvent<typeof userUniversity>,
-  ) => {
+  const handleUniversityChange = (event: SelectChangeEvent<string>) => {
     const {
       target: { value },
     } = event;
-    setUserUniversity(typeof value === 'string' ? value.split(',') : value);
+    setRegisterState({
+      userUniversity: typeof value === 'string' ? value.split(',') : value,
+    });
   };
-  const handleMajorChange = (event: SelectChangeEvent<typeof userMajor>) => {
+  const handleMajorChange = (event: SelectChangeEvent<string>) => {
     const {
       target: { value },
     } = event;
-    setUserMajor(typeof value === 'string' ? value.split(',') : value);
+    setRegisterState({
+      userMajor: typeof value === 'string' ? value.split(',') : value,
+    });
   };
   const handleDegreeChange = (event: SelectChangeEvent) => {
-    setUserDegree(event.target.value as DegreeType);
+    setRegisterState({ userDegree: event.target.value as DegreeType });
   };
   return (
     <ProfileEducationStyle>
-      <h1 className="sign-up-text">Profile Details and Education:</h1>
+      <h1 className="sign-up-text">Profile Details and Education</h1>
       <div className="inputs-container">
         <div className="profile-inputs">
           <TextField
             id="standard-basic"
             label="Full Name"
             variant="standard"
-            value={fullName}
-            onChange={(e) => setFullName(e.target.value)}
+            value={registerState.fullName}
+            onChange={(e) => setRegisterState({ fullName: e.target.value })}
           />
           <TextField
             id="standard-basic"
             label="Email"
             variant="standard"
-            type={email}
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            type="email"
+            value={registerState.email}
+            onChange={(e) => setRegisterState({ email: e.target.value })}
           />
           <TextField
             id="standard-basic"
             label="Birth Year"
             variant="standard"
-            value={birthYear}
-            onChange={(e) => setBirthYear(e.target.value)}
+            type="number"
+            InputProps={{ inputProps: { min: 1940, max: 2500 } }}
+            value={registerState.birthYear}
+            onChange={(e) => setRegisterState({ birthYear: e.target.value })}
           />
           <FormControl sx={{ m: 1, width: 300 }}>
             <InputLabel id="demo-multiple-name-label">
@@ -122,7 +109,7 @@ export const ProfileEducation: React.FC<ProfileEducationProps> = ({
               labelId="demo-multiple-name-label"
               id="demo-multiple-name"
               multiple
-              value={userLanguage}
+              value={registerState.userLanguage}
               onChange={handleLanguageChange}
               input={<OutlinedInput label="Languages (1 or more)" />}
               MenuProps={MenuProps}
@@ -131,7 +118,11 @@ export const ProfileEducation: React.FC<ProfileEducationProps> = ({
                 <MenuItem
                   key={language.id}
                   value={language.language}
-                  style={getStyles(language.language, userLanguage, theme)}
+                  style={getStyles(
+                    language.language,
+                    registerState.userLanguage,
+                    theme,
+                  )}
                 >
                   {language.language}
                 </MenuItem>
@@ -147,7 +138,7 @@ export const ProfileEducation: React.FC<ProfileEducationProps> = ({
             <Select
               labelId="demo-multiple-name-label"
               id="demo-multiple-name"
-              value={userUniversity}
+              value={registerState.userUniversity}
               onChange={handleUniversityChange}
               input={<OutlinedInput label="School" />}
               MenuProps={MenuProps}
@@ -156,7 +147,11 @@ export const ProfileEducation: React.FC<ProfileEducationProps> = ({
                 <MenuItem
                   key={university.id}
                   value={university.name}
-                  style={getStyles(university.name, userUniversity, theme)}
+                  style={getStyles(
+                    university.name,
+                    registerState.userUniversity,
+                    theme,
+                  )}
                 >
                   {university.name}
                 </MenuItem>
@@ -168,7 +163,7 @@ export const ProfileEducation: React.FC<ProfileEducationProps> = ({
             <Select
               labelId="demo-multiple-name-label"
               id="demo-multiple-name"
-              value={userMajor}
+              value={registerState.userMajor}
               onChange={handleMajorChange}
               input={<OutlinedInput label="Major" />}
               MenuProps={MenuProps}
@@ -177,7 +172,7 @@ export const ProfileEducation: React.FC<ProfileEducationProps> = ({
                 <MenuItem
                   key={major.id}
                   value={major.major}
-                  style={getStyles(major.major, userMajor, theme)}
+                  style={getStyles(major.major, registerState.userMajor, theme)}
                 >
                   {major.major}
                 </MenuItem>
@@ -191,7 +186,7 @@ export const ProfileEducation: React.FC<ProfileEducationProps> = ({
             <Select
               labelId="demo-multiple-name-label"
               id="demo-multiple-name"
-              value={userDegree as DegreeType}
+              value={registerState.userDegree as DegreeType}
               onChange={handleDegreeChange}
               input={<OutlinedInput label="Major" />}
               MenuProps={MenuProps}
@@ -213,10 +208,15 @@ const ProfileEducationStyle = styled.div`
   .inputs-container {
     display: flex;
     flex-direction: row;
+    height: 100%;
     .profile-inputs,
     .education-inputs {
+      justify-content: space-between;
       display: flex;
       flex-direction: column;
+    }
+    .profile-inputs {
+      margin-right: 90px;
     }
   }
 `;

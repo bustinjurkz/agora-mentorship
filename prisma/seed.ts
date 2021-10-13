@@ -115,7 +115,7 @@ export const seed = async () => {
               },
 
               mentee: {
-                create: user.mentee, // {
+                create: user.mentee,
               },
             },
           });

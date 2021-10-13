@@ -1,9 +1,126 @@
-import { MutationResolvers } from '../../generated/graphql';
+import { MutationResolvers, Services } from '../../generated/graphql';
 import { google } from 'googleapis';
 import config from '../../config';
-import { servicePrettier } from 'components/utils';
+import {
+  DegreeType,
+  getHighestEducation,
+  servicePrettier,
+} from 'components/utils';
 import { addHours, parseISO } from 'date-fns';
 export const Mutation: MutationResolvers = {
+  createUser: async (_, { input }, ctx) => {
+    await ctx.prisma.user
+      .create({
+        data: {
+          email: input.email,
+          password: input.password,
+        },
+      })
+
+      .then(async (x) => {
+        console.log('CREATED USER WITH ID: ', x.id);
+        if (input.mentee) {
+          await ctx.prisma.user.update({
+            where: {
+              id: x.id,
+            },
+            data: {
+              language: {
+                connect: input.language.map((x) => {
+                  return { language: x };
+                }),
+              },
+              university: {
+                connect: input.university.map((x) => {
+                  return { name: x };
+                }),
+              },
+              majors: {
+                connect: input.majors.map((x) => {
+                  return { major: x };
+                }),
+              },
+              skills: {
+                connect: input.skills.map((x) => {
+                  return { skill: x };
+                }),
+              },
+
+              mentee: {
+                create: {
+                  birthyear: input.mentee.birthyear as number,
+                  degree_type: input.mentee.degree_type as string,
+                  highest_education: getHighestEducation(
+                    input.mentee.degree_type as DegreeType,
+                  ),
+                  name: input.mentee.name,
+                  years_experience: input.mentee.years_experience,
+                  bio: input.mentee.bio,
+                  job_title_primary: input.mentee.job_title_primary,
+                  job_title_secondary: input.mentee.job_title_secondary,
+                  preferred_services: input.mentee
+                    .preferred_services as Services[],
+                },
+              },
+            },
+          });
+        } else if (input.mentor) {
+          await ctx.prisma.user.update({
+            where: {
+              id: x.id,
+            },
+            data: {
+              language: {
+                connect: input.language.map((x) => {
+                  return { language: x };
+                }),
+              },
+              university: {
+                connect: input.university.map((x) => {
+                  return { name: x };
+                }),
+              },
+              majors: {
+                connect: input.majors.map((x) => {
+                  return { major: x };
+                }),
+              },
+              skills: {
+                connect: input.skills.map((x) => {
+                  return { skill: x };
+                }),
+              },
+
+              mentor: {
+                create: {
+                  birthyear: input.mentor.birthyear as number,
+                  degree_type: input.mentor.degree_type as DegreeType,
+                  highest_education: getHighestEducation(
+                    input.mentor.degree_type as DegreeType,
+                  ),
+                  name: input.mentor.name,
+                  years_experience: input.mentor.years_experience,
+                  bio: input.mentor.bio,
+                  job_title_primary: input.mentor.job_title_primary,
+                  job_title_secondary: input.mentor.job_title_secondary,
+                  preferred_services: input.mentor
+                    .preferred_services as Services[],
+                  availability: {
+                    create: input.mentor!.availability!.map((x) => {
+                      return { time: x! };
+                    }),
+                  },
+                },
+              },
+            },
+          });
+        }
+      })
+      .catch((e) => {
+        throw e;
+      });
+    return true;
+  },
   proposeMeeting: async (_, { input }, ctx) => {
     const res = await ctx.prisma.meeting.create({
       data: {

@@ -37,7 +37,11 @@ export const UpcomingMeetingCard: React.FC<UpcomingMeetingCardProps> = ({
           </div>
         </div>
 
-        <Button className="button decline" onClick={() => setAction('change')}>
+        <Button
+          color="error"
+          className="button decline"
+          onClick={() => setAction('change')}
+        >
           Cancel
         </Button>
       </div>
