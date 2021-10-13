@@ -17,3 +17,9 @@ gql`
     cancelMeeting(input: $input)
   }
 `;
+
+gql`
+  mutation CreateUser($input: CreateUserInput!) {
+    createUser(input: $input)
+  }
+`;

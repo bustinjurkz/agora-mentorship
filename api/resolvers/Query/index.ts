@@ -34,7 +34,6 @@ export const Query: QueryResolvers = {
       },
     });
   },
-
   userMentors: async (_, { id }, ctx) => {
     // Fetches mentee to be used in the score calculation
     const mentee = await ctx.prisma.user.findFirst({
@@ -80,5 +79,18 @@ export const Query: QueryResolvers = {
         score: scoreAlgorithm(mentee!, x, matrix),
       };
     });
+  },
+  registerInputs: async (_, __, ctx) => {
+    const languages = await ctx.prisma.language.findMany();
+    const majors = await ctx.prisma.majors.findMany();
+    const universities = await ctx.prisma.university.findMany();
+    const skills = await ctx.prisma.skills.findMany();
+
+    return {
+      language: languages,
+      majors: majors,
+      university: universities,
+      skills: skills,
+    };
   },
 };

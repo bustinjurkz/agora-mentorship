@@ -1,19 +1,19 @@
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogContent from '@material-ui/core/DialogContent';
-import List from '@material-ui/core/List';
-import ListItemText from '@material-ui/core/ListItemText';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogContent from '@mui/material/DialogContent';
+import List from '@mui/material/List';
+import ListItemText from '@mui/material/ListItemText';
 import {
   MentorWithScore,
   Services,
   useProposeMeetingMutation,
 } from 'generated/graphql';
-import ListItem from '@material-ui/core/ListItem';
+import ListItem from '@mui/material/ListItem';
 import { format } from 'date-fns';
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { servicePrettier } from './utils';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import { renderAlert, servicePrettier } from './utils';
+import CircularProgress from '@mui/material/CircularProgress';
 
 export interface RequestConfirmationProps {
   finish: boolean;
@@ -45,8 +45,20 @@ const RequestConfirmation: React.FC<RequestConfirmationProps> = ({
   const handleBooking = () => {
     setLoading(true);
     proposeMeeting()
-      .catch(() => alert('Failed to create meeting.  Please contact support.'))
-      .finally(() => setLoading(false));
+      .catch(() =>
+        renderAlert(
+          'Failed to create meeting.  Please contact support.',
+          'error',
+        ),
+      )
+      .finally(() => {
+        setLoading(false);
+        renderAlert(
+          `${mentor.mentor?.mentor?.name} has received your request`,
+          'success',
+        );
+        setFinish(false);
+      });
   };
   return (
     <Dialog

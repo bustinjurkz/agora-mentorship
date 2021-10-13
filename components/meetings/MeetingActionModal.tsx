@@ -1,5 +1,5 @@
-import Dialog from '@material-ui/core/Dialog';
-import DialogContent from '@material-ui/core/DialogContent';
+import Dialog from '@mui/material/Dialog';
+import DialogContent from '@mui/material/DialogContent';
 
 import { Meeting, Mentee } from 'generated/graphql';
 
@@ -62,11 +62,7 @@ export const MeetingActionModal: React.FC<MeetingActionModalProps> = ({
             />
           )}
           {action === 'change' && (
-            <ChangeMeeting
-              meeting={meeting}
-              mentee={mentee}
-              setAction={setAction}
-            />
+            <ChangeMeeting meeting={meeting} setAction={setAction} />
           )}
           {action === 'status' && (
             <StatusMeeting

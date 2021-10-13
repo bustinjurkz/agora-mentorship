@@ -1,10 +1,11 @@
-import Button from '@material-ui/core/Button';
-import { KeyboardDatePicker } from '@material-ui/pickers/DatePicker';
+import Button from '@mui/material/Button';
+import DatePicker from '@mui/lab/DatePicker';
 import { Mentor } from 'generated/graphql';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { format, getHours, isEqual } from 'date-fns';
 import { parseDate } from './utils';
+import TextField from '@mui/material/TextField';
 export interface TimeSelectProps {
   handleSetTime: (time: Date) => void;
   mentor: Mentor;
@@ -103,13 +104,12 @@ const TimeSelect: React.FC<TimeSelectProps> = ({
     <TimeSelectStyle>
       <div className="header">
         <h2>Please choose 3 or more suitable timeslots:</h2>
-        <KeyboardDatePicker
+        <DatePicker
           value={selectedDate}
-          autoOk
+          renderInput={(props) => <TextField {...props} />}
           disablePast
           onChange={(selectedDate) => setSelectedDate(selectedDate)}
           minDate={new Date()}
-          variant="inline"
         />
       </div>
       <div className="times">

@@ -174,3 +174,26 @@ gql`
     }
   }
 `;
+
+gql`
+  query GetRegisterInputs {
+    registerInputs {
+      language {
+        id
+        language
+      }
+      majors {
+        id
+        major
+      }
+      skills {
+        id
+        skill
+      }
+      university {
+        id
+        name
+      }
+    }
+  }
+`;

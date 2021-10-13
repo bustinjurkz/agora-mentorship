@@ -1,13 +1,13 @@
-import Button from '@material-ui/core/Button/Button';
+import Button from '@mui/material/Button';
 import React from 'react';
 import styled from 'styled-components';
-import DashboardIcon from '@material-ui/icons/Dashboard';
-import MailIcon from '@material-ui/icons/Mail';
-import HelpIcon from '@material-ui/icons/Help';
-import SettingsIcon from '@material-ui/icons/Settings';
-import Divider from '@material-ui/core/Divider';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import MailIcon from '@mui/icons-material/Mail';
+import HelpIcon from '@mui/icons-material/Help';
+import SettingsIcon from '@mui/icons-material/Settings';
+import Divider from '@mui/material/Divider';
 import { BackgroundStyle, UserType } from './utils';
-import PersonAddIcon from '@material-ui/icons/PersonAdd';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import { useRouter } from 'next/dist/client/router';
 export interface ProfileDashboardProps {
   userType: UserType;
@@ -22,7 +22,7 @@ const ProfileDashboard: React.FC<ProfileDashboardProps> = ({ userType }) => {
         <Button className="item" startIcon={<DashboardIcon className="icon" />}>
           Dashboard
         </Button>
-        {userType === UserType.mentee && (
+        {userType === 'mentee' && (
           <Button
             className="item"
             onClick={() => router.push(`/find-mentors`, `/find-mentors`)}

@@ -1,4 +1,4 @@
-import Button from '@material-ui/core/Button';
+import Button from '@mui/material/Button';
 import { Majors, Mentee, Mentor } from 'generated/graphql';
 import React, { useState } from 'react';
 import styled from 'styled-components';
@@ -41,7 +41,7 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({
       case FieldType.position:
         return 'Job Position';
       case FieldType.services:
-        return userType === UserType.mentor && 'Services Offered';
+        return userType === 'mentor' && 'Services Offered';
     }
   };
   const renderContentBody = () => {
@@ -65,7 +65,7 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({
         );
       case FieldType.services:
         return (
-          userType === UserType.mentor &&
+          userType === 'mentor' &&
           user?.preferred_services.map((x) => {
             return (
               <div key={x} className="service">
@@ -93,6 +93,7 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({
             variant={fieldSelected === FieldType.bio ? 'contained' : 'text'}
             disableElevation
             className="field bio"
+            color="inherit"
           >
             Bio
           </Button>
@@ -104,6 +105,7 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({
             variant={
               fieldSelected === FieldType.position ? 'contained' : 'text'
             }
+            color="inherit"
             className="field position"
           >
             Job Position
@@ -117,10 +119,11 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({
               fieldSelected === FieldType.education ? 'contained' : 'text'
             }
             className="field education"
+            color="inherit"
           >
             Education
           </Button>
-          {userType === UserType.mentor && (
+          {userType === 'mentor' && (
             <Button
               disableElevation
               onClick={() => {
@@ -130,6 +133,7 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({
                 fieldSelected === FieldType.services ? 'contained' : 'text'
               }
               className="field services"
+              color="inherit"
             >
               Services
             </Button>

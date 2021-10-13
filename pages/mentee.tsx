@@ -1,8 +1,7 @@
 import PersonalInfo from 'components/PersonalInfo';
 import React from 'react';
 import Loading from 'components/Loading';
-import ProfileDashboard from 'components/ProfileDashboard';
-import { BackgroundStyle, UserType } from 'components/utils';
+// import ProfileDashboard from 'components/ProfileDashboard';
 import MeetingsCalendar from 'components/meetings/MeetingsCalendar';
 import UpcomingMeetings from 'components/meetings/UpcomingMeetings';
 import PendingMeetings from 'components/meetings/PendingMeetings';
@@ -10,8 +9,12 @@ import PastConnections from 'components/meetings/PastConnections';
 import { AdminStyle } from './mentor';
 import ErrorMessage from 'components/ErrorMessage';
 import { Majors, Meeting, Mentee, useGetUserQuery } from 'generated/graphql';
+import { useDispatch } from 'react-redux';
+import { addMeetings } from 'redux/store';
+import { NotificationBanner } from 'components/NotificationBanner';
 
 const MenteeAdmin: React.FC = () => {
+  const dispatch = useDispatch();
   const { data, loading, error } = useGetUserQuery({
     variables: {
       input: '15',
@@ -25,61 +28,26 @@ const MenteeAdmin: React.FC = () => {
       <ErrorMessage msg="Unknown network error.  Please try again later" />
     );
   }
-
-  const upcomingMeetings = data?.user?.mentee?.meetings?.filter(
-    (x) => x?.start_time && !x.end_time && !x.cancelled,
-  );
-  const pendingMeetings = data?.user?.mentee?.meetings?.filter(
-    (x) => !x?.start_time && x?.proposed_times && !x.cancelled,
-  );
-  const pastMeetings = data?.user?.mentee?.meetings?.filter(
-    (x) => !x?.start_time && x?.end_time && !x.cancelled,
-  );
-
-  const renderNotificationBanner = () => {
-    return (
-      <BackgroundStyle backgroundColor="#ff9500">
-        <div className="notification-banner">
-          Hi {data?.user?.mentee?.name}, you have{' '}
-          {upcomingMeetings && upcomingMeetings?.length > 0
-            ? upcomingMeetings?.length
-            : 'no'}{' '}
-          upcoming &{' '}
-          {pendingMeetings && pendingMeetings.length > 0
-            ? pendingMeetings.length
-            : 'no'}{' '}
-          pending meetings!
-        </div>
-      </BackgroundStyle>
-    );
-  };
+  dispatch(addMeetings(data?.user?.mentee?.meetings as Meeting[]));
 
   return (
     <AdminStyle>
-      <ProfileDashboard userType={UserType.mentee} />
+      {/* <ProfileDashboard userType="mentee" /> */}
       <div className="profile-container">
-        {renderNotificationBanner()}
+        <NotificationBanner userName={data?.user?.mentee?.name as string} />
+
         <div className="info-cal-container">
           <PersonalInfo
             user={data?.user?.mentee! as Mentee}
-            userType={UserType.mentee}
-            schoolName={data?.user?.university[0]?.name}
+            userType="mentee"
+            schoolName={data?.user?.university![0]?.name as string}
             majors={data?.user?.majors as Majors[]}
           />
-          <MeetingsCalendar upcomingMeetings={upcomingMeetings as Meeting[]} />
+          <MeetingsCalendar />
         </div>
-        <UpcomingMeetings
-          meetings={upcomingMeetings as Meeting[]}
-          userType={UserType.mentee}
-        />
-        <PendingMeetings
-          meetings={pendingMeetings as Meeting[]}
-          userType={UserType.mentee}
-        />
-        <PastConnections
-          meetings={pastMeetings as Meeting[]}
-          userType={UserType.mentee}
-        />
+        <UpcomingMeetings userType="mentee" />
+        <PendingMeetings userType="mentee" />
+        <PastConnections userType="mentee" />
       </div>
     </AdminStyle>
   );

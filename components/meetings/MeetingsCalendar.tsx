@@ -3,15 +3,12 @@ import Calendar from 'react-calendar';
 import styled from 'styled-components';
 import 'react-calendar/dist/Calendar.css';
 import { BackgroundStyle } from '../utils';
-import { Meeting } from 'generated/graphql';
+import { useSelector } from 'react-redux';
+import { selectUpcomingMeetings } from 'redux/store';
 
-export interface MeetingsCalendarProps {
-  upcomingMeetings: Meeting[];
-}
+const MeetingsCalendar: React.FC = () => {
+  const upcomingMeetings = useSelector(selectUpcomingMeetings);
 
-const MeetingsCalendar: React.FC<MeetingsCalendarProps> = ({
-  upcomingMeetings,
-}) => {
   const [value, onChange] = useState(new Date());
   const renderTiles = (date: Date) => {
     const dateObj = upcomingMeetings.find((x) => {

@@ -57,6 +57,13 @@ type MentorWithScore {
   score: Int
 }
 
+type RegisterInputs {
+  language: [Language]
+  skills: [Skills]
+  university: [University]
+  majors: [Majors]
+}
+
 type Mentor {
   id: ID!
   bio: String
@@ -138,6 +145,31 @@ type University {
   year_founded: Int!
 }
 
+input MenteeRegister {
+  bio: String
+  job_title_primary: String
+  job_title_secondary: String
+  preferred_services: [Services]!
+  birthyear: Int!
+  degree_type: String
+  name: String!
+  school_year: Int
+  years_experience: Int!
+}
+
+input MentorRegister {
+  bio: String
+  job_title_primary: String!
+  job_title_secondary: String
+  preferred_services: [Services]!
+  birthyear: Int!
+  degree_type: String
+  name: String!
+  school_year: Int
+  years_experience: Int!
+  availability: [Date!]!
+}
+
 type Query {
   "Find a single User"
   user(id: ID!): User
@@ -156,6 +188,9 @@ type Query {
 
   "Find all languages"
   languages: [Language]
+
+  "Find all register input selections"
+  registerInputs: RegisterInputs
 }
 
 type Mutation {
@@ -167,6 +202,9 @@ type Mutation {
 
   "Confirms a meeting with the agreed-upon time"
   createMeeting(input: CreateMeetingInput!): Boolean
+
+  "Creates a user in the registration process"
+  createUser(input: CreateUserInput!): Boolean
 }
 
 input ProposeMeetingInput {
@@ -179,6 +217,17 @@ input ProposeMeetingInput {
 input CancelMeetingInput {
   id: ID!
   cancel_reason: String!
+}
+
+input CreateUserInput {
+  email: String!
+  password: String!
+  mentee: MenteeRegister
+  mentor: MentorRegister
+  language: [String!]!
+  skills: [String!]!
+  university: [String!]!
+  majors: [String!]!
 }
 
 input CreateMeetingInput {

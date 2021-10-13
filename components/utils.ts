@@ -1,7 +1,8 @@
-import { createTheme } from '@material-ui/core/styles';
+import { createTheme } from '@mui/material/styles';
 import { Services } from '../api/generated/graphql';
 import styled, { createGlobalStyle } from 'styled-components';
 import Fuse from 'fuse.js';
+import Swal from 'sweetalert2';
 
 export const GlobalStyle = createGlobalStyle`
   body {
@@ -73,6 +74,51 @@ export const servicePrettier = (service: Services) => {
   }
 };
 
+export type DegreeType =
+  | 'College Diploma'
+  | 'Bachelors (3 years)'
+  | 'Honours (4 years)'
+  | 'Masters'
+  | 'Professional Degree'
+  | 'PhD';
+
+export const degrees: DegreeType[] = [
+  'College Diploma',
+  'Bachelors (3 years)',
+  'Honours (4 years)',
+  'Masters',
+  'Professional Degree',
+  'PhD',
+];
+
+export const getHighestEducation = (degree: DegreeType) => {
+  switch (degree) {
+    case 'College Diploma':
+      return 1;
+    case 'Bachelors (3 years)':
+      return 2;
+    case 'Honours (4 years)':
+      return 3;
+    case 'Masters':
+      return 4;
+    case 'Professional Degree':
+      return 5;
+    case 'PhD':
+      return 6;
+  }
+};
+
+export const services = [
+  Services.CareerDevelopment,
+  Services.CareerPlanning,
+  Services.General,
+  Services.MockInterview,
+  Services.ResumeCritique,
+  Services.SkillsForSuccess,
+  Services.SuccessAtWork,
+  Services.WorkLifeBalance,
+];
+
 export const BackgroundStyle = styled.div<{
   backgroundColor?: string;
   fullHeight?: boolean;
@@ -98,7 +144,18 @@ export function applySearchQuery<T>(data: T[], query: string): T[] {
   return fuse.search(query.trim().substring(0, 32)).map((x) => x.item);
 }
 
-export enum UserType {
-  mentee,
-  mentor,
+export type UserType = 'mentee' | 'mentor' | 'hr';
+
+export type MeetingType = 'past' | 'upcoming' | 'pending';
+
+export function renderAlert(
+  msg: string,
+  type: 'success' | 'error',
+  title?: string,
+) {
+  Swal.fire({
+    icon: type === 'error' ? 'error' : 'success',
+    title: title ? title : type === 'error' ? 'Oh no!' : 'Nice one!',
+    text: msg,
+  });
 }

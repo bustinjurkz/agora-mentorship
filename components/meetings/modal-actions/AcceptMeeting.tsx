@@ -1,18 +1,18 @@
-import Button from '@material-ui/core/Button';
+import Button from '@mui/material/Button';
 
-import List from '@material-ui/core/List';
-import ListItemText from '@material-ui/core/ListItemText';
+import List from '@mui/material/List';
+import ListItemText from '@mui/material/ListItemText';
 import {
   Meeting,
   Proposed_Time,
   useCreateMeetingMutation,
 } from 'generated/graphql';
-import ListItem from '@material-ui/core/ListItem';
+import ListItem from '@mui/material/ListItem';
 import format from 'date-fns/format';
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { servicePrettier } from '../../utils';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import { renderAlert, servicePrettier } from '../../utils';
+import CircularProgress from '@mui/material/CircularProgress';
 
 export interface AcceptMeetingProps {
   meeting: Meeting;
@@ -46,8 +46,21 @@ export const AcceptMeeting: React.FC<AcceptMeetingProps> = ({
 
   const handleBooking = () => {
     createMeeting()
-      .catch(() => alert('Failed to create meeting.  Please contact support.'))
-      .finally(() => setLoading(false));
+      .catch(() =>
+        renderAlert(
+          'Failed to create meeting.  Please contact support.',
+          'error',
+        ),
+      )
+      .finally(() => {
+        setLoading(false);
+        renderAlert(
+          `Meeting with ${meeting.mentee
+            ?.name!} booked, you will both receive an e-mail with the Google Meets room link shortly.`,
+          'success',
+        );
+        setAction(undefined);
+      });
   };
   const [loading, setLoading] = useState(false);
 

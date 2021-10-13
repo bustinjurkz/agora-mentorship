@@ -1,19 +1,17 @@
-import Button from '@material-ui/core/Button/Button';
-import { Meeting } from 'generated/graphql';
+import Button from '@mui/material/Button';
 import React from 'react';
 import styled from 'styled-components';
 import { BackgroundStyle, UserType } from '../utils';
 import { PastConnectionsCard } from './PastConnectionCard';
-
+import { useSelector } from 'react-redux';
+import { selectPastMeetings } from 'redux/store';
 export interface PendingMeetingsProps {
-  meetings: Meeting[];
   userType: UserType;
 }
 
-const PastConnections: React.FC<PendingMeetingsProps> = ({
-  meetings,
-  userType,
-}) => {
+const PastConnections: React.FC<PendingMeetingsProps> = ({ userType }) => {
+  const pastMeetings = useSelector(selectPastMeetings);
+
   return (
     <BackgroundStyle style={{ marginTop: 20 }}>
       <PastConnectionsStyle>
@@ -24,12 +22,12 @@ const PastConnections: React.FC<PendingMeetingsProps> = ({
           </Button>
         </div>
         <div className="card-container">
-          {meetings.length > 0 ? (
-            meetings?.map((x, i: number) => (
+          {pastMeetings.length > 0 ? (
+            pastMeetings?.map((x, i: number) => (
               <PastConnectionsCard
                 key={i}
                 meeting={x}
-                otherUser={userType === UserType.mentee ? x.mentor! : x.mentee!}
+                otherUser={userType === 'mentee' ? x.mentor! : x.mentee!}
               />
             ))
           ) : (

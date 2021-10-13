@@ -1,29 +1,31 @@
-import Button from '@material-ui/core/Button';
-import { Meeting, Mentee, useCancelMeetingMutation } from 'generated/graphql';
+import Button from '@mui/material/Button';
+import { Meeting, useCancelMeetingMutation } from 'generated/graphql';
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import FormControl from '@material-ui/core/FormControl';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Radio from '@material-ui/core/Radio';
+import CircularProgress from '@mui/material/CircularProgress';
+import FormControl from '@mui/material/FormControl';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Radio from '@mui/material/Radio';
+import { useDispatch } from 'react-redux';
+import { removeMeeting } from 'redux/store';
+import { renderAlert } from 'components/utils';
 
 export interface ChangeMeetingProps {
   setAction: (x: undefined) => void;
-  mentee?: Mentee;
   meeting: Meeting;
 }
 export enum CancelReason {
   Conflict = 'Schedule Conflict',
-  NoShow = 'Mentee not Committed',
   Other = 'Other',
 }
 
 export const ChangeMeeting: React.FC<ChangeMeetingProps> = ({
-  mentee,
   setAction,
   meeting,
 }) => {
+  const dispatch = useDispatch();
+
   const [reason, setReason] = useState<CancelReason>();
   const [cancelMeeting] = useCancelMeetingMutation({
     variables: {
@@ -36,8 +38,18 @@ export const ChangeMeeting: React.FC<ChangeMeetingProps> = ({
   const handleCancel = () => {
     setLoading(true);
     cancelMeeting()
-      .catch(() => alert('Failed to cancel meeting.  Please contact support.'))
-      .finally(() => setLoading(false));
+      .catch(() =>
+        renderAlert(
+          'Failed to cancel meeting.  Please contact support.',
+          'error',
+        ),
+      )
+      .finally(() => {
+        setLoading(false);
+        renderAlert('Maybe another time?', 'success', 'Meeting cancelled');
+        dispatch(removeMeeting(meeting.id));
+        setAction(undefined);
+      });
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -46,15 +58,14 @@ export const ChangeMeeting: React.FC<ChangeMeetingProps> = ({
   const [loading, setLoading] = useState(false);
   const reasons = [
     { value: CancelReason.Conflict, label: 'Schedule Conflict' },
-    { value: CancelReason.NoShow, label: 'Mentee not Committed' },
     { value: CancelReason.Other, label: 'Other' },
   ];
   return (
     <ChangeMeetingStyle>
-      <h1 className="header">Decline Meeting</h1>
+      <h1 className="header">Cancel Meeting</h1>
 
       <div className="reason-question">
-        <h3>Select a reason for declining {mentee?.name}?</h3>
+        <h3>Select a reason for cancelling</h3>
         <h4 className="select-one">(Select one)</h4>
       </div>
       <FormControl className="select-reason" component="fieldset">

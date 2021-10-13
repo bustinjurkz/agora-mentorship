@@ -44,6 +44,17 @@ export type CreateMeetingInput = {
   menteeUserId: Scalars['ID'];
 };
 
+export type CreateUserInput = {
+  email: Scalars['String'];
+  password: Scalars['String'];
+  mentee?: Maybe<MenteeRegister>;
+  mentor?: Maybe<MentorRegister>;
+  language: Array<Scalars['String']>;
+  skills: Array<Scalars['String']>;
+  university: Array<Scalars['String']>;
+  majors: Array<Scalars['String']>;
+};
+
 
 export enum Family {
   General = 'GENERAL',
@@ -101,6 +112,18 @@ export type Mentee = {
   userId?: Maybe<Scalars['ID']>;
 };
 
+export type MenteeRegister = {
+  bio?: Maybe<Scalars['String']>;
+  job_title_primary?: Maybe<Scalars['String']>;
+  job_title_secondary?: Maybe<Scalars['String']>;
+  preferred_services: Array<Maybe<Services>>;
+  birthyear: Scalars['Int'];
+  degree_type?: Maybe<Scalars['String']>;
+  name: Scalars['String'];
+  school_year?: Maybe<Scalars['Int']>;
+  years_experience: Scalars['Int'];
+};
+
 export type Mentor = {
   __typename?: 'Mentor';
   id: Scalars['ID'];
@@ -119,6 +142,19 @@ export type Mentor = {
   availability?: Maybe<Array<Maybe<Availability>>>;
 };
 
+export type MentorRegister = {
+  bio?: Maybe<Scalars['String']>;
+  job_title_primary: Scalars['String'];
+  job_title_secondary?: Maybe<Scalars['String']>;
+  preferred_services: Array<Maybe<Services>>;
+  birthyear: Scalars['Int'];
+  degree_type?: Maybe<Scalars['String']>;
+  name: Scalars['String'];
+  school_year?: Maybe<Scalars['Int']>;
+  years_experience: Scalars['Int'];
+  availability: Array<Scalars['Date']>;
+};
+
 export type MentorWithScore = {
   __typename?: 'MentorWithScore';
   mentor?: Maybe<User>;
@@ -133,6 +169,8 @@ export type Mutation = {
   cancelMeeting?: Maybe<Scalars['Boolean']>;
   /** Confirms a meeting with the agreed-upon time */
   createMeeting?: Maybe<Scalars['Boolean']>;
+  /** Creates a user in the registration process */
+  createUser?: Maybe<Scalars['Boolean']>;
 };
 
 
@@ -148,6 +186,11 @@ export type MutationCancelMeetingArgs = {
 
 export type MutationCreateMeetingArgs = {
   input: CreateMeetingInput;
+};
+
+
+export type MutationCreateUserArgs = {
+  input: CreateUserInput;
 };
 
 export type ProposeMeetingInput = {
@@ -178,6 +221,8 @@ export type Query = {
   skills?: Maybe<Array<Maybe<Skills>>>;
   /** Find all languages */
   languages?: Maybe<Array<Maybe<Language>>>;
+  /** Find all register input selections */
+  registerInputs?: Maybe<RegisterInputs>;
 };
 
 
@@ -188,6 +233,14 @@ export type QueryUserArgs = {
 
 export type QueryUserMentorsArgs = {
   id: Scalars['ID'];
+};
+
+export type RegisterInputs = {
+  __typename?: 'RegisterInputs';
+  language?: Maybe<Array<Maybe<Language>>>;
+  skills?: Maybe<Array<Maybe<Skills>>>;
+  university?: Maybe<Array<Maybe<University>>>;
+  majors?: Maybe<Array<Maybe<Majors>>>;
 };
 
 export enum Services {
@@ -274,6 +327,16 @@ export type CancelMeetingMutationVariables = Exact<{
 export type CancelMeetingMutation = (
   { __typename?: 'Mutation' }
   & Pick<Mutation, 'cancelMeeting'>
+);
+
+export type CreateUserMutationVariables = Exact<{
+  input: CreateUserInput;
+}>;
+
+
+export type CreateUserMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'createUser'>
 );
 
 export type GetUserQueryVariables = Exact<{
@@ -373,6 +436,29 @@ export type GetUserMentorsQuery = (
   )>>> }
 );
 
+export type GetRegisterInputsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetRegisterInputsQuery = (
+  { __typename?: 'Query' }
+  & { registerInputs?: Maybe<(
+    { __typename?: 'RegisterInputs' }
+    & { language?: Maybe<Array<Maybe<(
+      { __typename?: 'Language' }
+      & Pick<Language, 'id' | 'language'>
+    )>>>, majors?: Maybe<Array<Maybe<(
+      { __typename?: 'Majors' }
+      & Pick<Majors, 'id' | 'major'>
+    )>>>, skills?: Maybe<Array<Maybe<(
+      { __typename?: 'Skills' }
+      & Pick<Skills, 'id' | 'skill'>
+    )>>>, university?: Maybe<Array<Maybe<(
+      { __typename?: 'University' }
+      & Pick<University, 'id' | 'name'>
+    )>>> }
+  )> }
+);
+
 
 export const ProposeMeetingDocument = gql`
     mutation ProposeMeeting($input: ProposeMeetingInput!) {
@@ -464,6 +550,36 @@ export function useCancelMeetingMutation(baseOptions?: Apollo.MutationHookOption
 export type CancelMeetingMutationHookResult = ReturnType<typeof useCancelMeetingMutation>;
 export type CancelMeetingMutationResult = Apollo.MutationResult<CancelMeetingMutation>;
 export type CancelMeetingMutationOptions = Apollo.BaseMutationOptions<CancelMeetingMutation, CancelMeetingMutationVariables>;
+export const CreateUserDocument = gql`
+    mutation CreateUser($input: CreateUserInput!) {
+  createUser(input: $input)
+}
+    `;
+export type CreateUserMutationFn = Apollo.MutationFunction<CreateUserMutation, CreateUserMutationVariables>;
+
+/**
+ * __useCreateUserMutation__
+ *
+ * To run a mutation, you first call `useCreateUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createUserMutation, { data, loading, error }] = useCreateUserMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateUserMutation(baseOptions?: Apollo.MutationHookOptions<CreateUserMutation, CreateUserMutationVariables>) {
+        return Apollo.useMutation<CreateUserMutation, CreateUserMutationVariables>(CreateUserDocument, baseOptions);
+      }
+export type CreateUserMutationHookResult = ReturnType<typeof useCreateUserMutation>;
+export type CreateUserMutationResult = Apollo.MutationResult<CreateUserMutation>;
+export type CreateUserMutationOptions = Apollo.BaseMutationOptions<CreateUserMutation, CreateUserMutationVariables>;
 export const GetUserDocument = gql`
     query GetUser($input: ID!) {
   user(id: $input) {
@@ -688,3 +804,50 @@ export function useGetUserMentorsLazyQuery(baseOptions?: Apollo.LazyQueryHookOpt
 export type GetUserMentorsQueryHookResult = ReturnType<typeof useGetUserMentorsQuery>;
 export type GetUserMentorsLazyQueryHookResult = ReturnType<typeof useGetUserMentorsLazyQuery>;
 export type GetUserMentorsQueryResult = Apollo.QueryResult<GetUserMentorsQuery, GetUserMentorsQueryVariables>;
+export const GetRegisterInputsDocument = gql`
+    query GetRegisterInputs {
+  registerInputs {
+    language {
+      id
+      language
+    }
+    majors {
+      id
+      major
+    }
+    skills {
+      id
+      skill
+    }
+    university {
+      id
+      name
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetRegisterInputsQuery__
+ *
+ * To run a query within a React component, call `useGetRegisterInputsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetRegisterInputsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetRegisterInputsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetRegisterInputsQuery(baseOptions?: Apollo.QueryHookOptions<GetRegisterInputsQuery, GetRegisterInputsQueryVariables>) {
+        return Apollo.useQuery<GetRegisterInputsQuery, GetRegisterInputsQueryVariables>(GetRegisterInputsDocument, baseOptions);
+      }
+export function useGetRegisterInputsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetRegisterInputsQuery, GetRegisterInputsQueryVariables>) {
+          return Apollo.useLazyQuery<GetRegisterInputsQuery, GetRegisterInputsQueryVariables>(GetRegisterInputsDocument, baseOptions);
+        }
+export type GetRegisterInputsQueryHookResult = ReturnType<typeof useGetRegisterInputsQuery>;
+export type GetRegisterInputsLazyQueryHookResult = ReturnType<typeof useGetRegisterInputsLazyQuery>;
+export type GetRegisterInputsQueryResult = Apollo.QueryResult<GetRegisterInputsQuery, GetRegisterInputsQueryVariables>;
