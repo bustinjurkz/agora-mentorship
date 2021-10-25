@@ -122,6 +122,12 @@ export const Mutation: MutationResolvers = {
     return true;
   },
   proposeMeeting: async (_, { input }, ctx) => {
+    const userMenteeId = await ctx.prisma.mentee.findFirst({
+      where: { userId: parseInt(input.menteeId) },
+      select: {
+        id: true,
+      },
+    });
     const res = await ctx.prisma.meeting.create({
       data: {
         topic: input.topic,
@@ -130,7 +136,7 @@ export const Mutation: MutationResolvers = {
             return { time: new Date(x) };
           }),
         },
-        mentee: { connect: { id: parseInt(input.menteeId) } },
+        mentee: { connect: { id: userMenteeId?.id } },
         mentor: { connect: { id: parseInt(input.mentorId) } },
       },
       include: {

@@ -54,14 +54,17 @@ const Navbar: React.FC = () => {
           Agora Mentoring
         </h1>
         <div className="nav-buttons">
-          {loggedInUser.userType === 'mentee' && (
+          {(loggedInUser.userType === 'mentee' ||
+            router.pathname === '/mentee') && (
             <Button
               className="item"
               startIcon={<SearchIcon fontSize="large" />}
               onClick={() =>
                 router.push({
                   pathname: 'find-mentors',
-                  query: { userId: loggedInUser.userId },
+                  query: {
+                    userId: router.query.userId as string,
+                  },
                 })
               }
             >

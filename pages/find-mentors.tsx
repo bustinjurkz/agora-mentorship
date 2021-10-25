@@ -12,7 +12,6 @@ import { useRouter } from 'next/dist/client/router';
 const FindMentors: React.FC = () => {
   const router = useRouter();
   const [mentorSearch, setMentorSearch] = useState('');
-  console.log('yeet: ', router.query.userId);
   const { data, loading, error } = useGetUserMentorsQuery({
     variables: {
       input: router.query.userId as string,

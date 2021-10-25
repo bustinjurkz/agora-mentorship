@@ -59,7 +59,10 @@ const RequestConfirmation: React.FC<RequestConfirmationProps> = ({
           'success',
         );
         setFinish(false);
-        router.back();
+        router.push({
+          pathname: 'mentee',
+          query: { userId: router.query.userId as string },
+        });
       });
   };
   return (
