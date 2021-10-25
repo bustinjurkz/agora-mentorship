@@ -32,7 +32,9 @@ export function makeGraphServer(
     server: new ApolloServer({
       typeDefs: gql(
         input.isTest
-          ? fs.readFileSync(path.join(__dirname, '/schema.graphql')).toString()
+          ? fs
+              .readFileSync(path.join(process.cwd(), '/schema.graphql'))
+              .toString()
           : fs.readFileSync(path.join('api/schema.graphql')).toString(),
       ),
       resolvers: resolvers as any,
