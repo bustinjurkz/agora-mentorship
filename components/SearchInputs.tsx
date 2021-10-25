@@ -5,7 +5,7 @@ import Button from '@mui/material/Button';
 import { BackgroundStyle } from './utils';
 import Collapse from '@mui/material/Collapse';
 import FormControl from '@mui/material/FormControl';
-import Input from '@mui/material/Input/Input';
+import Input from '@mui/material/Input';
 import InputAdornment from '@mui/material/InputAdornment';
 import SearchIcon from '@mui/icons-material/Search';
 import MenuItem from '@mui/material/MenuItem';
