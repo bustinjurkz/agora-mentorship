@@ -27,15 +27,9 @@ export const meetingStoreSlice = createSlice({
           isBefore(new Date(), x?.start_time),
       );
       const pendingFiltered = action.payload.filter(
-        (x: Meeting) =>
-          !x?.start_time &&
-          x?.proposed_times &&
-          !x.cancelled &&
-          isBefore(new Date(), x?.start_time),
-      );
-      const pastFiltered = action.payload.filter(
         (x: Meeting) => !x?.start_time && x?.proposed_times && !x.cancelled,
       );
+      const pastFiltered = action.payload.filter((x: Meeting) => x?.end_time);
       state.upcomingMeetings = upcomingFiltered;
       state.pendingMeetings = pendingFiltered;
       state.pastMeetings = pastFiltered;

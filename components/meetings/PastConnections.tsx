@@ -55,7 +55,7 @@ const PastConnectionsStyle = styled.div`
     }
   }
 
-  .cards-container {
+  .card-container {
     display: inline-flex;
   }
 `;

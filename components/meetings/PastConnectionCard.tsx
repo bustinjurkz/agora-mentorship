@@ -18,8 +18,8 @@ export const PastConnectionsCard: React.FC<PastConnectionsCardProps> = ({
           <div className="info">
             <span className="name">{otherUser.name}</span>
             <span className="history">
-              {otherUser.meetings?.filter((x) => x?.end_time).length}
-              meetings completed.
+              {/* {otherUser.meetings?.filter((x) => x?.end_time).length}
+              meetings completed. */}
             </span>
           </div>
         </div>

@@ -120,10 +120,10 @@ const PendingMeetingCardStyle = styled.div`
   }
   .card-container {
     display: flex;
+    flex-direction: column;
     border-radius: 5px;
     border-left: 5px solid #ff9500;
     padding: 0px 30px 15px 30px;
-    flex-direction: column;
     background: ${({ theme }) => theme.lightGreen};
     .meeting-type {
       color: ${({ theme }) => theme.mainGreen};

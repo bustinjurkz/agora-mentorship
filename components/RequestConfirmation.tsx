@@ -14,6 +14,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { renderAlert, servicePrettier } from './utils';
 import CircularProgress from '@mui/material/CircularProgress';
+import { useRouter } from 'next/dist/client/router';
 
 export interface RequestConfirmationProps {
   finish: boolean;
@@ -30,13 +31,13 @@ const RequestConfirmation: React.FC<RequestConfirmationProps> = ({
   times,
   mentor,
 }) => {
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
-
   const [proposeMeeting] = useProposeMeetingMutation({
     variables: {
       input: {
         topic: topic,
-        menteeId: '4',
+        menteeId: router.query.userId as string,
         mentorId: mentor.mentor!.mentor!.id,
         proposed_times: times,
       },
@@ -58,6 +59,7 @@ const RequestConfirmation: React.FC<RequestConfirmationProps> = ({
           'success',
         );
         setFinish(false);
+        router.back();
       });
   };
   return (

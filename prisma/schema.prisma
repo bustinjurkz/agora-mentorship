@@ -1,6 +1,6 @@
 generator client {
   provider = "prisma-client-js"
-  // output   = "../generated/prisma/client"
+  previewFeatures = ["referentialActions"]
 }
 
 datasource db {
@@ -36,7 +36,7 @@ model Mentor {
   meetings            Meeting[]
   availability        Availability[]
   userId              Int            @unique
-  user                User           @relation(fields: [userId], references: [id])
+  user                User           @relation(fields: [userId], references: [id], onDelete: Cascade) 
 }
 
 model Mentee {
@@ -53,7 +53,7 @@ model Mentee {
   years_experience    Int
   meetings            Meeting[]
   userId              Int        @unique
-  user                User       @relation(fields: [userId], references: [id])
+  user                User       @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model University {
@@ -107,22 +107,22 @@ model Meeting {
   cancel_reason  String?
   proposed_times Proposed_Time[]
   menteeId       Int
-  mentee         Mentee          @relation(fields: [menteeId], references: [id])
+  mentee         Mentee          @relation(fields: [menteeId], references: [id], onDelete: Cascade)
   mentorId       Int
-  mentor         Mentor          @relation(fields: [mentorId], references: [id])
+  mentor         Mentor          @relation(fields: [mentorId], references: [id], onDelete: Cascade)
 }
 
 model Proposed_Time {
   id         Int      @id @default(autoincrement())
   time       DateTime
   meetingId  Int      
-  meeting    Meeting  @relation(fields: [meetingId], references: [id])
+  meeting    Meeting  @relation(fields: [meetingId], references: [id], onDelete: Cascade)
 }
 
 model Availability {
   id       Int      @id @default(autoincrement())
   time     DateTime
-  Mentor   Mentor   @relation(fields: [mentorId], references: [id])
+  Mentor   Mentor   @relation(fields: [mentorId], references: [id], onDelete: Cascade)
   mentorId Int
 }
 

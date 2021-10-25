@@ -66,5 +66,6 @@ const PendingMeetingsStyle = styled.div`
 
   .card-container {
     display: inline-flex;
+    overflow-x: auto;
   }
 `;

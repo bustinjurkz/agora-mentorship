@@ -84,7 +84,11 @@ export const scoreAlgorithm = (
 
   const getMatrixScore = () => {
     const mentorMajors = mentor.majors.map((x) => x.major);
+    console.log('name: ', mentor.mentor?.name);
     //@ts-ignore
+    console.log(mentorMajors.map((y) => matrix.map((x) => x[y])));
+    //@ts-ignore
+
     const tempScores = mentorMajors.map((y) => matrix.map((x) => x[y]));
     const max = Math.max(...tempScores[0]);
     console.log('MATRIX MAJOR SCORE:', max * WEIGHTS.MAJORS_SIMILARITY);
