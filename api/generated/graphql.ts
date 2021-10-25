@@ -67,6 +67,12 @@ export type Language = {
   population: Scalars['Int'];
 };
 
+export type LoginResponse = {
+  __typename?: 'LoginResponse';
+  id: Scalars['ID'];
+  isMentor: Scalars['Boolean'];
+};
+
 export type Majors = {
   __typename?: 'Majors';
   id: Scalars['ID'];
@@ -108,7 +114,6 @@ export type Mentee = {
 };
 
 export type MenteeRegister = {
-  __typename?: 'MenteeRegister';
   bio?: Maybe<Scalars['String']>;
   job_title_primary?: Maybe<Scalars['String']>;
   job_title_secondary?: Maybe<Scalars['String']>;
@@ -139,7 +144,6 @@ export type Mentor = {
 };
 
 export type MentorRegister = {
-  __typename?: 'MentorRegister';
   bio?: Maybe<Scalars['String']>;
   job_title_primary: Scalars['String'];
   job_title_secondary?: Maybe<Scalars['String']>;
@@ -220,6 +224,8 @@ export type Query = {
   languages?: Maybe<Array<Maybe<Language>>>;
   /** Find all register input selections */
   registerInputs?: Maybe<RegisterInputs>;
+  /** Get user ID from an email */
+  login?: Maybe<LoginResponse>;
 };
 
 
@@ -230,6 +236,11 @@ export type QueryUserArgs = {
 
 export type QueryUserMentorsArgs = {
   id: Scalars['ID'];
+};
+
+
+export type QueryLoginArgs = {
+  email: Scalars['String'];
 };
 
 export type RegisterInputs = {
@@ -383,13 +394,14 @@ export type ResolversTypes = {
   Family: Family;
   Language: ResolverTypeWrapper<LanguageModel>;
   Int: ResolverTypeWrapper<Scalars['Int']>;
+  LoginResponse: ResolverTypeWrapper<LoginResponse>;
+  Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   Majors: ResolverTypeWrapper<MajorsModel>;
   Meeting: ResolverTypeWrapper<Omit<Meeting, 'mentor' | 'mentee'> & { mentor?: Maybe<ResolversTypes['Mentor']>, mentee?: Maybe<ResolversTypes['Mentee']> }>;
-  Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   Mentee: ResolverTypeWrapper<Omit<Mentee, 'mentors' | 'meetings'> & { mentors?: Maybe<Array<Maybe<ResolversTypes['MentorWithScore']>>>, meetings?: Maybe<Array<Maybe<ResolversTypes['Meeting']>>> }>;
-  MenteeRegister: ResolverTypeWrapper<MenteeRegister>;
+  MenteeRegister: MenteeRegister;
   Mentor: ResolverTypeWrapper<Omit<Mentor, 'meetings'> & { meetings?: Maybe<Array<Maybe<ResolversTypes['Meeting']>>> }>;
-  MentorRegister: ResolverTypeWrapper<MentorRegister>;
+  MentorRegister: MentorRegister;
   MentorWithScore: ResolverTypeWrapper<Omit<MentorWithScore, 'mentor'> & { mentor?: Maybe<ResolversTypes['User']> }>;
   Mutation: ResolverTypeWrapper<{}>;
   ProposeMeetingInput: ProposeMeetingInput;
@@ -414,9 +426,10 @@ export type ResolversParentTypes = {
   Date: Scalars['Date'];
   Language: LanguageModel;
   Int: Scalars['Int'];
+  LoginResponse: LoginResponse;
+  Boolean: Scalars['Boolean'];
   Majors: MajorsModel;
   Meeting: Omit<Meeting, 'mentor' | 'mentee'> & { mentor?: Maybe<ResolversParentTypes['Mentor']>, mentee?: Maybe<ResolversParentTypes['Mentee']> };
-  Boolean: Scalars['Boolean'];
   Mentee: Omit<Mentee, 'mentors' | 'meetings'> & { mentors?: Maybe<Array<Maybe<ResolversParentTypes['MentorWithScore']>>>, meetings?: Maybe<Array<Maybe<ResolversParentTypes['Meeting']>>> };
   MenteeRegister: MenteeRegister;
   Mentor: Omit<Mentor, 'meetings'> & { meetings?: Maybe<Array<Maybe<ResolversParentTypes['Meeting']>>> };
@@ -449,6 +462,12 @@ export type LanguageResolvers<ContextType = Context, ParentType extends Resolver
   country?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   language?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   population?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type LoginResponseResolvers<ContextType = Context, ParentType extends ResolversParentTypes['LoginResponse'] = ResolversParentTypes['LoginResponse']> = {
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  isMentor?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -492,19 +511,6 @@ export type MenteeResolvers<ContextType = Context, ParentType extends ResolversP
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type MenteeRegisterResolvers<ContextType = Context, ParentType extends ResolversParentTypes['MenteeRegister'] = ResolversParentTypes['MenteeRegister']> = {
-  bio?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  job_title_primary?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  job_title_secondary?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  preferred_services?: Resolver<Array<Maybe<ResolversTypes['Services']>>, ParentType, ContextType>;
-  birthyear?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  degree_type?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  school_year?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  years_experience?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
 export type MentorResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Mentor'] = ResolversParentTypes['Mentor']> = {
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   bio?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
@@ -520,20 +526,6 @@ export type MentorResolvers<ContextType = Context, ParentType extends ResolversP
   userId?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
   meetings?: Resolver<Maybe<Array<Maybe<ResolversTypes['Meeting']>>>, ParentType, ContextType>;
   availability?: Resolver<Maybe<Array<Maybe<ResolversTypes['Availability']>>>, ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
-export type MentorRegisterResolvers<ContextType = Context, ParentType extends ResolversParentTypes['MentorRegister'] = ResolversParentTypes['MentorRegister']> = {
-  bio?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  job_title_primary?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  job_title_secondary?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  preferred_services?: Resolver<Array<Maybe<ResolversTypes['Services']>>, ParentType, ContextType>;
-  birthyear?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  degree_type?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  school_year?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  years_experience?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  availability?: Resolver<Array<ResolversTypes['Date']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -565,6 +557,7 @@ export type QueryResolvers<ContextType = Context, ParentType extends ResolversPa
   skills?: Resolver<Maybe<Array<Maybe<ResolversTypes['Skills']>>>, ParentType, ContextType>;
   languages?: Resolver<Maybe<Array<Maybe<ResolversTypes['Language']>>>, ParentType, ContextType>;
   registerInputs?: Resolver<Maybe<ResolversTypes['RegisterInputs']>, ParentType, ContextType>;
+  login?: Resolver<Maybe<ResolversTypes['LoginResponse']>, ParentType, ContextType, RequireFields<QueryLoginArgs, 'email'>>;
 };
 
 export type RegisterInputsResolvers<ContextType = Context, ParentType extends ResolversParentTypes['RegisterInputs'] = ResolversParentTypes['RegisterInputs']> = {
@@ -618,12 +611,11 @@ export type Resolvers<ContextType = Context> = {
   Availability?: AvailabilityResolvers<ContextType>;
   Date?: GraphQLScalarType;
   Language?: LanguageResolvers<ContextType>;
+  LoginResponse?: LoginResponseResolvers<ContextType>;
   Majors?: MajorsResolvers<ContextType>;
   Meeting?: MeetingResolvers<ContextType>;
   Mentee?: MenteeResolvers<ContextType>;
-  MenteeRegister?: MenteeRegisterResolvers<ContextType>;
   Mentor?: MentorResolvers<ContextType>;
-  MentorRegister?: MentorRegisterResolvers<ContextType>;
   MentorWithScore?: MentorWithScoreResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Proposed_Time?: Proposed_TimeResolvers<ContextType>;

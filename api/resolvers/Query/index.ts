@@ -93,4 +93,22 @@ export const Query: QueryResolvers = {
       skills: skills,
     };
   },
+  login: async (_, { email }, ctx) => {
+    const user = await ctx.prisma.user.findFirst({
+      where: { email: email },
+      select: {
+        id: true,
+        mentor: {
+          select: {
+            id: true,
+          },
+        },
+      },
+    });
+
+    return {
+      id: user?.id.toString() ?? '',
+      isMentor: user?.mentor?.id ? true : false,
+    };
+  },
 };

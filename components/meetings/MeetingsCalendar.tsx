@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import 'react-calendar/dist/Calendar.css';
 import { BackgroundStyle } from '../utils';
 import { useSelector } from 'react-redux';
-import { selectUpcomingMeetings } from 'redux/store';
+import { selectUpcomingMeetings } from 'redux/meetingSlice';
 
 const MeetingsCalendar: React.FC = () => {
   const upcomingMeetings = useSelector(selectUpcomingMeetings);

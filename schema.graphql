@@ -145,6 +145,11 @@ type University {
   year_founded: Int!
 }
 
+type LoginResponse {
+  id: ID!
+  isMentor: Boolean!
+}
+
 input MenteeRegister {
   bio: String
   job_title_primary: String
@@ -191,6 +196,9 @@ type Query {
 
   "Find all register input selections"
   registerInputs: RegisterInputs
+
+  "Get user ID from an email"
+  login(email: String!): LoginResponse
 }
 
 type Mutation {

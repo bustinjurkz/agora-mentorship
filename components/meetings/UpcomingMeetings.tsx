@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { BackgroundStyle, UserType } from '../utils';
 import { UpcomingMeetingCard } from './UpcomingMeetingCard';
 import { useSelector } from 'react-redux';
-import { selectUpcomingMeetings } from 'redux/store';
+import { selectUpcomingMeetings } from 'redux/meetingSlice';
 export interface UpcomingMeetingsProps {
   userType: UserType;
 }

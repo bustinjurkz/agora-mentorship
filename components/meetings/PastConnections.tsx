@@ -4,7 +4,8 @@ import styled from 'styled-components';
 import { BackgroundStyle, UserType } from '../utils';
 import { PastConnectionsCard } from './PastConnectionCard';
 import { useSelector } from 'react-redux';
-import { selectPastMeetings } from 'redux/store';
+import { selectPastMeetings } from 'redux/meetingSlice';
+
 export interface PendingMeetingsProps {
   userType: UserType;
 }
