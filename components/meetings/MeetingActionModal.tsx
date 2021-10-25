@@ -7,7 +7,6 @@ import React from 'react';
 import styled from 'styled-components';
 import { AcceptMeeting } from './modal-actions/AcceptMeeting';
 import { ChangeMeeting } from './modal-actions/ChangeMeeting';
-import { StatusMeeting } from './modal-actions/StatusMeeting';
 
 export interface MeetingActionModalProps {
   finish: boolean;
@@ -22,28 +21,11 @@ export interface MeetingActionModalProps {
 
 export const MeetingActionModal: React.FC<MeetingActionModalProps> = ({
   meeting,
-  mentee,
   action,
   setAction,
   mentorEmail,
   mentorName,
 }) => {
-  // const [createMeeting] = useCreateMeetingMutation({
-  //   variables: {
-  //     input: {
-  //       topic: topic,
-  //       menteeId: '4',
-  //       mentorId: mentor.mentor!.mentor!.id,
-  //       proposed_times: times,
-  //     },
-  //   },
-  // });
-  // const handleBooking = () => {
-  //   setLoading(true);
-  //   createMeeting()
-  //     .catch(() => alert('Failed to create meeting.  Please contact support.'))
-  //     .finally(() => setLoading(false));
-  // };
   return (
     <Dialog
       open={action !== undefined}
@@ -63,13 +45,6 @@ export const MeetingActionModal: React.FC<MeetingActionModalProps> = ({
           )}
           {action === 'change' && (
             <ChangeMeeting meeting={meeting} setAction={setAction} />
-          )}
-          {action === 'status' && (
-            <StatusMeeting
-              meeting={meeting}
-              mentee={mentee}
-              setAction={setAction}
-            />
           )}
         </DialogContent>
       </MeetingActionModalStyle>

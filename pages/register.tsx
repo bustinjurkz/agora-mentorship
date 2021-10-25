@@ -49,6 +49,7 @@ const Register: React.FC = () => {
   });
 
   const handleChange = (
+    //@ts-ignore
     event: React.MouseEvent<HTMLElement>,
     userType: UserType,
   ) => {
