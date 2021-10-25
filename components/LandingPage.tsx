@@ -5,11 +5,6 @@ import styled from 'styled-components';
 
 const LandingPage: React.FC = () => {
   const router = useRouter();
-
-  const handleSignIn = () => {
-    console.log('yeet');
-  };
-
   return (
     <LandingPageStyle>
       <div className="landing-wrapper">
@@ -34,7 +29,7 @@ const LandingPage: React.FC = () => {
             className="login"
             variant="outlined"
             disableElevation
-            onClick={() => handleSignIn()}
+            onClick={() => router.push(`/login`, `/login`)}
           >
             Login
           </Button>

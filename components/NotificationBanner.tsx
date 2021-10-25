@@ -1,7 +1,10 @@
 import React from 'react';
 import { BackgroundStyle } from './utils';
 import { useSelector } from 'react-redux';
-import { selectPendingMeetings, selectUpcomingMeetings } from 'redux/store';
+import {
+  selectPendingMeetings,
+  selectUpcomingMeetings,
+} from 'redux/meetingSlice';
 export interface NotificationBannerProps {
   userName: string;
 }

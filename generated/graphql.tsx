@@ -72,6 +72,12 @@ export type Language = {
   population: Scalars['Int'];
 };
 
+export type LoginResponse = {
+  __typename?: 'LoginResponse';
+  id: Scalars['ID'];
+  isMentor: Scalars['Boolean'];
+};
+
 export type Majors = {
   __typename?: 'Majors';
   id: Scalars['ID'];
@@ -223,6 +229,8 @@ export type Query = {
   languages?: Maybe<Array<Maybe<Language>>>;
   /** Find all register input selections */
   registerInputs?: Maybe<RegisterInputs>;
+  /** Get user ID from an email */
+  login?: Maybe<LoginResponse>;
 };
 
 
@@ -233,6 +241,11 @@ export type QueryUserArgs = {
 
 export type QueryUserMentorsArgs = {
   id: Scalars['ID'];
+};
+
+
+export type QueryLoginArgs = {
+  email: Scalars['String'];
 };
 
 export type RegisterInputs = {
@@ -456,6 +469,19 @@ export type GetRegisterInputsQuery = (
       { __typename?: 'University' }
       & Pick<University, 'id' | 'name'>
     )>>> }
+  )> }
+);
+
+export type GetUserIdQueryVariables = Exact<{
+  input: Scalars['String'];
+}>;
+
+
+export type GetUserIdQuery = (
+  { __typename?: 'Query' }
+  & { login?: Maybe<(
+    { __typename?: 'LoginResponse' }
+    & Pick<LoginResponse, 'id' | 'isMentor'>
   )> }
 );
 
@@ -851,3 +877,37 @@ export function useGetRegisterInputsLazyQuery(baseOptions?: Apollo.LazyQueryHook
 export type GetRegisterInputsQueryHookResult = ReturnType<typeof useGetRegisterInputsQuery>;
 export type GetRegisterInputsLazyQueryHookResult = ReturnType<typeof useGetRegisterInputsLazyQuery>;
 export type GetRegisterInputsQueryResult = Apollo.QueryResult<GetRegisterInputsQuery, GetRegisterInputsQueryVariables>;
+export const GetUserIdDocument = gql`
+    query GetUserId($input: String!) {
+  login(email: $input) {
+    id
+    isMentor
+  }
+}
+    `;
+
+/**
+ * __useGetUserIdQuery__
+ *
+ * To run a query within a React component, call `useGetUserIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUserIdQuery({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useGetUserIdQuery(baseOptions: Apollo.QueryHookOptions<GetUserIdQuery, GetUserIdQueryVariables>) {
+        return Apollo.useQuery<GetUserIdQuery, GetUserIdQueryVariables>(GetUserIdDocument, baseOptions);
+      }
+export function useGetUserIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserIdQuery, GetUserIdQueryVariables>) {
+          return Apollo.useLazyQuery<GetUserIdQuery, GetUserIdQueryVariables>(GetUserIdDocument, baseOptions);
+        }
+export type GetUserIdQueryHookResult = ReturnType<typeof useGetUserIdQuery>;
+export type GetUserIdLazyQueryHookResult = ReturnType<typeof useGetUserIdLazyQuery>;
+export type GetUserIdQueryResult = Apollo.QueryResult<GetUserIdQuery, GetUserIdQueryVariables>;

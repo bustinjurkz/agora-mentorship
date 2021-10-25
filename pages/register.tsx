@@ -306,7 +306,7 @@ export default Register;
 
 const RegisterStyle = styled.div`
   display: flex;
-  margin-top: 40px;
+  margin-top: 10px;
   justify-content: space-evenly;
   .container {
     width: 1000px;
@@ -315,10 +315,9 @@ const RegisterStyle = styled.div`
     align-items: center;
     .stepper {
       width: -webkit-fill-available;
-      background: ${({ theme }) => theme.white};
+      background: transparent;
     }
     .register-step {
-      margin-top: 30px;
       display: flex;
       flex-direction: column;
       text-align: center;
@@ -332,9 +331,7 @@ const RegisterStyle = styled.div`
   .stepper-button {
     font-size: larger;
   }
-  .sign-up-text {
-    margin-bottom: 50px;
-  }
+
   .buttons {
     display: flex;
     flex-direction: column;

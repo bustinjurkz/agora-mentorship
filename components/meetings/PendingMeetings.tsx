@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { BackgroundStyle, UserType } from '../utils';
 import { PendingMeetingCard } from './PendingMeetingCard';
 import { useSelector } from 'react-redux';
-import { selectPendingMeetings } from 'redux/store';
+import { selectPendingMeetings } from 'redux/meetingSlice';
 export interface PendingMeetingsProps {
   userType: UserType;
   mentorName?: string;
