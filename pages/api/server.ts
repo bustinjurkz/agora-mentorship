@@ -1,8 +1,8 @@
 import { Prisma, PrismaClient } from '@prisma/client';
 import { ApolloServer, gql } from 'apollo-server-micro';
 import { GraphQLError } from 'graphql';
-import { Context } from './context';
-import * as resolvers from './resolvers';
+import { Context } from '../../api/context';
+import * as resolvers from '../../api/resolvers';
 import path from 'path';
 import fs from 'fs';
 

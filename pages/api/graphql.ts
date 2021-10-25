@@ -1,5 +1,5 @@
 import Cors from 'micro-cors';
-import { makeGraphServer } from '@api/server';
+import { makeGraphServer } from 'pages/api/server';
 
 export const { server } = makeGraphServer({
   logError: console.log,
