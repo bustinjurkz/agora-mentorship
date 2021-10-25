@@ -1,8 +1,9 @@
 import Cors from 'micro-cors';
-import { makeGraphServer } from 'pages/api/server';
+import { makeGraphServer } from '@api/server';
 
 export const { server } = makeGraphServer({
   logError: console.log,
+  isTest: false,
   dbLogging: ['info', 'warn', 'error', 'query'],
 });
 
