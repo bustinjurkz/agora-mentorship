@@ -8,8 +8,11 @@ import SearchIcon from '@mui/icons-material/Search';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Paper from '@mui/material/Paper';
+import { useSelector } from 'react-redux';
+import { selectLoggedInUser } from 'redux/userSlice';
 
 const Navbar: React.FC = () => {
+  const loggedInUser = useSelector(selectLoggedInUser);
   const router = useRouter();
   const returnHome = () => {
     router.push(`/`, `/`);
@@ -51,9 +54,21 @@ const Navbar: React.FC = () => {
           Agora Mentoring
         </h1>
         <div className="nav-buttons">
-          <IconButton className="item">
-            <SearchIcon fontSize="large" />
-          </IconButton>
+          {loggedInUser.userType === 'mentee' && (
+            <Button
+              className="item"
+              startIcon={<SearchIcon fontSize="large" />}
+              onClick={() =>
+                router.push({
+                  pathname: 'find-mentors',
+                  query: { userId: loggedInUser.userId },
+                })
+              }
+            >
+              Find Mentors
+            </Button>
+          )}
+
           <IconButton className="item">
             <NotificationsIcon fontSize="large" />
           </IconButton>

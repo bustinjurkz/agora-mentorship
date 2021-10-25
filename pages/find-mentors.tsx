@@ -2,18 +2,19 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { MentorWithScore, useGetUserMentorsQuery } from 'generated/graphql';
 import Loading from 'components/Loading';
-
 import { SearchInputs } from 'components/SearchInputs';
 import MentorCard from 'components/MentorCard';
 import RequestMentor from 'components/RequestMentor';
 import ErrorMessage from 'components/ErrorMessage';
 import { applySearchQuery } from 'components/utils';
+import { useRouter } from 'next/dist/client/router';
 
 const FindMentors: React.FC = () => {
+  const router = useRouter();
   const [mentorSearch, setMentorSearch] = useState('');
   const { data, loading, error } = useGetUserMentorsQuery({
     variables: {
-      input: '15',
+      input: router.query.userId as string,
     },
   });
   const [mentorRequested, setMentorRequested] = useState<MentorWithScore>();

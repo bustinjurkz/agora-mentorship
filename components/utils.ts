@@ -46,10 +46,6 @@ export const parseDate = (selectedDate: Date, hour: number) => {
   return adjustedHourDate;
 };
 
-export const majorPrettier = (major: string) => {
-  return major.replace(/_/g, ' ');
-};
-
 export const servicePrettier = (service: Services) => {
   let prettyService;
   switch (service) {
@@ -90,6 +86,15 @@ export const degrees: DegreeType[] = [
   'Professional Degree',
   'PhD',
 ];
+
+function capitalize(str: string) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+export const majorPrettier = (major: string) => {
+  const newMajor = major.toLowerCase().replace(/_/g, ' ');
+  return newMajor.split(' ').map(capitalize).join(' ').replace(/And/, 'and');
+};
 
 export const getHighestEducation = (degree: DegreeType) => {
   switch (degree) {

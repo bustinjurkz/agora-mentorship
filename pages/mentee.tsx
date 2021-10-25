@@ -10,14 +10,16 @@ import { AdminStyle } from './mentor';
 import ErrorMessage from 'components/ErrorMessage';
 import { Majors, Meeting, Mentee, useGetUserQuery } from 'generated/graphql';
 import { useDispatch } from 'react-redux';
-import { addMeetings } from 'redux/store';
+import { addMeetings } from 'redux/meetingSlice';
 import { NotificationBanner } from 'components/NotificationBanner';
+import { useRouter } from 'next/dist/client/router';
 
 const MenteeAdmin: React.FC = () => {
   const dispatch = useDispatch();
+  const router = useRouter();
   const { data, loading, error } = useGetUserQuery({
     variables: {
-      input: '15',
+      input: (router.query.userId as string) ?? '',
     },
   });
   if (loading) {

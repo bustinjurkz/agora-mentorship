@@ -197,3 +197,12 @@ gql`
     }
   }
 `;
+
+gql`
+  query GetUserId($input: String!) {
+    login(email: $input) {
+      id
+      isMentor
+    }
+  }
+`;

@@ -3,11 +3,12 @@ import React from 'react';
 import styled from 'styled-components';
 import TextField from '@mui/material/TextField';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import { Theme, useTheme } from '@mui/material/styles';
+import { BackgroundStyle } from 'components/utils';
+import Input from '@mui/material/Input';
 
 function getStyles(name: string, personName: string[], theme: Theme) {
   return {
@@ -53,8 +54,8 @@ export const SkillsProfession: React.FC<SkillsProfessionProps> = ({
   return (
     <ProfileEducationStyle>
       <h1 className="sign-up-text">Skills and Profession</h1>
-      <div className="inputs-container">
-        <div className="left-inputs">
+      <BackgroundStyle style={{ padding: 30, width: 600 }}>
+        <div className="inputs-container">
           <TextField
             id="standard-basic"
             label="Primary Role"
@@ -82,8 +83,7 @@ export const SkillsProfession: React.FC<SkillsProfessionProps> = ({
               setRegisterState({ yearsExperience: e.target.value })
             }
           />
-        </div>
-        <div className="right-inputs">
+
           <FormControl sx={{ m: 1, width: 300 }}>
             <InputLabel id="demo-multiple-name-label">Skills</InputLabel>
             <Select
@@ -92,7 +92,7 @@ export const SkillsProfession: React.FC<SkillsProfessionProps> = ({
               multiple
               value={registerState.userSkills}
               onChange={handleSkillsChange}
-              input={<OutlinedInput label="Skills" />}
+              input={<Input />}
               MenuProps={MenuProps}
             >
               {skills.map((skill) => (
@@ -111,7 +111,7 @@ export const SkillsProfession: React.FC<SkillsProfessionProps> = ({
             </Select>
           </FormControl>
         </div>
-      </div>
+      </BackgroundStyle>
     </ProfileEducationStyle>
   );
 };
@@ -119,17 +119,12 @@ export const SkillsProfession: React.FC<SkillsProfessionProps> = ({
 const ProfileEducationStyle = styled.div`
   .inputs-container {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     height: 100%;
-
-    .left-inputs,
-    .right-inputs {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-    .left-inputs {
-      margin-right: 90px;
-    }
+    width: min-content;
+    align-self: center;
+  }
+  .inputs-container * {
+    margin-bottom: 8px;
   }
 `;

@@ -10,15 +10,16 @@ import PendingMeetings from 'components/meetings/PendingMeetings';
 import PastConnections from 'components/meetings/PastConnections';
 import ErrorMessage from 'components/ErrorMessage';
 import { useDispatch } from 'react-redux';
-import { addMeetings } from 'redux/store';
+import { addMeetings } from 'redux/meetingSlice';
 import { NotificationBanner } from 'components/NotificationBanner';
+import { useRouter } from 'next/dist/client/router';
 
 const MentorAdmin: React.FC = () => {
   const dispatch = useDispatch();
-
+  const router = useRouter();
   const { data, loading, error } = useGetUserQuery({
     variables: {
-      input: '16',
+      input: (router.query.userId as string) ?? '',
     },
   });
   if (loading) {
@@ -68,7 +69,7 @@ export const AdminStyle = styled.div`
   .profile-container {
     display: flex;
     width: 100%;
-    min-width: 900px;
+    width: 900px;
     flex-direction: column;
     .info-cal-container {
       display: inline-flex;
