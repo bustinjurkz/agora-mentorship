@@ -3,7 +3,6 @@ import React from 'react';
 import styled from 'styled-components';
 import { Majors, Meeting, Mentor, useGetUserQuery } from 'generated/graphql';
 import Loading from 'components/Loading';
-// import ProfileDashboard from 'components/ProfileDashboard';
 import MeetingsCalendar from 'components/meetings/MeetingsCalendar';
 import UpcomingMeetings from 'components/meetings/UpcomingMeetings';
 import PendingMeetings from 'components/meetings/PendingMeetings';
@@ -21,24 +20,22 @@ const MentorAdmin: React.FC = () => {
     skip: !router.query.userId,
     fetchPolicy: 'network-only',
     variables: {
-      input: (router.query.userId as string) ?? '',
+      input: router.query.userId as string,
     },
   });
   if (loading) {
     return <Loading />;
   }
-  if (error) {
+  if (error || !data) {
     return (
       <ErrorMessage msg={'Unknown network error.  Please try again later'} />
     );
   }
-  if (data) {
-    dispatch(addMeetings(data?.user?.mentor?.meetings as Meeting[]));
-  }
+
+  dispatch(addMeetings(data?.user?.mentor?.meetings as Meeting[]));
 
   return (
     <AdminStyle>
-      {/* <ProfileDashboard userType={'mentor'} /> */}
       <div className="profile-container">
         <NotificationBanner userName={data?.user?.mentor?.name as string} />
         <div className="info-cal-container">

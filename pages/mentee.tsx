@@ -1,7 +1,6 @@
 import PersonalInfo from 'components/PersonalInfo';
 import React from 'react';
 import Loading from 'components/Loading';
-// import ProfileDashboard from 'components/ProfileDashboard';
 import MeetingsCalendar from 'components/meetings/MeetingsCalendar';
 import UpcomingMeetings from 'components/meetings/UpcomingMeetings';
 import PendingMeetings from 'components/meetings/PendingMeetings';
@@ -36,7 +35,6 @@ const MenteeAdmin: React.FC = () => {
 
   return (
     <AdminStyle>
-      {/* <ProfileDashboard userType="mentee" /> */}
       <div className="profile-container">
         <NotificationBanner userName={data?.user?.mentee?.name as string} />
 

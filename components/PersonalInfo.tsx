@@ -29,7 +29,7 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({
   majors,
   userType,
 }) => {
-  const major = majorPrettier(majors[0]!.major);
+  const major = majorPrettier(majors[0].major);
 
   const [fieldSelected, setFieldSelected] = useState<FieldType>(FieldType.bio);
   const renderContentHeader = () => {
