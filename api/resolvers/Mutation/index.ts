@@ -165,6 +165,7 @@ export const Mutation: MutationResolvers = {
 
     calendar.events
       .insert({
+        auth: oAuth2Client,
         calendarId: 'primary',
         requestBody: {
           summary: `Meeting between ${input.mentorName} and ${input.menteeName}`,
