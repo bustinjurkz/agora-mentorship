@@ -154,66 +154,65 @@ export const Mutation: MutationResolvers = {
       },
     });
     const randomstring = require('randomstring');
+
     const { OAuth2 } = google.auth;
     const oAuth2Client = new OAuth2(
       config.google.oauthClientId,
-      config.google.oauthclientSecret,
+      config.google.oauthClientSecret,
     );
     oAuth2Client.setCredentials({ refresh_token: config.google.refreshToken });
     const calendar = google.calendar({ version: 'v3', auth: oAuth2Client });
-    const event = {
-      summary: `Meeting between ${input.mentorName} and ${input.menteeName}`,
-      location: 'Remote',
-      description: `An informational networking session on the topic of: ${servicePrettier(
-        input.topic,
-      )}. Please note Agora Mentoring does not attend the meeting, we merely organize it.`,
-      start: {
-        dateTime: input.start_time,
-      },
-      end: {
-        dateTime: addHours(parseISO(input.start_time), 1),
-      },
-      attendees: [{ email: menteeEmail?.email }, { email: input.mentorEmail }],
-      conferenceData: {
-        createRequest: {
-          conferenceSolutionKey: {
-            type: 'hangoutsMeet',
+
+    calendar.events
+      .insert({
+        calendarId: 'primary',
+        requestBody: {
+          summary: `Meeting between ${input.mentorName} and ${input.menteeName}`,
+          location: 'Remote',
+          description: `An informational networking session on the topic of: ${servicePrettier(
+            input.topic,
+          )}. Please note Agora Mentoring does not attend the meeting, we merely organize it.`,
+
+          start: {
+            dateTime: input.start_time,
           },
-          requestId: randomstring.generate(),
+          end: {
+            dateTime: addHours(parseISO(input.start_time), 1) as any,
+          },
+          attendees: [
+            { email: menteeEmail?.email },
+            { email: input.mentorEmail },
+          ],
+          conferenceData: {
+            createRequest: {
+              conferenceSolutionKey: {
+                type: 'hangoutsMeet',
+              },
+              requestId: randomstring.generate(),
+            },
+          },
         },
-      },
-    };
-
-    const insertEvent = async () => {
-      try {
-        //@ts-ignore
-        await calendar.events.insert({
-          calendarId: 'primary',
-          auth: oAuth2Client,
-          resource: event,
-          conferenceDataVersion: 1,
-          sendNotifications: true,
-        });
-        return;
-      } catch (e) {
-        return e;
-      }
-    };
-    insertEvent()
-      .then(() =>
-        ctx.prisma.meeting.update({
-          where: {
-            id: parseInt(input.id),
-          },
-          data: {
-            start_time: input.start_time,
-          },
-        }),
-      )
+        conferenceDataVersion: 1,
+        sendNotifications: true,
+      })
+      .then(() => {
+        ctx.prisma.meeting
+          .update({
+            where: {
+              id: parseInt(input.id),
+            },
+            data: {
+              start_time: input.start_time,
+            },
+          })
+          .catch((e) => {
+            throw e;
+          });
+      })
       .catch((e) => {
-        throw e;
+        console.log('catch: ', e);
+        return false;
       });
-
     return true;
   },
   cancelMeeting: async (_, { input }, ctx) => {

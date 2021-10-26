@@ -18,7 +18,7 @@ export default {
   google: {
     apiKey: process.env.GOOGLE_API_KEY!,
     oauthClientId: process.env.OAUTH_CLIENT_ID!,
-    oauthclientSecret: process.env.OAUTH_CLIENT_SECRET!,
+    oauthClientSecret: process.env.OAUTH_CLIENT_SECRET!,
     refreshToken: process.env.REFRESH_TOKEN!,
   },
 };

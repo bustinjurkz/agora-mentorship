@@ -24,7 +24,7 @@ export const meetingStoreSlice = createSlice({
           x?.start_time &&
           !x.end_time &&
           !x.cancelled &&
-          isBefore(new Date(), x?.start_time),
+          isBefore(new Date(), new Date(x?.start_time)),
       );
       const pendingFiltered = action.payload.filter(
         (x: Meeting) => !x?.start_time && x?.proposed_times && !x.cancelled,

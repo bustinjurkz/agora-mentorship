@@ -18,6 +18,8 @@ const MentorAdmin: React.FC = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const { data, loading, error } = useGetUserQuery({
+    skip: !router.query.userId,
+    fetchPolicy: 'network-only',
     variables: {
       input: (router.query.userId as string) ?? '',
     },
@@ -30,8 +32,9 @@ const MentorAdmin: React.FC = () => {
       <ErrorMessage msg={'Unknown network error.  Please try again later'} />
     );
   }
-
-  dispatch(addMeetings(data?.user?.mentor?.meetings as Meeting[]));
+  if (data) {
+    dispatch(addMeetings(data?.user?.mentor?.meetings as Meeting[]));
+  }
 
   return (
     <AdminStyle>

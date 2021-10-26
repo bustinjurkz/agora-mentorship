@@ -46,25 +46,40 @@ export const AcceptMeeting: React.FC<AcceptMeetingProps> = ({
   });
 
   const handleBooking = () => {
+    setLoading(true);
     createMeeting()
-      .catch(() =>
+      .then((res) => {
+        if (res.data?.createMeeting === true) {
+          setLoading(false);
+          setAction(undefined);
+
+          renderAlert(
+            `Meeting with ${meeting.mentee
+              ?.name!} booked, you will both receive an e-mail with the Google Meets room link shortly.`,
+            'success',
+          );
+          router.push({
+            pathname: 'mentor',
+            query: { userId: router.query.userId as string },
+          });
+        } else {
+          setLoading(false);
+          setAction(undefined);
+
+          renderAlert(
+            'Failed to create meeting.  Please contact support.',
+            'error',
+          );
+        }
+      })
+      .catch(() => {
+        setAction(undefined);
+        setLoading(false);
+        console.log('uh oh');
         renderAlert(
           'Failed to create meeting.  Please contact support.',
           'error',
-        ),
-      )
-      .finally(() => {
-        setLoading(false);
-        renderAlert(
-          `Meeting with ${meeting.mentee
-            ?.name!} booked, you will both receive an e-mail with the Google Meets room link shortly.`,
-          'success',
         );
-        router.push({
-          pathname: 'mentor',
-          query: { userId: router.query.userId as string },
-        });
-        setAction(undefined);
       });
   };
   const [loading, setLoading] = useState(false);

@@ -16,9 +16,9 @@ const Login: React.FC = () => {
   const [loggingIn, setLoggingIn] = useState(false);
   const [getUser] = useGetUserIdLazyQuery({
     onCompleted: (data) => {
-      setLoggingIn(false);
       if (!data?.login?.id) {
         renderAlert('User with the supplied e-mail does not exist', 'error');
+        setLoggingIn(false);
       } else {
         dispatch(
           loginUser({
