@@ -1,5 +1,4 @@
 import Button from '@mui/material/Button';
-import { useRouter } from 'next/dist/client/router';
 import List from '@mui/material/List';
 import ListItemText from '@mui/material/ListItemText';
 import {
@@ -19,6 +18,7 @@ export interface AcceptMeetingProps {
   setAction: (x: undefined) => void;
   mentorName: string;
   mentorEmail: string;
+  refetch: () => void;
 }
 
 export const AcceptMeeting: React.FC<AcceptMeetingProps> = ({
@@ -26,8 +26,8 @@ export const AcceptMeeting: React.FC<AcceptMeetingProps> = ({
   setAction,
   mentorName,
   mentorEmail,
+  refetch,
 }) => {
-  const router = useRouter();
   const proposedTimes = meeting.proposed_times as Proposed_Time[];
   const [selectedTime, setSelectedTime] = useState(-1);
 
@@ -52,16 +52,12 @@ export const AcceptMeeting: React.FC<AcceptMeetingProps> = ({
         if (res.data?.createMeeting === true) {
           setLoading(false);
           setAction(undefined);
-
           renderAlert(
             `Meeting with ${meeting.mentee
               ?.name!} booked, you will both receive an e-mail with the Google Meets room link shortly.`,
             'success',
           );
-          router.push({
-            pathname: 'mentor',
-            query: { userId: router.query.userId as string },
-          });
+          refetch();
         } else {
           setLoading(false);
           setAction(undefined);

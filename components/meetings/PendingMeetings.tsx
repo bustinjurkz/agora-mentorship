@@ -9,12 +9,14 @@ export interface PendingMeetingsProps {
   userType: UserType;
   mentorName?: string;
   mentorEmail?: string;
+  refetch: () => void;
 }
 
 const PendingMeetings: React.FC<PendingMeetingsProps> = ({
   userType,
   mentorName,
   mentorEmail,
+  refetch,
 }) => {
   const pendingMeetings = useSelector(selectPendingMeetings);
 
@@ -38,6 +40,7 @@ const PendingMeetings: React.FC<PendingMeetingsProps> = ({
                 otherUser={userType === 'mentee' ? x.mentor! : x.mentee!}
                 mentorEmail={mentorEmail}
                 mentorName={mentorName}
+                refetch={refetch}
               />
             ))
           ) : (

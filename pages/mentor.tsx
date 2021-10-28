@@ -16,7 +16,7 @@ import { useRouter } from 'next/dist/client/router';
 const MentorAdmin: React.FC = () => {
   const dispatch = useDispatch();
   const router = useRouter();
-  const { data, loading, error } = useGetUserQuery({
+  const { data, loading, error, refetch } = useGetUserQuery({
     skip: !router.query.userId,
     fetchPolicy: 'network-only',
     variables: {
@@ -50,6 +50,7 @@ const MentorAdmin: React.FC = () => {
         <UpcomingMeetings userType="mentor" />
         <PendingMeetings
           userType="mentor"
+          refetch={refetch}
           mentorName={data?.user?.mentor?.name!}
           mentorEmail={data?.user?.email as string}
         />

@@ -17,6 +17,7 @@ export interface MeetingActionModalProps {
   action: 'accept' | 'change' | 'status';
   mentorEmail?: string;
   mentorName?: string;
+  refetch: () => void;
 }
 
 export const MeetingActionModal: React.FC<MeetingActionModalProps> = ({
@@ -25,6 +26,7 @@ export const MeetingActionModal: React.FC<MeetingActionModalProps> = ({
   setAction,
   mentorEmail,
   mentorName,
+  refetch,
 }) => {
   return (
     <Dialog
@@ -41,6 +43,7 @@ export const MeetingActionModal: React.FC<MeetingActionModalProps> = ({
               setAction={setAction}
               mentorEmail={mentorEmail!}
               mentorName={mentorName!}
+              refetch={refetch}
             />
           )}
           {action === 'change' && (

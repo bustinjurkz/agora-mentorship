@@ -17,6 +17,7 @@ export interface PendingMeetingCardProps {
   userType: UserType;
   mentorEmail?: string;
   mentorName?: string;
+  refetch: () => void;
 }
 
 export const PendingMeetingCard: React.FC<PendingMeetingCardProps> = ({
@@ -25,6 +26,7 @@ export const PendingMeetingCard: React.FC<PendingMeetingCardProps> = ({
   userType,
   mentorEmail,
   mentorName,
+  refetch,
 }) => {
   const [action, setAction] = useState<
     'change' | 'accept' | 'status' | undefined
@@ -94,6 +96,7 @@ export const PendingMeetingCard: React.FC<PendingMeetingCardProps> = ({
           setAction={setAction}
           mentorEmail={mentorEmail}
           mentorName={mentorName}
+          refetch={refetch}
         />
       )}
     </PendingMeetingCardStyle>
