@@ -16,7 +16,7 @@ import { useRouter } from 'next/dist/client/router';
 const MenteeAdmin: React.FC = () => {
   const dispatch = useDispatch();
   const router = useRouter();
-  const { data, loading, error } = useGetUserQuery({
+  const { data, loading, error, refetch } = useGetUserQuery({
     skip: !router.query.userId,
     fetchPolicy: 'network-only',
     variables: {
@@ -48,7 +48,7 @@ const MenteeAdmin: React.FC = () => {
           <MeetingsCalendar />
         </div>
         <UpcomingMeetings userType="mentee" />
-        <PendingMeetings userType="mentee" />
+        <PendingMeetings userType="mentee" refetch={refetch} />
         <PastConnections userType="mentee" />
       </div>
     </AdminStyle>
