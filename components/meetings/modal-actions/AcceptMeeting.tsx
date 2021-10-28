@@ -75,7 +75,6 @@ export const AcceptMeeting: React.FC<AcceptMeetingProps> = ({
       .catch(() => {
         setAction(undefined);
         setLoading(false);
-        console.log('uh oh');
         renderAlert(
           'Failed to create meeting.  Please contact support.',
           'error',

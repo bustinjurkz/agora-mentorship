@@ -196,8 +196,6 @@ export const Mutation: MutationResolvers = {
       sendNotifications: true,
     });
 
-    console.log('res: ', res);
-
     const meetingCreate = await ctx.prisma.meeting
       .update({
         where: {
@@ -211,7 +209,7 @@ export const Mutation: MutationResolvers = {
         throw e;
       });
 
-    return meetingCreate.id ? true : false;
+    return meetingCreate.id && res.data?.id ? true : false;
   },
   cancelMeeting: async (_, { input }, ctx) => {
     const res = await ctx.prisma.meeting.update({
