@@ -163,58 +163,55 @@ export const Mutation: MutationResolvers = {
     oAuth2Client.setCredentials({ refresh_token: config.google.refreshToken });
     const calendar = google.calendar({ version: 'v3', auth: oAuth2Client });
 
-    calendar.events
-      .insert({
-        auth: oAuth2Client,
-        calendarId: 'primary',
-        requestBody: {
-          summary: `Meeting between ${input.mentorName} and ${input.menteeName}`,
-          location: 'Remote',
-          description: `An informational networking session on the topic of: ${servicePrettier(
-            input.topic,
-          )}. Please note Agora Mentoring does not attend the meeting, we merely organize it.`,
+    const res = await calendar.events.insert({
+      auth: oAuth2Client,
+      calendarId: 'primary',
+      requestBody: {
+        summary: `Meeting between ${input.mentorName} and ${input.menteeName}`,
+        location: 'Remote',
+        description: `An informational networking session on the topic of: ${servicePrettier(
+          input.topic,
+        )}. Please note Agora Mentoring does not attend the meeting, we merely organize it.`,
 
-          start: {
-            dateTime: input.start_time,
-          },
-          end: {
-            dateTime: addHours(parseISO(input.start_time), 1) as any,
-          },
-          attendees: [
-            { email: menteeEmail?.email },
-            { email: input.mentorEmail },
-          ],
-          conferenceData: {
-            createRequest: {
-              conferenceSolutionKey: {
-                type: 'hangoutsMeet',
-              },
-              requestId: randomstring.generate(),
+        start: {
+          dateTime: input.start_time,
+        },
+        end: {
+          dateTime: addHours(parseISO(input.start_time), 1) as any,
+        },
+        attendees: [
+          { email: menteeEmail?.email },
+          { email: input.mentorEmail },
+        ],
+        conferenceData: {
+          createRequest: {
+            conferenceSolutionKey: {
+              type: 'hangoutsMeet',
             },
+            requestId: randomstring.generate(),
           },
         },
-        conferenceDataVersion: 1,
-        sendNotifications: true,
-      })
-      .then(() => {
-        ctx.prisma.meeting
-          .update({
-            where: {
-              id: parseInt(input.id),
-            },
-            data: {
-              start_time: input.start_time,
-            },
-          })
-          .catch((e) => {
-            throw e;
-          });
+      },
+      conferenceDataVersion: 1,
+      sendNotifications: true,
+    });
+
+    console.log('res: ', res);
+
+    const meetingCreate = await ctx.prisma.meeting
+      .update({
+        where: {
+          id: parseInt(input.id),
+        },
+        data: {
+          start_time: input.start_time,
+        },
       })
       .catch((e) => {
-        console.log('catch: ', e);
-        return false;
+        throw e;
       });
-    return true;
+
+    return meetingCreate.id ? true : false;
   },
   cancelMeeting: async (_, { input }, ctx) => {
     const res = await ctx.prisma.meeting.update({
