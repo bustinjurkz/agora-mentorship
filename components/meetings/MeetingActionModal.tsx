@@ -17,7 +17,7 @@ export interface MeetingActionModalProps {
   action: 'accept' | 'change' | 'status';
   mentorEmail?: string;
   mentorName?: string;
-  refetch: () => void;
+  refetch?: () => void;
 }
 
 export const MeetingActionModal: React.FC<MeetingActionModalProps> = ({
@@ -43,7 +43,7 @@ export const MeetingActionModal: React.FC<MeetingActionModalProps> = ({
               setAction={setAction}
               mentorEmail={mentorEmail!}
               mentorName={mentorName!}
-              refetch={refetch}
+              refetch={refetch!}
             />
           )}
           {action === 'change' && (
