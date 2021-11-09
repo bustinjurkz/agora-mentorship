@@ -87,10 +87,18 @@ export const Query: QueryResolvers = {
     const skills = await ctx.prisma.skills.findMany();
 
     return {
-      language: languages,
-      majors: majors,
-      university: universities,
-      skills: skills,
+      language: languages.sort(function (a, b) {
+        return a.language.localeCompare(b.language);
+      }),
+      majors: majors.sort(function (a, b) {
+        return a.major.localeCompare(b.major);
+      }),
+      university: universities.sort(function (a, b) {
+        return a.name.localeCompare(b.name);
+      }),
+      skills: skills.sort(function (a, b) {
+        return a.skill.localeCompare(b.skill);
+      }),
     };
   },
   login: async (_, { email }, ctx) => {
