@@ -64,9 +64,6 @@ export const MentorSpecific: React.FC<MentorSpecificProps> = ({
     }
   };
 
-  //TODO times is right!!! something else is fucking up!
-  console.log('times: ', times);
-
   const renderTime = (timeslot: 'MORNING' | 'AFTERNOON' | 'EVENING') => {
     const morning = [
       parseDate(selectedDate!, 7),

@@ -24,10 +24,8 @@ const TimeSelect: React.FC<TimeSelectProps> = ({
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
 
   const mentorAvailability = mentor!.availability?.map((x) =>
-    new Date(x?.time).getUTCHours(),
+    new Date(x?.time).getHours(),
   );
-
-  console.log('mentorAvailability: ', mentorAvailability);
 
   // Appends prior meeting times in local timezone for comparison
   const mentorMeetings: Date[] | undefined = mentor!.meetings?.map(
