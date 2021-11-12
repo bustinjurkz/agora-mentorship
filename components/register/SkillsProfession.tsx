@@ -58,14 +58,14 @@ export const SkillsProfession: React.FC<SkillsProfessionProps> = ({
         <div className="inputs-container">
           <TextField
             id="standard-basic"
-            label="Primary Role"
+            label="Current Job Title"
             variant="standard"
             value={registerState.primaryRole}
             onChange={(e) => setRegisterState({ primaryRole: e.target.value })}
           />
           <TextField
             id="standard-basic"
-            label="Secondary Role"
+            label="Current Department"
             variant="standard"
             value={registerState.secondaryRole}
             onChange={(e) =>
@@ -74,7 +74,7 @@ export const SkillsProfession: React.FC<SkillsProfessionProps> = ({
           />
           <TextField
             id="standard-basic"
-            label="Years Experience"
+            label="Years Experience in Primary Role"
             InputProps={{ inputProps: { min: 0, max: 50 } }}
             variant="standard"
             type="number"
@@ -84,8 +84,10 @@ export const SkillsProfession: React.FC<SkillsProfessionProps> = ({
             }
           />
 
-          <FormControl sx={{ m: 1, width: 300 }}>
-            <InputLabel id="demo-multiple-name-label">Skills</InputLabel>
+          <FormControl>
+            <InputLabel id="demo-multiple-name-label">
+              Skills (Choose 3)
+            </InputLabel>
             <Select
               labelId="demo-multiple-name-label"
               id="demo-multiple-name"
@@ -121,8 +123,8 @@ const ProfileEducationStyle = styled.div`
     display: flex;
     flex-direction: column;
     height: 100%;
-    width: min-content;
     align-self: center;
+    width: 100%;
   }
   .inputs-container * {
     margin-bottom: 8px;

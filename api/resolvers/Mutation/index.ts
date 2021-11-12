@@ -7,8 +7,19 @@ import {
   servicePrettier,
 } from 'components/utils';
 import { addHours, parseISO } from 'date-fns';
+import { ApolloError } from 'apollo-server-errors';
 export const Mutation: MutationResolvers = {
   createUser: async (_, { input }, ctx) => {
+    const duplicateEmail = await ctx.prisma.user.findFirst({
+      where: { email: input.email },
+      select: {
+        id: true,
+      },
+    });
+    if (duplicateEmail?.id) {
+      throw new ApolloError('Duplicate Email', '400');
+    }
+
     await ctx.prisma.user
       .create({
         data: {

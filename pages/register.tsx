@@ -1,5 +1,5 @@
 import Button from '@mui/material/Button';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { DegreeType, renderAlert, UserType } from 'components/utils';
 import MobileStepper from '@mui/material/MobileStepper';
@@ -36,7 +36,7 @@ const Register: React.FC = () => {
     fullName: '',
     email: '',
     birthYear: '',
-    userLanguage: [],
+    userLanguage: ['English'],
     userUniversity: [],
     userMajor: [],
     userDegree: '' as DegreeType,
@@ -47,6 +47,10 @@ const Register: React.FC = () => {
     userServices: [],
     bio: 'this is my bio',
   });
+
+  useEffect(() => {
+    activeStep === 0 && setUserType(undefined);
+  }, [activeStep]);
 
   const handleChange = (
     //@ts-ignore
@@ -107,6 +111,7 @@ const Register: React.FC = () => {
     createUser()
       .then((e) => {
         if (e.errors) {
+          console.log('e.errors: ', e.errors);
           renderAlert('Failed to register.  Please contact support.', 'error');
           setCreatingUser(false);
           returnHome();
@@ -115,10 +120,10 @@ const Register: React.FC = () => {
         returnHome();
         renderAlert('Thank you for registering!', 'success');
       })
-      .catch(() => {
+      .catch((e) => {
+        console.log('errors from catch: ', e);
         setCreatingUser(false);
-        returnHome();
-        renderAlert('Failed to register.  Please contact support.', 'error');
+        renderAlert(`Failed to register.  ${e.message}`, 'error');
       });
   };
 
@@ -233,6 +238,33 @@ const Register: React.FC = () => {
       <ErrorMessage msg={'Unknown network error.  Please try again later'} />
     );
   }
+
+  const canNext = () => {
+    if (activeStep === 1) {
+      return registerState.fullName &&
+        registerState.birthYear &&
+        registerState.userDegree &&
+        registerState.userLanguage.length > 0 &&
+        registerState.userUniversity.length > 0 &&
+        registerState.userMajor.length > 0
+        ? true
+        : false;
+    }
+    if (activeStep === 2) {
+      return registerState.primaryRole &&
+        registerState.secondaryRole &&
+        registerState.yearsExperience &&
+        registerState.userSkills.length > 2
+        ? true
+        : false;
+    }
+    if (userType === 'mentor' && activeStep === 3) {
+      return registerState.userServices.length > 0 && times.length > 2
+        ? true
+        : false;
+    }
+  };
+
   return (
     <RegisterStyle>
       <div className="container">
@@ -251,6 +283,7 @@ const Register: React.FC = () => {
                 style={{ visibility: !userType ? 'hidden' : 'inherit' }}
                 onClick={handleNext}
                 color="success"
+                disabled={!canNext()}
               >
                 {creatingUser ? (
                   <CircularProgress />

@@ -72,16 +72,16 @@ export const servicePrettier = (service: Services) => {
 
 export type DegreeType =
   | 'College Diploma'
-  | 'Bachelors (3 years)'
-  | 'Honours (4 years)'
+  | 'Certification'
+  | 'Bachelors'
   | 'Masters'
   | 'Professional Degree'
   | 'PhD';
 
 export const degrees: DegreeType[] = [
   'College Diploma',
-  'Bachelors (3 years)',
-  'Honours (4 years)',
+  'Certification',
+  'Bachelors',
   'Masters',
   'Professional Degree',
   'PhD',
@@ -100,10 +100,10 @@ export const getHighestEducation = (degree: DegreeType) => {
   switch (degree) {
     case 'College Diploma':
       return 1;
-    case 'Bachelors (3 years)':
+    case 'Certification':
+      return 1;
+    case 'Bachelors':
       return 2;
-    case 'Honours (4 years)':
-      return 3;
     case 'Masters':
       return 4;
     case 'Professional Degree':

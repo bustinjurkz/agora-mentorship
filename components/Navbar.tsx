@@ -10,6 +10,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Paper from '@mui/material/Paper';
 import { useSelector } from 'react-redux';
 import { selectLoggedInUser } from 'redux/userSlice';
+import Image from 'next/image';
 
 const Navbar: React.FC = () => {
   const loggedInUser = useSelector(selectLoggedInUser);
@@ -22,13 +23,17 @@ const Navbar: React.FC = () => {
   return homeNavRoutes.has(router.pathname) ? (
     <Paper elevation={4}>
       <LandingNavbarStyle>
-        <h1
-          className="title"
+        <Image
+          src="/logo-header.png"
+          alt={'Agora Mentoring'}
+          width="225"
+          height="69"
+          aria-label={'Agora Mentoring'}
+          className="logo"
           onClick={() => returnHome()}
           onKeyDown={() => returnHome()}
-        >
-          Agora Mentoring
-        </h1>
+        />
+
         <div className="nav-buttons">
           <Button className="item">How it Works</Button>
           <Button className="item">About</Button>
@@ -38,7 +43,7 @@ const Navbar: React.FC = () => {
             onClick={() => router.push(`/register`, `/register`)}
             className="sign-up"
           >
-            Sign Up
+            Register
           </Button>
         </div>
       </LandingNavbarStyle>
@@ -46,13 +51,16 @@ const Navbar: React.FC = () => {
   ) : (
     <Paper elevation={4}>
       <AdminNavbarStyle>
-        <h1
-          className="title"
+        <Image
+          src="/logo-header.png"
+          alt={'Agora Mentoring'}
+          width="225"
+          height="69"
+          aria-label={'Agora Mentoring'}
+          className="logo"
           onClick={() => returnHome()}
           onKeyDown={() => returnHome()}
-        >
-          Agora Mentoring
-        </h1>
+        />
         <div className="nav-buttons">
           {(loggedInUser.userType === 'mentee' ||
             router.pathname === '/mentee') && (
@@ -93,11 +101,10 @@ const LandingNavbarStyle = styled.div`
   height: 100px;
   padding: 0px 50px;
   background-color: ${({ theme }) => theme.mainGreen};
-
-  .title {
-    color: ${({ theme }) => theme.white};
+  .image-wrapper {
     cursor: pointer;
   }
+
   .nav-buttons {
     display: inline-flex;
     align-items: center;
@@ -123,9 +130,7 @@ const AdminNavbarStyle = styled.header`
   height: 100px;
   padding: 0px 50px;
   background-color: ${({ theme }) => theme.mainGreen};
-
-  .title {
-    color: ${({ theme }) => theme.white};
+  .image-wrapper {
     cursor: pointer;
   }
   .nav-buttons {

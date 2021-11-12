@@ -117,6 +117,7 @@ export const ProfileEducation: React.FC<ProfileEducationProps> = ({
                 labelId="demo-multiple-name-label"
                 id="demo-multiple-name"
                 multiple
+                defaultValue={'English'}
                 value={registerState.userLanguage}
                 onChange={handleLanguageChange}
                 input={<Input />}
@@ -165,7 +166,9 @@ export const ProfileEducation: React.FC<ProfileEducationProps> = ({
               </Select>
             </FormControl>
             <FormControl sx={{ m: 1, width: 300 }}>
-              <InputLabel id="demo-multiple-name-label">Major</InputLabel>
+              <InputLabel id="demo-multiple-name-label">
+                Field of Study
+              </InputLabel>
               <Select
                 labelId="demo-multiple-name-label"
                 id="demo-multiple-name"

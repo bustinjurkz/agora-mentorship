@@ -2,6 +2,7 @@ import Button from '@mui/material/Button';
 import { useRouter } from 'next/dist/client/router';
 import React from 'react';
 import styled from 'styled-components';
+import Image from 'next/image';
 
 const LandingPage: React.FC = () => {
   const router = useRouter();
@@ -44,7 +45,16 @@ const LandingPage: React.FC = () => {
           </Button>
         </div>
       </div>
-      <div className="image-container"></div>
+      <div className="image-container">
+        <Image
+          src="/logo-landing.png"
+          alt={'Agora Mentoring'}
+          width="300"
+          height="300"
+          aria-label={'Agora Mentoring'}
+          className="logo"
+        />
+      </div>
     </LandingPageStyle>
   );
 };
@@ -57,9 +67,8 @@ const LandingPageStyle = styled.div`
   justify-content: space-between;
   .image-container {
     align-self: center;
-    background: grey;
-    height: 400px;
-    width: 400px;
+    height: 300px;
+    width: 300px;
   }
   .landing-wrapper {
     align-self: center;
